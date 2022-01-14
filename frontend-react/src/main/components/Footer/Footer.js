@@ -5,7 +5,7 @@ class Footer extends Component {
   render() {
     return (
       <el-row className="main-footer">
-        <div claaName="contents">Copyright © SAMSUNG All Rights Reserved.</div>
+        <div className="contents">Copyright © SAMSUNG All Rights Reserved.</div>
       </el-row>
     );
   }
