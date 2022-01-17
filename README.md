@@ -1,5 +1,7 @@
 # StuDelivery!
 
+> [GitMoji](https://gitmoji.dev/)
+
 ## 🤙 Git Commit & Merge Convention
 
 - `feat`: 새로운 기능 추가
