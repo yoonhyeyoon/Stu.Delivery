@@ -6,8 +6,8 @@ import {
 
 import Header from "./components/main/Header/Header";
 import Footer from "./components/main/Footer/Footer";
-import Login from "./routes/Login";
-import Signup from "./routes/Signup";
+import Login from "./routes/account/Login";
+import Signup from "./routes/account/Signup";
 
 function App() {
   return (
