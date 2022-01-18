@@ -56,8 +56,4 @@ public class AuthController {
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
 	}
 
-	@GetMapping("/valid")
-	public String emailConfirm(@RequestParam(value = "userId") String userId, @RequestParam(value = "authKey") String authKey) throws Exception {
-		return userService.updateAuthStatus(userId, authKey);
-	}
 }
