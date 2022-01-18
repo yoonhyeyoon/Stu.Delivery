@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
 		user.setNickName(userRegisterInfo.getNickname());
 		user.setCreatedAt(LocalDateTime.now());
 
+		// authKey 생성
 		String authKey = new AuthKey().getKey(50);
 		user.setAuthKey(authKey);
 		user.setAuthStatus(false);
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	// authState 변경
 	@Override
 	public String updateAuthStatus(String userId, String authKey) {
 		User user = userRepositorySupport.findUserByUserId(userId).get();
@@ -75,15 +77,15 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	private void sendMail(User user, String authKey) throws Exception {
-
+	// 메일 전송
+	public void sendMail(User user, String authKey) throws Exception {
 
 		MailUtils sendMail = new MailUtils(mailSender);
 
 		sendMail.setSubject("[Stu.Delivery] 회원가입 이메일 인증");
 		sendMail.setText(new StringBuffer().append("<h1>[이메일 인증]</h1>")
 			.append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>")
-			.append("<a href='http://localhost:8080/api/v1/auth/valid?userId=")
+			.append("<a href='http://localhost:8080/api/v1/mail/valid?userId=")
 			.append(user.getUserId())
 			.append("&authKey=")
 			.append(authKey)
