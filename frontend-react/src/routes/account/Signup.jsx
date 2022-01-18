@@ -10,12 +10,12 @@ function Signup() {
   const [nameMessage, setNameMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState("");
 
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+  const [isConfirmPassword, setIsConfirmPassword] = useState(false);
 
   const onEmailHandler = (event) => {
     const emailRegex =
@@ -52,10 +52,10 @@ function Signup() {
     setConfirmPassword(confirmPasswordCurrent);
 
     if (password === confirmPasswordCurrent) {
-      setIsPasswordConfirm(true);
+      setIsConfirmPassword(true);
     } else {
-      setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.");
-      setIsPasswordConfirm(false);
+      setConfirmPasswordMessage("비밀번호가 일치하지 않습니다.");
+      setIsConfirmPassword(false);
     }
   };
 
@@ -86,6 +86,11 @@ function Signup() {
             value={email}
             onChange={onEmailHandler}
           />
+          {email.length > 0 && (
+            <span className={`message ${isEmail ? "success" : "error"}`}>
+              {emailMessage}
+            </span>
+          )}
         </div>
         <div>
           <input
@@ -94,6 +99,11 @@ function Signup() {
             value={password}
             onChange={onPasswordHandler}
           />
+          {password.length > 0 && (
+            <span className={`message ${isPassword ? "success" : "error"}`}>
+              {passwordMessage}
+            </span>
+          )}
         </div>
         <div>
           <input
@@ -102,6 +112,13 @@ function Signup() {
             value={confirmPassword}
             onChange={onConfirmPasswordHandler}
           />
+          {confirmPassword.length > 0 && (
+            <span
+              className={`message ${isConfirmPassword ? "success" : "error"}`}
+            >
+              {confirmPasswordMessage}
+            </span>
+          )}
         </div>
         <div>
           <input
