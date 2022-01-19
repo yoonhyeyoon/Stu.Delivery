@@ -65,7 +65,7 @@ public class AuthController {
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
 	}
 
-	@PostMapping("/change-pwd")
+	@PatchMapping("/change-pwd")
 	@ApiOperation(value = "비밀번호 변경", notes = "비밀번호를 변경한다.")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
