@@ -1,10 +1,10 @@
 function Main(isLogin) {
   const onLogout = () => {
-      localStorage.removeItem('JWT');
-      setIsLogin(false);
-      // App 으로 이동 (새로고침)
-      document.location.href = '/';
-    }
+    localStorage.removeItem("JWT");
+    setIsLogin(false);
+    // App 으로 이동 (새로고침)
+    document.location.href = "/";
+  };
 
   return (
     <div>
