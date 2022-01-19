@@ -79,10 +79,17 @@ public class AuthController {
 			String userId = userDetails.getUsername();
 			User user = userService.getUserByUserId(userId);
 
-			user.setPassword(passwordEncoder.encode(changePasswordReq.getPassword()));
-			userRepository.save(user);
+			System.out.println(passwordEncoder.encode(changePasswordReq.getCur()));
+			System.out.println(user.getPassword());
 
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			if (passwordEncoder.matches(changePasswordReq.getCur(), user.getPassword())) {
+				user.setPassword(passwordEncoder.encode(changePasswordReq.getPassword()));
+				userRepository.save(user);
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			} else {
+				return ResponseEntity.status(400).body(BaseResponseBody.of(400, "password not valid"));
+			}
+
 		} catch (Exception e){
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Failed : " + e));
 		}

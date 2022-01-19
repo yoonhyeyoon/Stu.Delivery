@@ -9,6 +9,10 @@ import lombok.Setter;
 @Setter
 @ApiModel("ChangePasswordReq")
 public class ChangePasswordReq {
+
+    @ApiModelProperty(name = "현재 비밀번호", example = "test")
+    String cur;
+
     @ApiModelProperty(name = "변경할 비밀번호", example = "change_password")
     String password;
 }
