@@ -1,0 +1,45 @@
+.Login {
+  display: inline-block;
+  position: relative;
+  width: 360px;
+  padding: 30px;
+  margin: 0 auto;
+  text-align: left;
+  align-items: center;
+}
+
+.form {
+  position: relative;
+  margin: 0 auto;
+}
+
+.login-input {
+  display: flex;
+  align-items: center;
+}
+
+.login-input label {
+  float: left;
+  font-size: 13px;
+  width: 110px;
+  margin-bottom: 5%;
+}
+
+input {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+h2 {
+  text-align: center;
+}
+
+.submit {
+  width: 100px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.submit button {
+  width: 100px;
+}
