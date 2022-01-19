@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private JavaMailSender mailSender;
+	MailService mailService;
 
 	@Override
 	@Transactional
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		user.setAuthKey(authKey);
 		user.setAuthStatus(false);
 
-		sendMail(user, authKey);
+		mailService.sendConfirmMail(user, authKey);
 
 		return userRepository.save(user);
 	}
@@ -77,23 +77,5 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	// 메일 전송
-	public void sendMail(User user, String authKey) throws Exception {
 
-		MailUtils sendMail = new MailUtils(mailSender);
-
-		sendMail.setSubject("[Stu.Delivery] 회원가입 이메일 인증");
-		sendMail.setText(new StringBuffer().append("<h1>[이메일 인증]</h1>")
-			.append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>")
-			.append("<a href='http://localhost:8080/api/v1/mail/valid?userId=")
-			.append(user.getUserId())
-			.append("&authKey=")
-			.append(authKey)
-			.append("' target='_blenk'>이메일 인증 확인</a>")
-			.toString());
-
-		sendMail.setFrom("dev.js.pekah@gmail.com", "Stu.Delivery");
-		sendMail.setTo(user.getUserId());
-		sendMail.send();
-	}
 }
