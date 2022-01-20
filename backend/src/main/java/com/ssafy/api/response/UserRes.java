@@ -5,6 +5,8 @@ import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +19,26 @@ import lombok.Setter;
 public class UserRes{
 	@ApiModelProperty(name="User ID")
 	String userId;
+
+	Boolean activated;
+	Boolean authStatus;
+	String determination;
+	String nickName;
+	String profileImg;
+	Time totalStudy;
+	LocalDateTime updatedAt;
 	
 	public static UserRes of(User user) {
 		UserRes res = new UserRes();
 		res.setUserId(user.getUserId());
+		res.setActivated(true);
+		res.setAuthStatus(user.getAuthStatus());
+		res.setDetermination(user.getDetermination());
+		res.setNickName(user.getNickName());
+		res.setProfileImg(user.getProfileImg());
+		res.setTotalStudy(user.getTotalStudy());
+		res.setUpdatedAt(user.getUpdatedAt());
+
 		return res;
 	}
 }

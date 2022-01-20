@@ -3,6 +3,10 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,4 +67,10 @@ public class User extends BaseEntity{
     private String authKey;
 
     private Boolean authStatus;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Attendance> attendanceList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Goal> goals = new ArrayList<>();
 }
