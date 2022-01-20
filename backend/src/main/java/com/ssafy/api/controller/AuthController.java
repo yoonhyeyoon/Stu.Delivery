@@ -1,15 +1,12 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ChangePasswordReq;
-import com.ssafy.api.request.FindPasswordReq;
-import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.common.auth.SsafyUserDetails;
+import com.ssafy.common.auth.CustomUserDetails;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserLoginPostReq;
@@ -18,7 +15,6 @@ import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepositorySupport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,6 +52,10 @@ public class AuthController {
 		String password = loginInfo.getPassword();
 
 		User user = userService.getUserByUserId(userId);
+		// 존재하지 않는 아이디일때
+		if(user == null) {
+			return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "Unknown Id", null));
+		}
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
 		if(passwordEncoder.matches(password, user.getPassword())) {
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
@@ -75,7 +75,7 @@ public class AuthController {
 	public ResponseEntity<? extends BaseResponseBody> changePwd(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "변경할 비밀번호", required = true) ChangePasswordReq changePasswordReq) {
 
 		try {
-			SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+			CustomUserDetails userDetails = (CustomUserDetails)authentication.getDetails();
 			String userId = userDetails.getUsername();
 			User user = userService.getUserByUserId(userId);
 

@@ -3,6 +3,9 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,10 +32,6 @@ public class User extends BaseEntity{
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(
-        name = "password",
-        nullable = false
-    )
     private String password;
 
     @Column(
@@ -43,8 +42,7 @@ public class User extends BaseEntity{
     private String nickName;
 
     @Column(
-        name = "profile_img",
-        length = 50
+        name = "profile_img"
     )
     private String profileImg;
 
@@ -63,4 +61,10 @@ public class User extends BaseEntity{
     private String authKey;
 
     private Boolean authStatus;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
 }

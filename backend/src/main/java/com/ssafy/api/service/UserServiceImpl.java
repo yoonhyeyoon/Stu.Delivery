@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.util.MailUtils;
+import com.ssafy.db.entity.AuthProvider;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
 		user.setNickName(userRegisterInfo.getNickname());
 		user.setCreatedAt(LocalDateTime.now());
+		user.setProvider(AuthProvider.local);
 
 		// authKey 생성
 		String authKey = new AuthKey().getKey(50);
@@ -57,7 +59,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByUserId(String userId) {
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		User user = userRepositorySupport.findUserByUserId(userId).get();
+		// 만약 존재하지 않는 userId일 때 null 반환 후 controller에서 예외처리
+		User user = userRepositorySupport.findUserByUserId(userId).orElse(null);
 		return user;
 	}
 

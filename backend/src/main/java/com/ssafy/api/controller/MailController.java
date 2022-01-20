@@ -4,9 +4,8 @@ import com.ssafy.api.request.FindPasswordReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.MailService;
 import com.ssafy.api.service.UserService;
-import com.ssafy.api.service.UserServiceImpl;
 import com.ssafy.common.auth.AuthKey;
-import com.ssafy.common.auth.SsafyUserDetails;
+import com.ssafy.common.auth.CustomUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
@@ -56,7 +55,7 @@ public class MailController {
     public ResponseEntity<? extends BaseResponseBody> resend(@ApiIgnore Authentication authentication) throws Exception {
 
         // 유저 정보 가져오기
-        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+        CustomUserDetails userDetails = (CustomUserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
         User user = userService.getUserByUserId(userId);
 
