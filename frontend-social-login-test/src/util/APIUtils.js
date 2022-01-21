@@ -29,14 +29,14 @@ export function getCurrentUser() {
     }
 
     return request({
-        url: API_BASE_URL + "/user/me",
+        url: API_BASE_URL + "/api/v1/users/me",
         method: 'GET'
     });
 }
 
 export function login(loginRequest) {
     return request({
-        url: API_BASE_URL + "/auth/login",
+        url: API_BASE_URL + "/api/v1/auth/login",
         method: 'POST',
         body: JSON.stringify(loginRequest)
     });
@@ -44,7 +44,7 @@ export function login(loginRequest) {
 
 export function signup(signupRequest) {
     return request({
-        url: API_BASE_URL + "/auth/signup",
+        url: API_BASE_URL + "/api/v1/users",
         method: 'POST',
         body: JSON.stringify(signupRequest)
     });

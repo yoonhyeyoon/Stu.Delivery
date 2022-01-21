@@ -70,7 +70,7 @@ class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
+            id: '',
             password: ''
         };
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -106,9 +106,9 @@ class LoginForm extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="form-item">
-                    <input type="email" name="email" 
+                    <input type="email" name="id" 
                         className="form-control" placeholder="Email"
-                        value={this.state.email} onChange={this.handleInputChange} required/>
+                        value={this.state.id} onChange={this.handleInputChange} required/>
                 </div>
                 <div className="form-item">
                     <input type="password" name="password" 

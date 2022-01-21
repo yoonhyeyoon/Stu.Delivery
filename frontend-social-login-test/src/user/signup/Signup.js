@@ -54,9 +54,9 @@ class SignupForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            email: '',
-            password: ''
+            id: '',
+            password: '',
+            nickname: '',
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -90,19 +90,19 @@ class SignupForm extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="form-item">
-                    <input type="text" name="name" 
-                        className="form-control" placeholder="Name"
-                        value={this.state.name} onChange={this.handleInputChange} required/>
-                </div>
-                <div className="form-item">
-                    <input type="email" name="email" 
+                    <input type="email" name="id" 
                         className="form-control" placeholder="Email"
-                        value={this.state.email} onChange={this.handleInputChange} required/>
+                        value={this.state.id} onChange={this.handleInputChange} required/>
                 </div>
                 <div className="form-item">
                     <input type="password" name="password" 
                         className="form-control" placeholder="Password"
                         value={this.state.password} onChange={this.handleInputChange} required/>
+                </div>
+                <div className="form-item">
+                    <input type="text" name="nickname" 
+                        className="form-control" placeholder="Nickname"
+                        value={this.state.nickname} onChange={this.handleInputChange} required/>
                 </div>
                 <div className="form-item">
                     <button type="submit" className="btn btn-block btn-primary" >Sign Up</button>
