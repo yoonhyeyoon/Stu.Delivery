@@ -37,7 +37,7 @@ public class User extends BaseEntity{
     @Column(
         name = "nick_name",
         nullable = false,
-        length = 10
+        length = 30
     )
     private String nickName;
 
