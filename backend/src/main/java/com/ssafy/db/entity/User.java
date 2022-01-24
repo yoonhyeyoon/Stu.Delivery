@@ -6,14 +6,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.security.AuthProvider;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDateTime;
+
 
 /**
  * 유저 모델 정의.
@@ -50,8 +58,10 @@ public class User extends BaseEntity{
 
     private String determination;
 
+    @CreatedDate
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     private Boolean activated;
@@ -61,6 +71,12 @@ public class User extends BaseEntity{
     private String authKey;
 
     private Boolean authStatus;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Attendance> attendanceList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Goal> goals = new ArrayList<>();
 
     @NotNull
     @Enumerated(EnumType.STRING)

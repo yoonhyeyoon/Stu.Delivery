@@ -5,6 +5,8 @@ import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 

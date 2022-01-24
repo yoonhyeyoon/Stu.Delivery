@@ -4,6 +4,9 @@ import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.util.MailUtils;
 import com.ssafy.db.entity.AuthProvider;
 import java.time.LocalDateTime;
+
+import com.ssafy.db.entity.Attendance;
+import com.ssafy.db.entity.Goal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -38,6 +42,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User createUser(UserRegisterPostReq userRegisterInfo) throws Exception {
+
+		if (userRepository.findByUserId(userRegisterInfo.getId()).isPresent()) {
+			return null;
+		}
+
 		User user = new User();
 		user.setUserId(userRegisterInfo.getId());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
@@ -80,5 +89,9 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public void updateUser(User user) {
+		userRepository.save(user);
+	}
 
 }
