@@ -1,7 +1,6 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserUpdateReq;
-import com.ssafy.db.entity.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.UserRegisterPostReq;
@@ -68,7 +68,7 @@ public class UserController {
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
-		/**
+		/*
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
@@ -85,5 +85,15 @@ public class UserController {
 		userService.updateUser(userUpdateReq.getUser());
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+
+	@GetMapping("/email-valid")
+	public ResponseEntity<? extends BaseResponseBody> isValidEmail(@RequestParam(value = "email") String email) {
+		User user = userService.getUserByUserId(email);
+		if (user == null) {
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "True"));
+		} else {
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "False"));
+		}
 	}
 }
