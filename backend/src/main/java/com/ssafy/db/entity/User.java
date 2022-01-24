@@ -3,6 +3,7 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.security.AuthProvider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.FetchType;
@@ -17,6 +18,11 @@ import javax.persistence.Entity;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDateTime;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
+
 
 /**
  * 유저 모델 정의.
@@ -77,4 +83,11 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Goal> goals = new ArrayList<>();
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
+
 }
