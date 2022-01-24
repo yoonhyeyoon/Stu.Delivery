@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import java.security.AuthProvider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.FetchType;
