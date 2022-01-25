@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 
 import Header from "./components/main/Header/Header";
 import Footer from "./components/main/Footer/Footer";
+import OAuth2RedirectHandler from "./components/main/oauth2/OAuth2RedirectHandler";
 import Login from "./routes/account/Login";
 import Signup from "./routes/account/Signup";
 import Main from "./routes/main/Main";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("JWT");
@@ -29,6 +31,10 @@ function App() {
           <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route
+            path="/oauth2/redirect"
+            element={<OAuth2RedirectHandler />}
+          ></Route>
         </Routes>
       </Router>
 
