@@ -3,8 +3,11 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,4 +85,7 @@ public class User extends BaseEntity{
     private AuthProvider provider;
 
     private String providerId;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserStudy> userStudies = new ArrayList<>();
 }
