@@ -21,7 +21,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "스터디 API", tags = {"Study"})
 @RestController
-@RequestMapping("/api/v1/studies")
+@RequestMapping("/api/v1/study")
 public class StudyController {
 
     @Autowired
