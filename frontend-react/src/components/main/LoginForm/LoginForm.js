@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./LoginForm.css";
+import { login, setJwtToken } from "../../../utils/api";
 
 function LoginForm() {
   const [inputId, setInputId] = useState("");
@@ -18,14 +19,7 @@ function LoginForm() {
   // login 버튼 클릭 이벤트
   const onClickLogin = () => {
     /* 이메일 규칙의 정규식 표현 */
-    const emailRule =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
-    const pwdRule = /^[A-Za-z0-9]{6,12}$/;
-
-    if (!emailRule.test(inputId)) {
-      alert("이메일 형식의 아이디를 입력해주세요.");
-    }
+    login(inputId, inputPw);
   };
 
   // 페이지 렌더링 후 가장 처음 호출되는 함수

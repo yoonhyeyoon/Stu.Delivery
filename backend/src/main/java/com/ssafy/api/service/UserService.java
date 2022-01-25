@@ -13,4 +13,5 @@ public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo) throws MessagingException, UnsupportedEncodingException, Exception;
 	User getUserByUserId(String userId);
 	String updateAuthStatus(String userId, String authKey);
+	void updateUser(User user);
 }

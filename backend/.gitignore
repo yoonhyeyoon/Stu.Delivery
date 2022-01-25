@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 ssafy-web.log
+ssafy-web.log.*
 
 ### STS ###
 .apt_generated

@@ -5,6 +5,8 @@ import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +19,18 @@ import lombok.Setter;
 public class UserRes{
 	@ApiModelProperty(name="User ID")
 	String userId;
+
+	@ApiModelProperty(name="Nickname")
+	String nickname;
+
+	@ApiModelProperty(name="Profile Image")
+	String profileImg;
 	
 	public static UserRes of(User user) {
 		UserRes res = new UserRes();
 		res.setUserId(user.getUserId());
+		res.setNickname(user.getNickName());
+		res.setProfileImg(user.getProfileImg());
 		return res;
 	}
 }
