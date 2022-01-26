@@ -1,12 +1,14 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.common.auth.CustomUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Study;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.Api;
+import java.util.ArrayList;
 import java.util.List;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,13 @@ public class StudyController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Study>> getStudyList() {
-        return ResponseEntity.ok(this.studyService.getStudyList());
+    public ResponseEntity<List<StudyListRes>> getStudyList() {
+        List<Study> studyList = this.studyService.getStudyList();
+        List<StudyListRes> res = new ArrayList<>();
+        for(Study study: studyList) {
+            res.add(StudyListRes.of(study));
+        }
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping
