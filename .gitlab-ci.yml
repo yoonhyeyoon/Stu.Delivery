@@ -46,7 +46,7 @@ deploy-back:
         - develop
     script :
         # 백엔드 서버 재시작
-        - /home/ubuntu/restart_backend_ha.sh
+        - ~/restart_backend_ha.sh
     tags :
         - prd
 
