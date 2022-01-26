@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.response.StudyCreateRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.common.auth.CustomUserDetails;
@@ -45,12 +46,12 @@ public class StudyController {
 
     @PostMapping
     @ApiOperation(value = "스터디 생성하기", notes = "스터디를 생성한다.")
-    public ResponseEntity<? extends BaseResponseBody> createStudy(
+    public ResponseEntity<StudyCreateRes> createStudy(
         @ApiIgnore Authentication authentication, @RequestBody StudyCreatePostReq studyCreatePostReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getDetails();
         User master = userDetails.getUser();
         Study study = this.studyService.createStudy(master, studyCreatePostReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body(StudyCreateRes.of(study));
     }
 }
