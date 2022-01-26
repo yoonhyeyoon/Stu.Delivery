@@ -28,9 +28,6 @@ public class StudyServiceImpl implements StudyService {
     StudyRepository studyRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     UserStudyRepository userStudyRepository;
 
     @Autowired
@@ -51,12 +48,12 @@ public class StudyServiceImpl implements StudyService {
         study.setIntroduction(req.getIntroduction());
         study.setIsPrivate(req.getIs_private());
         study.setPassword(req.getPassword());
-        study.setThumbnailUrl(req.getThumbnailUrl());
-        study.setLinkUrl(req.getLinkUrl());
-        study.setMaxUserNum(req.getMaxUserNum());
+        study.setThumbnailUrl(req.getThumbnail_url());
+        study.setLinkUrl(req.getLink_url());
+        study.setMaxUserNum(req.getMax_user_num());
         try {
-            study.setStartAt(LocalDate.parse(req.getStartAt(), DateTimeFormatter.ISO_DATE));
-            study.setFinishAt(LocalDate.parse(req.getFinishAt(), DateTimeFormatter.ISO_DATE));
+            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
         } catch(DateTimeParseException e) {
             throw new BadRequestException("start_at 혹은 finish_at 데이터 형식이 잘못되었습니다.");
         }
@@ -70,19 +67,19 @@ public class StudyServiceImpl implements StudyService {
         userStudyRepository.save(userStudy);
 
         // 정기 일정 추가
-        List<Map<String, String>> schList = req.getRegularSchedules();
+        List<Map<String, String>> schList = req.getRegular_schedules();
         List<RegularSchedule> regularSchedules = new ArrayList<>();
         for (Map<String, String> schMap: schList) {
-            String dayOfWeek = schMap.get("dayOfWeek");
+            String dayOfWeek = schMap.get("day_of_week");
             String time = schMap.get("time");
             if (dayOfWeek == null || time == null) {
                 throw new BadRequestException("regularSchedules 입력이 잘못되었습니다.");
             }
-            RegularSchedule regularSchedule = null;
+            RegularSchedule regularSchedule;
             try {
                 regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
             } catch (IllegalArgumentException e) {
-                throw new BadRequestException("dayOfWeek 입력 형식이 잘못되었습니다.");
+                throw new BadRequestException("day_of_week 입력 형식이 잘못되었습니다.");
             } catch (DateTimeParseException e) {
                 throw new BadRequestException("time 입력 형식이 잘못되었습니다.");
             }

@@ -17,21 +17,21 @@ public class StudyListRes {
     String name;
 
     @ApiModelProperty(name = "썸네일", example = "/resources/thumbnails/1.png")
-    String thumbnailUrl;
+    String thumbnail_url;
 
     @ApiModelProperty(name = "스터디 최대 인원", example = "8")
-    Integer maxUserNum;
+    Integer max_user_num;
 
     @ApiModelProperty(name = "스터디 현재 인원", example = "3")
-    Integer userNum;
+    Integer user_num;
 
     public static StudyListRes of(Study study) {
         StudyListRes res = new StudyListRes();
         res.setId(study.getId());
         res.setName(study.getName());
-        res.setThumbnailUrl(study.getThumbnailUrl());
-        res.setMaxUserNum(study.getMaxUserNum());
-        res.setUserNum(study.getUserStudies().size());
+        res.setThumbnail_url(study.getThumbnailUrl());
+        res.setMax_user_num(study.getMaxUserNum());
+        res.setUser_num(study.getUserStudies().size());
         return res;
     }
 }
