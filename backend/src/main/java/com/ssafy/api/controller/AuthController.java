@@ -36,9 +36,6 @@ public class AuthController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@Autowired
-	UserRepository userRepository;
-
 	@PostMapping("/login")
 	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
 	@ApiResponses({
@@ -65,35 +62,5 @@ public class AuthController {
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
 	}
 
-	@PatchMapping("/change-pwd")
-	@ApiOperation(value = "비밀번호 변경", notes = "비밀번호를 변경한다.")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
-		@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-		@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-	})
-	public ResponseEntity<? extends BaseResponseBody> changePwd(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "변경할 비밀번호", required = true) ChangePasswordReq changePasswordReq) {
-
-		try {
-			CustomUserDetails userDetails = (CustomUserDetails)authentication.getDetails();
-			String userId = userDetails.getUsername();
-			User user = userService.getUserByUserId(userId);
-
-			System.out.println(passwordEncoder.encode(changePasswordReq.getCur()));
-			System.out.println(user.getPassword());
-
-			if (passwordEncoder.matches(changePasswordReq.getCur(), user.getPassword())) {
-				user.setPassword(passwordEncoder.encode(changePasswordReq.getPassword()));
-				userRepository.save(user);
-				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-			} else {
-				return ResponseEntity.status(400).body(BaseResponseBody.of(400, "password not valid"));
-			}
-
-		} catch (Exception e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Failed : " + e));
-		}
-
-	}
 
 }

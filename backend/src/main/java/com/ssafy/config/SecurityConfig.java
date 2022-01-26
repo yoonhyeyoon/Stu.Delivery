@@ -98,7 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
             .authorizeRequests()
-                .antMatchers("/v1/users/me", "/v1/studies")
+                .antMatchers("/v1/users/me", "/v1/users/password", "/v1/studies")
                     .authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .anyRequest()
                     .permitAll()
