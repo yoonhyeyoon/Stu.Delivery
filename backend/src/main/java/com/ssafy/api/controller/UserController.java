@@ -54,7 +54,7 @@ public class UserController {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 
 		} else {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "id already exist"));
+			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "id already exist"));
 		}
 
 	}
