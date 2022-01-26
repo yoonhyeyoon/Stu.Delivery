@@ -2,6 +2,7 @@ package com.ssafy.common.auth.oauth2;
 
 import static com.ssafy.common.auth.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
+import com.ssafy.common.exception.handler.BadRequestException;
 import com.ssafy.common.util.CookieUtils;
 import com.ssafy.common.util.JwtTokenUtil;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-        Authentication authentication) throws IOException, ServletException {
+        Authentication authentication) throws IOException {
 
         String targetUrl = determineTargetUrl(request, response, authentication);
 
@@ -55,7 +56,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            throw new OAuth2BadRequestException("인증되지 않은 리디렉션 URI 입니다. 인증을 진행할 수 없습니다.");
+            throw new BadRequestException("인증되지 않은 리디렉션 URI 입니다. 인증을 진행할 수 없습니다.");
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());

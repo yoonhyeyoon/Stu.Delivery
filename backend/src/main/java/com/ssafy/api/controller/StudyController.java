@@ -8,6 +8,7 @@ import com.ssafy.db.entity.Study;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.Api;
 import java.util.List;
+import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -38,8 +39,8 @@ public class StudyController {
         @ApiIgnore Authentication authentication, @RequestBody StudyCreatePostReq studyCreatePostReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getDetails();
-        studyCreatePostReq.setMaster(userDetails.getUser());
-        Study study = this.studyService.createStudy(studyCreatePostReq);
+        User master = userDetails.getUser();
+        Study study = this.studyService.createStudy(master, studyCreatePostReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }
