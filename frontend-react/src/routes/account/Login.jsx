@@ -1,16 +1,14 @@
 import LoginForm from "../../components/main/LoginForm/LoginForm";
 import SocialLogin from "../../components/main/LoginForm/SocialLogin";
 
-const Login = () => {
+const Login = (props) => {
+  console.log(props);
   return (
     <>
-      <LoginForm />
+      <LoginForm authenticated={props.authenticated} />
       <SocialLogin />
     </>
   );
 };
 
-// function Login() {
-//   return <div>로그인</div>;
-// }
 export default Login;
