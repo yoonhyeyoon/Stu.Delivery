@@ -28,7 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 @Api(value = "인증 API", tags = {"Auth."})
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
 	@Autowired
 	UserService userService;
