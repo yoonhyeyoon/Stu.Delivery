@@ -10,28 +10,28 @@ import lombok.Setter;
 @Setter
 @ApiModel("StudyListResponse")
 public class StudyListRes {
-    @ApiModelProperty(name = "스터디 ID")
+    @ApiModelProperty(name = "스터디 ID", example = "4")
     Long id;
 
-    @ApiModelProperty(name = "스터디 이름")
+    @ApiModelProperty(name = "스터디 이름", example = "알고리즘 스터디!")
     String name;
 
-    @ApiModelProperty(name = "썸네일")
-    String thumbnail_url;
+    @ApiModelProperty(name = "썸네일", example = "/resources/thumbnails/1.png")
+    String thumbnailUrl;
 
-    @ApiModelProperty(name = "스터디 최대 인원")
-    Integer max_user_num;
+    @ApiModelProperty(name = "스터디 최대 인원", example = "8")
+    Integer maxUserNum;
 
-    @ApiModelProperty(name = "스터디 현재 인원")
-    Integer user_num;
+    @ApiModelProperty(name = "스터디 현재 인원", example = "3")
+    Integer userNum;
 
     public static StudyListRes of(Study study) {
         StudyListRes res = new StudyListRes();
         res.setId(study.getId());
         res.setName(study.getName());
-        res.setThumbnail_url(study.getThumbnailUrl());
-        res.setMax_user_num(study.getMaxUserNum());
-        res.setUser_num(study.getUserStudies().size());
+        res.setThumbnailUrl(study.getThumbnailUrl());
+        res.setMaxUserNum(study.getMaxUserNum());
+        res.setUserNum(study.getUserStudies().size());
         return res;
     }
 }

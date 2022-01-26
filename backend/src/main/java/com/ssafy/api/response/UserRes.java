@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserResponse")
 public class UserRes{
-	@ApiModelProperty(name="User ID")
+	@ApiModelProperty(name="User ID", value = "")
 	String userId;
 
 	@ApiModelProperty(name="Nickname")
