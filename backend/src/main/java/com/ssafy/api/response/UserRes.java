@@ -18,19 +18,19 @@ import lombok.Setter;
 @ApiModel("UserResponse")
 public class UserRes{
 	@ApiModelProperty(name="User ID", value = "")
-	String userId;
+	String user_id;
 
 	@ApiModelProperty(name="Nickname")
 	String nickname;
 
 	@ApiModelProperty(name="Profile Image")
-	String profileImg;
+	String profile_img;
 	
 	public static UserRes of(User user) {
 		UserRes res = new UserRes();
-		res.setUserId(user.getUserId());
+		res.setUser_id(user.getUserId());
 		res.setNickname(user.getNickName());
-		res.setProfileImg(user.getProfileImg());
+		res.setProfile_img(user.getProfileImg());
 		return res;
 	}
 }
