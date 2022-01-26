@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.common.exception.handler.BadRequestException;
 import com.ssafy.db.entity.Location;
 import com.ssafy.db.entity.RegularSchedule;
 import com.ssafy.db.entity.Study;
@@ -10,8 +11,13 @@ import com.ssafy.db.repository.RegularScheduleRepository;
 import com.ssafy.db.repository.StudyRepository;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserStudyRepository;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,10 +43,10 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public Study createStudy(StudyCreatePostReq req) {
+    public Study createStudy(User master, StudyCreatePostReq req) {
         // 스터디 생성
         Study study = new Study();
-        study.setMaster(req.getMaster());
+        study.setMaster(master);
         study.setName(req.getName());
         study.setIntroduction(req.getIntroduction());
         study.setIsPrivate(req.getIs_private());
@@ -48,22 +54,42 @@ public class StudyServiceImpl implements StudyService {
         study.setThumbnailUrl(req.getThumbnail_url());
         study.setLinkUrl(req.getLink_url());
         study.setMaxUserNum(req.getMax_user_num());
-        study.setStartAt(req.getStart_at());
-        study.setFinishAt(req.getFinish_at());
+        try {
+            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+        } catch(DateTimeParseException e) {
+            throw new BadRequestException("start_at 혹은 finish_at 데이터 형식이 잘못되었습니다.");
+        }
         Study resStudy = studyRepository.save(study);
 
         // 스터디장 스터디 가입
         UserStudy userStudy = new UserStudy();
         userStudy.setStudy(study);
-        userStudy.setUser(req.getMaster());
+        userStudy.setUser(master);
         userStudy.setLocation(Location.offline);
         userStudyRepository.save(userStudy);
 
         // 정기 일정 추가
-        List<RegularSchedule> regularSchedules = req.getRegular_schedules();
-        for (RegularSchedule regularSchedule: regularSchedules) {
+        List<Map<String, String>> sch_list = req.getRegular_schedules();
+        List<RegularSchedule> regularSchedules = new ArrayList<>();
+        for (Map<String, String> sch_map: sch_list) {
+            String dayOfWeek = sch_map.get("day_of_week");
+            String time = sch_map.get("time");
+            if (dayOfWeek == null || time == null) {
+                throw new BadRequestException("regular_schedules 입력이 잘못되었습니다.");
+            }
+            RegularSchedule regularSchedule = null;
+            try {
+                regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
+            } catch (IllegalArgumentException e) {
+                throw new BadRequestException("day_of_week 입력 형식이 잘못되었습니다.");
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException("time 입력 형식이 잘못되었습니다.");
+            }
             regularSchedule.setStudy(resStudy);
+            regularSchedules.add(regularSchedule);
         }
+
         regularScheduleRepository.saveAll(regularSchedules);
 
         return resStudy;
