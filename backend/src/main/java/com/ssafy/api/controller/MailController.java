@@ -28,7 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "메일 API", tags = {"Mail."})
 @RestController
-@RequestMapping("/api/v1/mail")
+@RequestMapping("/v1/mail")
 public class MailController {
 
     @Autowired
