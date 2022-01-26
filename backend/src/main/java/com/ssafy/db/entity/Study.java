@@ -10,6 +10,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -25,18 +26,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 public class Study extends BaseEntity{
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "master_id")
     private User master;
 
-    @Column(
-        nullable = false,
-        length = 50
-    )
+    @NotNull
+    @Column(length = 50)
     private String name;
 
+    @NotNull
     private String introduction;
 
+    @NotNull
     private Boolean isPrivate;
 
     @Column(length = 50)
