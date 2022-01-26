@@ -51,12 +51,12 @@ public class StudyServiceImpl implements StudyService {
         study.setIntroduction(req.getIntroduction());
         study.setIsPrivate(req.getIs_private());
         study.setPassword(req.getPassword());
-        study.setThumbnailUrl(req.getThumbnail_url());
-        study.setLinkUrl(req.getLink_url());
-        study.setMaxUserNum(req.getMax_user_num());
+        study.setThumbnailUrl(req.getThumbnailUrl());
+        study.setLinkUrl(req.getLinkUrl());
+        study.setMaxUserNum(req.getMaxUserNum());
         try {
-            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
-            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            study.setStartAt(LocalDate.parse(req.getStartAt(), DateTimeFormatter.ISO_DATE));
+            study.setFinishAt(LocalDate.parse(req.getFinishAt(), DateTimeFormatter.ISO_DATE));
         } catch(DateTimeParseException e) {
             throw new BadRequestException("start_at 혹은 finish_at 데이터 형식이 잘못되었습니다.");
         }
@@ -70,7 +70,7 @@ public class StudyServiceImpl implements StudyService {
         userStudyRepository.save(userStudy);
 
         // 정기 일정 추가
-        List<Map<String, String>> sch_list = req.getRegular_schedules();
+        List<Map<String, String>> sch_list = req.getRegularSchedules();
         List<RegularSchedule> regularSchedules = new ArrayList<>();
         for (Map<String, String> sch_map: sch_list) {
             String dayOfWeek = sch_map.get("day_of_week");

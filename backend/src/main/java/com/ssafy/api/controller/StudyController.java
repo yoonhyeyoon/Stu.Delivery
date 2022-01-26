@@ -8,6 +8,7 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Study;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.List;
 import javassist.tools.web.BadHttpRequest;
@@ -32,6 +33,7 @@ public class StudyController {
 
     @GetMapping
     @ResponseBody
+    @ApiOperation(value = "스터디 리스트 가져오기", notes = "스터디 리스트를 가져온다.")
     public ResponseEntity<List<StudyListRes>> getStudyList() {
         List<Study> studyList = this.studyService.getStudyList();
         List<StudyListRes> res = new ArrayList<>();
@@ -42,6 +44,7 @@ public class StudyController {
     }
 
     @PostMapping
+    @ApiOperation(value = "스터디 생성하기", notes = "스터디를 생성한다.")
     public ResponseEntity<? extends BaseResponseBody> createStudy(
         @ApiIgnore Authentication authentication, @RequestBody StudyCreatePostReq studyCreatePostReq
     ) {

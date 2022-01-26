@@ -20,15 +20,15 @@ public class StudyCreatePostReq {
     @ApiModelProperty(name = "비밀번호", example = "123123")
     String password;
     @ApiModelProperty(name = "썸네일 url", example = "/resources/thumbnails/1.png")
-    String thumbnail_url;
+    String thumbnailUrl;
     @ApiModelProperty(name = "스터디 링크 url", example = "http://test.com/study/urlurl")
-    String link_url;
+    String linkUrl;
     @ApiModelProperty(name = "최대 인원", example = "8")
-    Integer max_user_num;
+    Integer maxUserNum;
     @ApiModelProperty(name = "스터디 시작일", example = "2022-01-25")
-    String start_at;
+    String startAt;
     @ApiModelProperty(name = "스터디 종료일", example = "2022-02-25")
-    String finish_at;
+    String finishAt;
     @ApiModelProperty(name = "정기 스터디 일정 리스트", example = "[\n"
         + "        {\n"
         + "            \"day_of_week\": \"MONDAY\",\n"
@@ -39,6 +39,6 @@ public class StudyCreatePostReq {
         + "            \"time\": \"19:00\"\n"
         + "        }\n"
         + "    ]")
-    List<Map<String, String>> regular_schedules;
+    List<Map<String, String>> regularSchedules;
 
 }
