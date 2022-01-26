@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "./Signup.module.css";
 
 function Signup() {
@@ -27,6 +28,7 @@ function Signup() {
       setEmailMessage("이메일 형식이 틀렸습니다.");
       setIsEmail(false);
     } else {
+      setEmailMessage("");
       setIsEmail(true);
     }
   };
@@ -43,6 +45,7 @@ function Signup() {
       );
       setIsPassword(false);
     } else {
+      setPasswordMessage("");
       setIsPassword(true);
     }
   };
@@ -52,6 +55,7 @@ function Signup() {
     setConfirmPassword(confirmPasswordCurrent);
 
     if (password === confirmPasswordCurrent) {
+      setConfirmPasswordMessage("");
       setIsConfirmPassword(true);
     } else {
       setConfirmPasswordMessage("비밀번호가 일치하지 않습니다.");
@@ -67,12 +71,34 @@ function Signup() {
       setNameMessage("2글자 이상 6글자 이하로 입력해주세요.");
       setIsName(false);
     } else {
+      setNameMessage("");
       setIsName(true);
     }
   };
 
-  const onSubmit = (event) => {
-    return;
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    axios({
+      method: "post",
+      url: "https://i6d201.p.ssafy.io/api/api/v1/users",
+      data: {
+        id: email,
+        password: password,
+        nickname: nickname,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        alert("회원가입이 완료되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err.response.data.statusCode);
+        if (err.response.data.statusCode == 409) {
+          setEmailMessage("이메일이 중복되었습니다.");
+          setIsEmail(true);
+        }
+      });
   };
 
   return (
@@ -127,9 +153,19 @@ function Signup() {
             value={nickname}
             onChange={onNicknameHandler}
           />
+          {nickname.length > 0 && (
+            <span className={`message ${isName ? "success" : "error"}`}>
+              {nameMessage}
+            </span>
+          )}
         </div>
         <div>
-          <button type="submit">회원가입</button>
+          <button
+            type="submit"
+            disabled={!(isName && isEmail && isPassword && isConfirmPassword)}
+          >
+            회원가입
+          </button>
         </div>
       </form>
     </div>
