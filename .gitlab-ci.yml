@@ -1,0 +1,62 @@
+stages:
+    - build
+    - deploy
+build-back:
+    stage: build
+    only:
+        - master
+        - develop
+    script :
+        # Java를 sdkman 으로 설치한 경우 JAVA_HOME 설정을 위해서만 필요
+        # - source "/home/ubuntu/.sdkman/bin/sdkman-init.sh"
+        - cd $CI_PROJECT_DIR/backend
+        - chmod +x gradlew
+        - ./gradlew build && ./gradlew bootJar
+        - cp build/libs/*.jar ~/app1.jar
+    tags :
+        # !! tag 값이 동일하게 설정된 Runner만 파이프라인을 동작시킴
+        # 여러 서버에 배포할때 서버별 runner 태그로도 활용(dev, stg, prd)
+        - prd
+
+# build-front:
+#     stage: build
+#     cache:
+#         key: ${CI_COMMIT_REF_SLUG}
+#         paths:
+#             - frontend/node_modules
+#     only :
+#         - master
+#         - develop
+#     script :
+#         # Node.js를 nvm 으로 설치한 경우만 필요
+#         - source "/home/ubuntu/.nvm/nvm.sh"
+#         - cd $CI_PROJECT_DIR/frontend
+#         - yarn install
+#         - yarn test
+#         - yarn build
+#         - rm -rf ~/skeleton-project/frontend/dist
+#         - cp -rf dist ~/skeleton-project/frontend
+#     tags :
+#         - prd
+
+deploy-back:
+    stage: deploy
+    only :
+        - master
+        - develop
+    script :
+        # 백엔드 서버 재시작
+        - /home/ubuntu/restart_backend_ha.sh
+    tags :
+        - prd
+
+# deploy-front:
+#     stage: deploy
+#     only :
+#         - master
+#         - develop
+#     script :
+#         # 배포는 이미 끝나서 단순 확인하기 위한 job으로만 구성
+#         - ls -al ~/skeleton-project/frontend/dist
+#     tags :
+#         - prd
