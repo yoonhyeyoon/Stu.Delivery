@@ -9,7 +9,7 @@ build-back:
     script :
         # Java를 sdkman 으로 설치한 경우 JAVA_HOME 설정을 위해서만 필요
         # - source "/home/ubuntu/.sdkman/bin/sdkman-init.sh"
-        - cd project/S06P12D201/backend
+        - cd $CI_PROJECT_DIR/backend
         - chmod +x gradlew
         - ./gradlew build && ./gradlew bootJar
         - cp build/libs/app1.jar ~/app1.jar
