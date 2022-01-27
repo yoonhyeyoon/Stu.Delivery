@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.StudyCreatePostReq;
 import com.ssafy.common.exception.handler.BadRequestException;
+import com.ssafy.common.exception.handler.ConflictException;
 import com.ssafy.db.entity.Location;
 import com.ssafy.db.entity.RegularSchedule;
 import com.ssafy.db.entity.Study;
@@ -90,5 +91,21 @@ public class StudyServiceImpl implements StudyService {
         regularScheduleRepository.saveAll(regularSchedules);
 
         return resStudy;
+    }
+
+    @Override
+    public void joinStudy(User user, Long studyId) {
+        Study study = studyRepository.findById(studyId).orElse(null);
+        if (study == null) {
+            throw new BadRequestException("해당 study_id가 존재하지 않습니다.");
+        }
+        if (userStudyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
+            throw new ConflictException("이미 해당 스터디에 가입된 사용자입니다.");
+        }
+        UserStudy userStudy = new UserStudy();
+        userStudy.setStudy(study);
+        userStudy.setUser(user);
+        userStudy.setLocation(Location.offline);
+        userStudyRepository.save(userStudy);
     }
 }
