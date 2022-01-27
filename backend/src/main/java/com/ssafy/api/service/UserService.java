@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo) throws MessagingException, UnsupportedEncodingException, Exception;
 	User getUserByUserId(String userId);
+	Boolean isEmailPresent(String email);
 	String updateAuthStatus(String userId, String authKey);
 	void updateUser(User user);
 }
