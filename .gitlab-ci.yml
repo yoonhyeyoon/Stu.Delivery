@@ -31,7 +31,7 @@ build-front:
         # Node.js를 nvm 으로 설치한 경우만 필요
         # - source "/home/ubuntu/.nvm/nvm.sh"
         - cd $CI_PROJECT_DIR/frontend-react
-        - npm install && npm audit fix
+        - npm install && npm audit fix --force
         - npm run test
         - npm run build
         - rm -rf ~/project/S06P12D201/frontend-react/dist
