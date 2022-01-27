@@ -35,7 +35,7 @@ build-front:
         # - npm run test
         # - npm run build
         # - rm -rf node_modules
-        # - rm -rf package-lock.json
+        - rm -rf package-lock.json
         - yarn install
         # - yarn test
         - CI=false yarn build
