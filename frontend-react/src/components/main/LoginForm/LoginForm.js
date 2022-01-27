@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./LoginForm.css";
-import { login, setJwtToken } from "../../../utils/api";
+import { login } from "../../../utils/api";
 
 function LoginForm() {
   const [inputId, setInputId] = useState("");

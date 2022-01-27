@@ -1,12 +1,17 @@
 package com.ssafy.config;
 
 import com.ssafy.api.service.UserService;
+import com.ssafy.common.auth.AuthenticationEntryPoint;
 import com.ssafy.common.auth.CustomUserDetailsService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import com.ssafy.common.auth.oauth2.CustomOAuth2UserService;
 import com.ssafy.common.auth.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.common.auth.oauth2.OAuth2AuthenticationFailureHandler;
 import com.ssafy.common.auth.oauth2.OAuth2AuthenticationSuccessHandler;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +22,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -86,19 +92,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
             .cors()
                 .and()
+            .formLogin()
+                .disable()
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
-            .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
             .authorizeRequests()
-                .antMatchers("/api/v1/users/me")
+                .antMatchers("/v1/users/me", "/v1/users/password", "/v1/studies")
                     .authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .anyRequest()
                     .permitAll()
                 .and()
+            .exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint())
+                .and()
+            .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))//HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
             .oauth2Login()
                 .authorizationEndpoint()
-                    .baseUri("/oauth2/authorize")
+                    .baseUri("/api/oauth2/authorize")
                     .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository())
                     .and()
                 .redirectionEndpoint()
