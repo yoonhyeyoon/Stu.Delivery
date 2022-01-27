@@ -31,11 +31,11 @@ build-front:
         # Node.js를 nvm 으로 설치한 경우만 필요
         # - source "/home/ubuntu/.nvm/nvm.sh"
         - cd $CI_PROJECT_DIR/frontend-react
-        #- npm install
+        # - npm install
         # - npm run test
-        #- npm run build
-        - rm -rf node_modules
-        - rm -rf package-lock.json
+        # - npm run build
+        # - rm -rf node_modules
+        # - rm -rf package-lock.json
         - yarn install
         # - yarn test
         - CI=false yarn build
