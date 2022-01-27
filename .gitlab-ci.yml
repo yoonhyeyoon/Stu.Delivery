@@ -32,7 +32,7 @@ build-front:
         # - source "/home/ubuntu/.nvm/nvm.sh"
         - cd $CI_PROJECT_DIR/frontend-react
         - npm install
-        - npm test
+        - npm run test
         - npm build
         - rm -rf ~/project/S06P12D201/frontend-react/dist
         - cp -rf dist ~/project/S06P12D201/frontend-react
