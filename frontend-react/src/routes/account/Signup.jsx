@@ -92,7 +92,7 @@ function Signup() {
 
     axios({
       method: "post",
-      url: "https://i6d201.p.ssafy.io/api/api/v1/users",
+      url: "https://i6d201.p.ssafy.io/api/v1/users",
       data: {
         id: email,
         password: password,
@@ -107,90 +107,99 @@ function Signup() {
         console.log(err.response.data.statusCode);
         if (err.response.data.statusCode === 409) {
           setEmailMessage("이메일이 중복되었습니다.");
-          setIsEmail(true);
+          setIsEmail(false);
         }
       });
   };
 
   return (
     <div>
-      <Container>
-        <Form onSubmit={onSubmit} className={styles.form}>
-          <h5>회원가입</h5>
+      <div className={styles.back}>
+        <Container className={styles.box}>
+          <Form onSubmit={onSubmit} className={styles.form}>
+            <h5>회원가입</h5>
 
-          <Form.Group as={Row} className="mb-3">
-            <Col sm>
-              <Form.Control
-                type="email"
-                placeholder="이메일"
-                value={email}
-                onChange={onEmailHandler}
-              />
-              {email.length > 0 && (
-                <Form.Text className={isEmail ? styles.success : styles.error}>
-                  {emailMessage}
-                </Form.Text>
-              )}
-            </Col>
-          </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Col sm>
+                <Form.Control
+                  type="email"
+                  placeholder="이메일"
+                  value={email}
+                  onChange={onEmailHandler}
+                />
+                {email.length > 0 && (
+                  <Form.Text
+                    className={isEmail ? styles.success : styles.error}
+                  >
+                    {emailMessage}
+                  </Form.Text>
+                )}
+              </Col>
+            </Form.Group>
 
-          <Form.Group as={Row} className="mb-3">
-            <Col sm>
-              <Form.Control
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={onPasswordHandler}
-              />
-              <Form.Text className={isPassword ? styles.success : styles.error}>
-                {passwordMessage}
-              </Form.Text>
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Col sm>
-              <Form.Control
-                type="password"
-                placeholder="비밀번호 확인"
-                value={confirmPassword}
-                onChange={onConfirmPasswordHandler}
-              />
-              {confirmPassword.length > 0 && (
+            <Form.Group as={Row} className="mb-3">
+              <Col sm>
+                <Form.Control
+                  type="password"
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={onPasswordHandler}
+                />
                 <Form.Text
-                  className={isConfirmPassword ? styles.success : styles.error}
+                  className={isPassword ? styles.success : styles.error}
                 >
-                  {confirmPasswordMessage}
+                  {passwordMessage}
                 </Form.Text>
-              )}
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Col sm>
-              <Form.Control
-                type="text"
-                placeholder="닉네임"
-                value={nickname}
-                onChange={onNicknameHandler}
-              />
-              <Form.Text className={isName ? styles.success : styles.error}>
-                {nameMessage}
-              </Form.Text>
-            </Col>
-          </Form.Group>
-          <div className="d-grid gap-1">
-            <Button
-              className={styles.submit}
-              className="text-white"
-              variant="warning"
-              type="submit"
-              disabled={!(isName && isEmail && isPassword && isConfirmPassword)}
-            >
-              회원가입
-            </Button>
-          </div>
-        </Form>
-      </Container>
-      <NavLink to="/">back</NavLink>
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Col sm>
+                <Form.Control
+                  type="password"
+                  placeholder="비밀번호 확인"
+                  value={confirmPassword}
+                  onChange={onConfirmPasswordHandler}
+                />
+                {confirmPassword.length > 0 && (
+                  <Form.Text
+                    className={
+                      isConfirmPassword ? styles.success : styles.error
+                    }
+                  >
+                    {confirmPasswordMessage}
+                  </Form.Text>
+                )}
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Col sm>
+                <Form.Control
+                  type="text"
+                  placeholder="닉네임"
+                  value={nickname}
+                  onChange={onNicknameHandler}
+                />
+                <Form.Text className={isName ? styles.success : styles.error}>
+                  {nameMessage}
+                </Form.Text>
+              </Col>
+            </Form.Group>
+            <div className="d-grid gap-1">
+              <Button
+                className={styles.submit}
+                className="text-white"
+                variant="warning"
+                type="submit"
+                disabled={
+                  !(isName && isEmail && isPassword && isConfirmPassword)
+                }
+              >
+                회원가입
+              </Button>
+            </div>
+          </Form>
+        </Container>
+      </div>
     </div>
   );
 }

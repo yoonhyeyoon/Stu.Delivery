@@ -42,7 +42,7 @@ function LoginForm() {
 
   return (
     <div>
-      <Container>
+      <Container className={styles.box}>
         <Form className={styles.form}>
           <h5>로그인</h5>
           <Form.Group as={Row} className="mb-3">
