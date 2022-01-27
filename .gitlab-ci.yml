@@ -29,7 +29,7 @@ build-front:
         - develop
     script :
         # Node.js를 nvm 으로 설치한 경우만 필요
-        - source "/home/ubuntu/.nvm/nvm.sh"
+        # - source "/home/ubuntu/.nvm/nvm.sh"
         - cd $CI_PROJECT_DIR/frontend-react
         - npm install
         - npm test
