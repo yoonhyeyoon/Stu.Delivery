@@ -17,7 +17,7 @@ class Header extends Component {
     return (
       <el-row className="main-header">
         <div className="hide-on-small">
-          <div className="react">{name}</div>
+          <div className="react">{name}확인글자</div>
         </div>
       </el-row>
     );
