@@ -37,7 +37,7 @@ build-front:
         - rm -rf node_modules
         - rm -rf package-lock.json
         - yarn install
-        - yarn test
+        # - yarn test
         - yarn build
         - rm -rf ~/project/S06P12D201/frontend-react/build
         - cp -rf build ~/project/S06P12D201/frontend-react
