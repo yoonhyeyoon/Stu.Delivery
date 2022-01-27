@@ -132,11 +132,10 @@ public class UserController {
     @GetMapping("/email-valid")
     public ResponseEntity<? extends BaseResponseBody> isValidEmail(
         @RequestParam(value = "email") String email) {
-        User user = userService.getUserByUserId(email);
-        if (user == null) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "True"));
-        } else {
+        if (userService.isEmailPresent(email)) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "False"));
+        } else {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "True"));
         }
     }
 }

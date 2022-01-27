@@ -1,6 +1,8 @@
 package com.ssafy.api.service;
 
 import com.ssafy.common.auth.AuthKey;
+import com.ssafy.common.exception.enums.ExceptionEnum;
+import com.ssafy.common.exception.response.ApiException;
 import com.ssafy.common.util.MailUtils;
 import com.ssafy.db.entity.AuthProvider;
 import java.time.LocalDateTime;
@@ -68,9 +70,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByUserId(String userId) {
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		// 만약 존재하지 않는 userId일 때 null 반환 후 controller에서 예외처리
-		User user = userRepositorySupport.findUserByUserId(userId).orElse(null);
+		User user = userRepositorySupport.findUserByUserId(userId).orElseThrow(() -> new ApiException(
+			ExceptionEnum.NOT_FOUND_USER));
 		return user;
+	}
+
+	@Override
+	public Boolean isEmailPresent(String email) {
+		Boolean flag = userRepositorySupport.findUserByUserId(email).isPresent();
+		return flag;
 	}
 
 	// authState 변경
