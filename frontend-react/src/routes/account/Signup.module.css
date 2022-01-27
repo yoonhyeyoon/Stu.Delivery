@@ -1,5 +1,11 @@
 .form {
-  background-color: aqua;
   align-items: left;
   justify-content: center;
+  width: 30em;
+}
+.error {
+  color: red;
+}
+.submit {
+  background-color: #bf7a26;
 }

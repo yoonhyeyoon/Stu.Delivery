@@ -9,8 +9,9 @@
 }
 
 .form {
-  position: relative;
-  margin: 0 auto;
+  align-items: left;
+  justify-content: center;
+  width: 30em;
 }
 
 .login-input {
@@ -35,9 +36,7 @@ h2 {
 }
 
 .submit {
-  width: 100px;
-  margin: 0 auto;
-  align-items: center;
+  background-color: #bf7a26;
 }
 
 .submit button {

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Signup.module.css";
+import { Link, NavLink } from "react-router-dom";
+
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -8,15 +15,19 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
 
-  const [nameMessage, setNameMessage] = useState("");
+  const [nameMessage, setNameMessage] = useState(
+    "2글자 이상 6글자 이하로 입력해주세요."
+  );
   const [emailMessage, setEmailMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState(
+    "숫자+영문자+특수문자 조합으로 8자리 이상 16자리 이하를 입력해주세요."
+  );
   const [confirmPasswordMessage, setConfirmPasswordMessage] = useState("");
 
-  const [isName, setIsName] = useState(false);
-  const [isEmail, setIsEmail] = useState(false);
-  const [isPassword, setIsPassword] = useState(false);
-  const [isConfirmPassword, setIsConfirmPassword] = useState(false);
+  const [isName, setIsName] = useState(true);
+  const [isEmail, setIsEmail] = useState(true);
+  const [isPassword, setIsPassword] = useState(true);
+  const [isConfirmPassword, setIsConfirmPassword] = useState(true);
 
   const onEmailHandler = (event) => {
     const emailRegex =
@@ -103,71 +114,83 @@ function Signup() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} className={styles.form}>
-        <h1>회원가입</h1>
-        <div>
-          <input
-            type="email"
-            placeholder="아이디(이메일)을 입력해주세요"
-            value={email}
-            onChange={onEmailHandler}
-          />
-          {email.length > 0 && (
-            <span className={`message ${isEmail ? "success" : "error"}`}>
-              {emailMessage}
-            </span>
-          )}
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-            value={password}
-            onChange={onPasswordHandler}
-          />
-          {password.length > 0 && (
-            <span className={`message ${isPassword ? "success" : "error"}`}>
-              {passwordMessage}
-            </span>
-          )}
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="비밀번호를 다시 한 번 입력해주세요."
-            value={confirmPassword}
-            onChange={onConfirmPasswordHandler}
-          />
-          {confirmPassword.length > 0 && (
-            <span
-              className={`message ${isConfirmPassword ? "success" : "error"}`}
+      <Container>
+        <Form onSubmit={onSubmit} className={styles.form}>
+          <h5>회원가입</h5>
+
+          <Form.Group as={Row} className="mb-3">
+            <Col sm>
+              <Form.Control
+                type="email"
+                placeholder="이메일"
+                value={email}
+                onChange={onEmailHandler}
+              />
+              {email.length > 0 && (
+                <Form.Text className={isEmail ? styles.success : styles.error}>
+                  {emailMessage}
+                </Form.Text>
+              )}
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3">
+            <Col sm>
+              <Form.Control
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={onPasswordHandler}
+              />
+              <Form.Text className={isPassword ? styles.success : styles.error}>
+                {passwordMessage}
+              </Form.Text>
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3">
+            <Col sm>
+              <Form.Control
+                type="password"
+                placeholder="비밀번호 확인"
+                value={confirmPassword}
+                onChange={onConfirmPasswordHandler}
+              />
+              {confirmPassword.length > 0 && (
+                <Form.Text
+                  className={isConfirmPassword ? styles.success : styles.error}
+                >
+                  {confirmPasswordMessage}
+                </Form.Text>
+              )}
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3">
+            <Col sm>
+              <Form.Control
+                type="text"
+                placeholder="닉네임"
+                value={nickname}
+                onChange={onNicknameHandler}
+              />
+              <Form.Text className={isName ? styles.success : styles.error}>
+                {nameMessage}
+              </Form.Text>
+            </Col>
+          </Form.Group>
+          <div className="d-grid gap-1">
+            <Button
+              className={styles.submit}
+              className="text-white"
+              variant="warning"
+              type="submit"
+              disabled={!(isName && isEmail && isPassword && isConfirmPassword)}
             >
-              {confirmPasswordMessage}
-            </span>
-          )}
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="닉네임을 입력해주세요"
-            value={nickname}
-            onChange={onNicknameHandler}
-          />
-          {nickname.length > 0 && (
-            <span className={`message ${isName ? "success" : "error"}`}>
-              {nameMessage}
-            </span>
-          )}
-        </div>
-        <div>
-          <button
-            type="submit"
-            disabled={!(isName && isEmail && isPassword && isConfirmPassword)}
-          >
-            회원가입
-          </button>
-        </div>
-      </form>
+              회원가입
+            </Button>
+          </div>
+        </Form>
+      </Container>
+      <NavLink to="/">back</NavLink>
     </div>
   );
 }
