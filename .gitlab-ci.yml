@@ -38,7 +38,7 @@ build-front:
         - rm -rf package-lock.json
         - yarn install
         # - yarn test
-        - yarn build
+        - CI=false yarn build
         - rm -rf ~/project/S06P12D201/frontend-react/build
         - cp -rf build ~/project/S06P12D201/frontend-react
     tags :
@@ -62,6 +62,6 @@ deploy-front:
         - develop
     script :
         # 배포는 이미 끝나서 단순 확인하기 위한 job으로만 구성
-        - ls -al ~/project/S06P12D201/frontend-react/dist
+        - ls -al ~/project/S06P12D201/frontend-react/build
     tags :
         - prd
