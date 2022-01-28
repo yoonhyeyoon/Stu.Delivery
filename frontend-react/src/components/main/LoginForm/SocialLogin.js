@@ -21,7 +21,7 @@ function SocialLogin() {
     color: "black",
     textDecoration: "none",
     opacity: 0.7,
-    padding: "1.3em",
+    padding: "0 1.3em 0",
   };
 
   return (
