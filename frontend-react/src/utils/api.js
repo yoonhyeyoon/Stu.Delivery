@@ -24,6 +24,7 @@ const login = (id, pwd) => {
           // 로그인 성공시 쿠키에 jwt token 저장
           console.log("success!");
           setJwtToken(response.data.accessToken);
+          localStorage.setItem("isLogin", true);
           window.location.href = "/mypage";
         }
       })

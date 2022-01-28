@@ -22,6 +22,7 @@ class Header extends Component {
     // 로그아웃
     const onLogout = () => {
       localStorage.removeItem("JWT");
+      localStorage.removeItem("isLogin");
       document.location.href = "/main";
     };
 
@@ -36,7 +37,7 @@ class Header extends Component {
             </div>
             <div className="app-options">
               <nav className="app-nav">
-                {this.props.isLogin ? (
+                {localStorage.getItem("isLogin") ? (
                   <ul>
                     <li>
                       <button onClick={onLogout}>로그아웃</button>
