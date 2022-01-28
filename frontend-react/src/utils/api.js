@@ -22,6 +22,7 @@ const login = (id, pwd) => {
         if (response.data.jwtToken) {
           // 로그인 성공시 쿠키에 jwt token 저장
           setJwtToken(response.data.jwtToken);
+          window.location.href = "/mypage";
         }
       })
       .catch((e) => {

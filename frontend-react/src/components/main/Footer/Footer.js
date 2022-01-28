@@ -4,9 +4,25 @@ import "./Footer.css";
 class Footer extends Component {
   render() {
     return (
-      <el-row className="main-footer">
-        <div className="contents">Copyright © SAMSUNG All Rights Reserved.</div>
-      </el-row>
+      <footer className="app-footer">
+        <div className="container">
+          <div className="app-branding">
+            <div className="app-title">Stu.Delivery</div>
+          </div>
+          <div className="app-option">
+            <nav className="app-nav">
+              <ul>
+                <li>
+                  <p>Contact us</p>
+                </li>
+                <li>
+                  <p>공지사항</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </footer>
     );
   }
 }
