@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
+import logo from "./logo.png";
 
 class Header extends Component {
   constructor(props) {
@@ -29,7 +30,9 @@ class Header extends Component {
         <header className="app-header">
           <div className="container">
             <div className="app-branding">
-              <div className="app-title">{appName}</div>
+              <div className="app-title">
+                <img src={logo} />
+              </div>
             </div>
             <div className="app-options">
               <nav className="app-nav">
