@@ -15,11 +15,17 @@ class Header extends Component {
   clickLogo() {}
 
   render() {
+    console.log(this.props.isLogin);
     const appName = "Stu.Delivery";
 
-    if (this.props.authenticated) {
-      console.log("로그인 중입니다.");
-      return (
+    // 로그아웃
+    const onLogout = () => {
+      localStorage.removeItem("JWT");
+      document.location.href = "/main";
+    };
+
+    return (
+      <>
         <header className="app-header">
           <div className="container">
             <div className="app-branding">
@@ -27,46 +33,37 @@ class Header extends Component {
             </div>
             <div className="app-options">
               <nav className="app-nav">
-                <ul>
-                  <li>
-                    <p>내 스터디</p>
-                  </li>
-                  <li>
-                    <p>스터디 목록</p>
-                  </li>
-                  <li>
-                    <p>스터디 만들기</p>
-                  </li>
-                </ul>
+                {this.props.isLogin ? (
+                  <ul>
+                    <li>
+                      <button onClick={onLogout}>로그아웃</button>
+                    </li>
+                    <li>
+                      <p>내 스터디</p>
+                    </li>
+                    <li>
+                      <p>스터디 목록</p>
+                    </li>
+                    <li>
+                      <p>스터디 만들기</p>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul>
+                    <li>
+                      <a href="/login">로그인</a>
+                    </li>
+                    <li>
+                      <a href="/signup">회원가입</a>
+                    </li>
+                  </ul>
+                )}
               </nav>
             </div>
           </div>
         </header>
-      );
-    } else {
-      console.log("로그인이 필요합니다.");
-      return (
-        <header className="app-header">
-          <div className="container">
-            <div className="app-branding">
-              <div className="app-title">{appName}</div>
-            </div>
-            <div className="app-options">
-              <nav className="app-nav">
-                <ul>
-                  <li>
-                    <NavLink to="/login">로그인</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/signup">회원가입</NavLink>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </header>
-      );
-    }
+      </>
+    );
   }
 }
 
