@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
+import styles from "./Login.module.css";
 import axios from "axios";
-import "./LoginForm.css";
 import { login } from "../../../utils/api";
+
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
 function LoginForm() {
   const [inputId, setInputId] = useState("");
@@ -35,35 +41,44 @@ function LoginForm() {
   //   );
 
   return (
-    <div className="Login">
-      <h2>Login</h2>
-      <div className="form">
-        <div className="login-input">
-          <label className="label">ID : </label>
-          <input
-            type="text"
-            name="input_id"
-            value={inputId}
-            onChange={handleInputId}
-            placeholder="이메일 형식의 아이디를 입력해주세요."
-          />
-        </div>
-        <div className="login-input">
-          <label className="label">PW : </label>
-          <input
-            type="password"
-            name="input_pw"
-            value={inputPw}
-            onChange={handleInputPw}
-            placeholder="비밀번호를 입력해주세요."
-          />
-        </div>
-        <div className="submit">
-          <button type="button" onClick={onClickLogin}>
-            Login
-          </button>
-        </div>
-      </div>
+    <div>
+      <Container className={styles.box}>
+        <Form className={styles.form}>
+          <h5>로그인</h5>
+          <Form.Group as={Row} className="mb-3">
+            <Col sm>
+              <Form.Control
+                type="text"
+                name="input_id"
+                value={inputId}
+                onChange={handleInputId}
+                placeholder="이메일 형식의 아이디를 입력해주세요."
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3">
+            <Col sm>
+              <Form.Control
+                type="password"
+                name="input_pw"
+                value={inputPw}
+                onChange={handleInputPw}
+                placeholder="비밀번호를 입력해주세요."
+              />
+            </Col>
+          </Form.Group>
+          <div className="d-grid gap-1">
+            <Button
+              className={styles.submit}
+              className="text-white"
+              variant="warning"
+              type="submit"
+            >
+              로그인
+            </Button>
+          </div>
+        </Form>
+      </Container>
     </div>
   );
 }

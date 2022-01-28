@@ -17,7 +17,7 @@ function MemoInput() {
   };
   const handleAddMemo = async (event) => {
     event.preventDefault();
-    if (title == "") {
+    if (title === "") {
       return alert("제목을 입력하세요.");
     } else if ((content = "")) {
       return alert("내용을 입력하세요.");

@@ -21,15 +21,15 @@ function App() {
     } else {
       setIsLogin(false);
     }
-  });
+  }, []);
 
   return (
     <div className="App">
-      <Header />
+      <Header isLogin={isLogin} />
 
       <Router>
         <Routes>
-          <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
+          <Route path="/main" element={<Main />}></Route> :
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route
@@ -40,7 +40,7 @@ function App() {
         </Routes>
       </Router>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
