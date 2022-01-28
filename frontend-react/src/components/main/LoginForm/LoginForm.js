@@ -9,6 +9,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
+import SocialLogin from "./SocialLogin";
+
 function LoginForm() {
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
@@ -77,6 +79,7 @@ function LoginForm() {
               로그인
             </Button>
           </div>
+          <SocialLogin />
         </Form>
       </Container>
     </div>
