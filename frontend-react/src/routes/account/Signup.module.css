@@ -2,6 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  /* margin: -150px 0px 0px -200px */
 }
 .form {
   justify-content: center;
