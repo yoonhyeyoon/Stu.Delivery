@@ -40,7 +40,8 @@ class Header extends Component {
                 {localStorage.getItem("isLogin") ? (
                   <ul>
                     <li>
-                      <button onClick={onLogout}>로그아웃</button>
+                      <a onClick={onLogout}>로그아웃</a>
+                      {/* <button onClick={onLogout}>로그아웃</button> */}
                     </li>
                     <li>
                       <p>내 스터디</p>
