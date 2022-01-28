@@ -7,7 +7,7 @@ function Main(isLogin) {
 
   return (
     <div>
-      {isLogin ? (
+      {localStorage.getItem("isLogin") ? (
         <button type="button" onClick={onLogout}>
           로그아웃
         </button>
