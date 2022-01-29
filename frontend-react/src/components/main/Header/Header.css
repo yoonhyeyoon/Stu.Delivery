@@ -36,6 +36,7 @@
   padding-left: 15px;
   padding-right: 15px;
   color: rgba(0, 0, 0, 0.65);
+  text-decoration : none;
 }
 
 .app-nav ul li p {
@@ -48,9 +49,13 @@
 }
 
 .app-nav ul li a:hover {
-  color: #0f96f6;
+  color: #bf7a26;
 }
 
 .app-nav ul li a.active {
-  color: #0f96f6;
+  color: #bf7a26;
+}
+
+img {
+  size: 1em;
 }

@@ -18,26 +18,28 @@ build-back:
         # 여러 서버에 배포할때 서버별 runner 태그로도 활용(dev, stg, prd)
         - prd
 
-# build-front:
-#     stage: build
-#     cache:
-#         key: ${CI_COMMIT_REF_SLUG}
-#         paths:
-#             - frontend/node_modules
-#     only :
-#         - master
-#         - develop
-#     script :
-#         # Node.js를 nvm 으로 설치한 경우만 필요
-#         - source "/home/ubuntu/.nvm/nvm.sh"
-#         - cd $CI_PROJECT_DIR/frontend
-#         - yarn install
-#         - yarn test
-#         - yarn build
-#         - rm -rf ~/skeleton-project/frontend/dist
-#         - cp -rf dist ~/skeleton-project/frontend
-#     tags :
-#         - prd
+build-front:
+    stage: build
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}
+        paths:
+            - project/S06P12D201/frontend-react/node_modules
+    only :
+        - master
+        - develop
+    script :
+        # Node.js를 nvm 으로 설치한 경우만 필요
+        # - source "/home/ubuntu/.nvm/nvm.sh"
+        - cd $CI_PROJECT_DIR/frontend-react
+        # - rm -rf node_modules
+        - rm -rf package-lock.json
+        - yarn install
+        # - yarn test
+        - CI=false yarn build
+        - rm -rf ~/project/S06P12D201/frontend-react/build
+        - cp -rf build ~/project/S06P12D201/frontend-react
+    tags :
+        - prd
 
 deploy-back:
     stage: deploy
@@ -50,13 +52,13 @@ deploy-back:
     tags :
         - prd
 
-# deploy-front:
-#     stage: deploy
-#     only :
-#         - master
-#         - develop
-#     script :
-#         # 배포는 이미 끝나서 단순 확인하기 위한 job으로만 구성
-#         - ls -al ~/skeleton-project/frontend/dist
-#     tags :
-#         - prd
+deploy-front:
+    stage: deploy
+    only :
+        - master
+        - develop
+    script :
+        # 배포는 이미 끝나서 단순 확인하기 위한 job으로만 구성
+        - ls -al ~/project/S06P12D201/frontend-react/build
+    tags :
+        - prd

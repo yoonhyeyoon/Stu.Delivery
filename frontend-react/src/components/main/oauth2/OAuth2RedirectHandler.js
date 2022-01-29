@@ -26,7 +26,7 @@ const OAuth2RedirectHandler = (props) => {
     return (
       <Navigate
         to={{
-          pathname: "/profile",
+          pathname: "/mypage",
           // eslint-disable-next-line no-restricted-globals
           state: { from: location },
         }}
@@ -37,7 +37,7 @@ const OAuth2RedirectHandler = (props) => {
     return (
       <Navigate
         to={{
-          pathname: "/profile",
+          pathname: "/mypage",
           // eslint-disable-next-line no-restricted-globals
           state: { from: location, error: error },
         }}

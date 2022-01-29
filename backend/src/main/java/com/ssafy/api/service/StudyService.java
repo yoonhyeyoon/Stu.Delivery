@@ -9,4 +9,5 @@ import javassist.tools.web.BadHttpRequest;
 public interface StudyService {
     List<Study> getStudyList();
     Study createStudy(User master, StudyCreatePostReq studyCreatePostReq);
+    void joinStudy(User user, Long studyId);
 }
