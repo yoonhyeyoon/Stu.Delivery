@@ -46,7 +46,7 @@ function App() {
             element={<OAuth2RedirectHandler />}
           ></Route>
           <Route path="/lounge" element={<Lounge />}></Route>
-          <Route path="/mypage" element={<MyPage />}></Route>
+          <Route path="/mypage/*" element={<MyPage />}></Route>
         </Routes>
       </Router>
 
