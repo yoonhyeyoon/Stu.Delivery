@@ -2,8 +2,21 @@ import React, { useState } from "react";
 import { insertMemo } from "../../../../redux/memos";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import styles from "./Memo.module.css";
+
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
 function MemoInput() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -36,32 +49,39 @@ function MemoInput() {
           dispatch(insertMemo(resData.id, title, content));
         })
         .catch((err) => console.log(err));
+      handleClose();
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleAddMemo}>
-        <input
-          type="text"
-          value={title}
-          placeholder="제목"
-          onChange={onTitleHandler}
-        />
-        <textarea
-          cols="30"
-          rows="10"
-          placeholder="내요오옹"
-          value={content}
-          onChange={onContentHandler}
-        ></textarea>
-        <div>
-          <small>
-            {contentLimit - content.length}/{contentLimit}
-          </small>
-          <button type="submit">등록</button>
-        </div>
-      </form>
+      <a onClick={handleShow} className={styles.btn}>
+        + 보드추가하기
+      </a>
+      <Modal show={show} onHide={handleClose}>
+        <Form onSubmit={handleAddMemo}>
+          <Form.Control
+            type="text"
+            value={title}
+            placeholder="제목"
+            onChange={onTitleHandler}
+          />
+          <Form.Control
+            as="textarea"
+            cols="30"
+            rows="10"
+            placeholder="내요오옹"
+            value={content}
+            onChange={onContentHandler}
+          ></Form.Control>
+          <div>
+            <small>
+              {content.length}/{contentLimit}
+            </small>
+            <Button type="submit">게시</Button>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Memo from "./Memo";
 import AddMemo from "./AddMemo";
+import styles from "./Memo.module.css";
 
 function BoardList() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function BoardList() {
     fetchMemo();
   }, [dispatch]);
   return (
-    <div>
+    <div className={styles.frame}>
       <AddMemo />
       {memos.map((memo) => {
         <Memo key={memo.id} />;
