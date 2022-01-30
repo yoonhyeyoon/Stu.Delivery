@@ -71,12 +71,6 @@ public class User extends BaseEntity{
 
     private Boolean authStatus;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Attendance> attendanceList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Goal> goals = new ArrayList<>();
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
@@ -85,4 +79,13 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<StudyMember> studyMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer")
+    private List<StudyBoard> studyBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Attendance> attendanceList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Goal> goals = new ArrayList<>();
 }

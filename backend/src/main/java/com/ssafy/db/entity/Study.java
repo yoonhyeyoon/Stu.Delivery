@@ -58,15 +58,18 @@ public class Study extends BaseEntity{
 
     private String lockerUrl;
 
-    @OneToMany(mappedBy = "study")
-    private List<RegularSchedule> regularSchedules = new ArrayList<>();
-
     private LocalDate startAt;
 
     private LocalDate finishAt;
 
     @OneToMany(mappedBy = "study")
+    private List<RegularSchedule> regularSchedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study")
     private List<StudyMember> studyMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study")
+    private List<StudyBoard> studyBoards = new ArrayList<>();
 
     public void addRegularSchedule (RegularSchedule regularSchedule) {
         this.regularSchedules.add(regularSchedule);
