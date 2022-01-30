@@ -31,7 +31,7 @@ public class StudyListRes {
         res.setName(study.getName());
         res.setThumbnail_url(study.getThumbnailUrl());
         res.setMax_user_num(study.getMaxUserNum());
-        res.setUser_num(study.getUserStudies().size());
+        res.setUser_num(study.getStudyMembers().size());
         return res;
     }
 }

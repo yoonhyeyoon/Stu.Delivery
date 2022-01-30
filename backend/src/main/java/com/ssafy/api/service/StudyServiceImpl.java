@@ -6,11 +6,11 @@ import com.ssafy.common.exception.response.ApiException;
 import com.ssafy.db.entity.Location;
 import com.ssafy.db.entity.RegularSchedule;
 import com.ssafy.db.entity.Study;
+import com.ssafy.db.entity.StudyMember;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.entity.UserStudy;
 import com.ssafy.db.repository.RegularScheduleRepository;
 import com.ssafy.db.repository.StudyRepository;
-import com.ssafy.db.repository.UserStudyRepository;
+import com.ssafy.db.repository.StudyMemberRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -27,7 +27,7 @@ public class StudyServiceImpl implements StudyService {
     StudyRepository studyRepository;
 
     @Autowired
-    UserStudyRepository userStudyRepository;
+    StudyMemberRepository studyMemberRepository;
 
     @Autowired
     RegularScheduleRepository regularScheduleRepository;
@@ -59,11 +59,11 @@ public class StudyServiceImpl implements StudyService {
         Study resStudy = studyRepository.save(study);
 
         // 스터디장 스터디 가입
-        UserStudy userStudy = new UserStudy();
-        userStudy.setStudy(study);
-        userStudy.setUser(master);
-        userStudy.setLocation(Location.offline);
-        userStudyRepository.save(userStudy);
+        StudyMember studyMember = new StudyMember();
+        studyMember.setStudy(study);
+        studyMember.setUser(master);
+        studyMember.setLocation(Location.offline);
+        studyMemberRepository.save(studyMember);
 
         // 정기 일정 추가
         List<Map<String, String>> schList = req.getRegular_schedules();
@@ -94,13 +94,19 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public void joinStudy(User user, Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
-        if (userStudyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
+        if (studyMemberRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
             throw new ApiException(ExceptionEnum.CONFLICT_USER_STUDY);
         }
-        UserStudy userStudy = new UserStudy();
-        userStudy.setStudy(study);
-        userStudy.setUser(user);
-        userStudy.setLocation(Location.offline);
-        userStudyRepository.save(userStudy);
+        StudyMember studyMember = new StudyMember();
+        studyMember.setStudy(study);
+        studyMember.setUser(user);
+        studyMember.setLocation(Location.offline);
+        studyMemberRepository.save(studyMember);
+    }
+
+    @Override
+    public Study getStudy(Long studyId) {
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        return study;
     }
 }

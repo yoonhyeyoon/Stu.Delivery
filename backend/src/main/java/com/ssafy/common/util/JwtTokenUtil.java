@@ -50,10 +50,10 @@ public class JwtTokenUtil {
             .build();
     }
 
-    public static String getToken(String userId) {
+    public static String getToken(String email) {
         Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
         return JWT.create()
-            .withSubject(userId)
+            .withSubject(email)
             .withExpiresAt(expires)
             .withIssuer(ISSUER)
             .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
@@ -64,15 +64,15 @@ public class JwtTokenUtil {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         return JWT.create()
-            .withSubject(userPrincipal.getUserId())
+            .withSubject(userPrincipal.getEmail())
             .withIssuer(ISSUER)
             .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
             .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
 
-    public static String getToken(Instant expires, String userId) {
+    public static String getToken(Instant expires, String email) {
         return JWT.create()
-            .withSubject(userId)
+            .withSubject(email)
             .withExpiresAt(Date.from(expires))
             .withIssuer(ISSUER)
             .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))

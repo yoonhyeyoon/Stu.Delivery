@@ -63,7 +63,7 @@ public class UserController {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 
         } else {
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "id already exist"));
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "email already exist"));
         }
 
     }
@@ -81,8 +81,8 @@ public class UserController {
         @RequestBody @ApiParam(value = "변경할 비밀번호", required = true) ChangePasswordReq changePasswordReq) {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
-            String userId = userDetails.getUsername();
-            User user = userService.getUserByUserId(userId);
+            String email = userDetails.getUsername();
+            User user = userService.getUserByEmail(email);
 
             if (passwordEncoder.matches(changePasswordReq.getCur(), user.getPassword())) {
                 user.setPassword(passwordEncoder.encode(changePasswordReq.getPassword()));
@@ -113,8 +113,8 @@ public class UserController {
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
-        String userId = userDetails.getUsername();
-        User user = userService.getUserByUserId(userId);
+        String email = userDetails.getUsername();
+        User user = userService.getUserByEmail(email);
 
         return ResponseEntity.status(200).body(UserRes.of(user));
     }
