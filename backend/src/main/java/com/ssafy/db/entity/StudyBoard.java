@@ -12,7 +12,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity(name = "study")
+@Entity(name = "study_board")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

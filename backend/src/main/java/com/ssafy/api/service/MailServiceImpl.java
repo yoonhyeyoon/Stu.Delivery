@@ -33,15 +33,15 @@ public class MailServiceImpl implements MailService {
         sendMail.setSubject("[Stu.Delivery] 회원가입 이메일 인증");
         sendMail.setText(new StringBuffer().append("<h1>[이메일 인증]</h1>")
             .append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>")
-            .append("<a href='http://localhost:8080/api/v1/mail/valid?userId=")
-            .append(user.getUserId())
+            .append("<a href='https://i6d201.p.ssafy.io/api/v1/mail/valid?email=")
+            .append(user.getEmail())
             .append("&authKey=")
             .append(authKey)
             .append("' target='_blenk'>이메일 인증 확인</a>")
             .toString());
 
         sendMail.setFrom("dev.js.pekah@gmail.com", "Stu.Delivery");
-        sendMail.setTo(user.getUserId());
+        sendMail.setTo(user.getEmail());
         sendMail.send();
     }
 
@@ -61,7 +61,7 @@ public class MailServiceImpl implements MailService {
             .toString());
 
         sendMail.setFrom("dev.js.pekah@gmail.com", "Stu.Delivery");
-        sendMail.setTo(user.getUserId());
+        sendMail.setTo(user.getEmail());
         sendMail.send();
 
         userRepository.save(user);

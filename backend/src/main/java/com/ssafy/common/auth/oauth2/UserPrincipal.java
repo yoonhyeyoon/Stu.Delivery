@@ -13,15 +13,15 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class UserPrincipal implements OAuth2User, UserDetails {
 
     private Long id;
-    private String userId;
+    private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String userId, String password,
+    public UserPrincipal(Long id, String email, String password,
         Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.userId = userId;
+        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
@@ -32,7 +32,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
         return new UserPrincipal(
             user.getId(),
-            user.getUserId(),
+            user.getEmail(),
             user.getPassword(),
             authorities
         );
@@ -48,8 +48,8 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getUsername() {
-        return userId;
+        return email;
     }
 
     @Override

@@ -31,11 +31,11 @@ import java.time.LocalDateTime;
 public class User extends BaseEntity{
 
     @Column(
-        name = "user_id",
+        name = "email",
         nullable = false,
         length = 50
     )
-    private String userId;
+    private String email;
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
