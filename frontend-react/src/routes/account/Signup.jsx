@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Signup.module.css";
-import { Link, NavLink } from "react-router-dom";
+import { useHistory, Link, NavLink } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -102,6 +102,7 @@ function Signup() {
       .then((res) => {
         console.log(res);
         alert("회원가입이 완료되었습니다.");
+        document.location.href = "/login";
       })
       .catch((err) => {
         console.log(err.response.data.statusCode);

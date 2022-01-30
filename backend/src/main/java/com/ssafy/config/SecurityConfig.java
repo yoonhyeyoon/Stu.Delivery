@@ -108,7 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))//HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
             .oauth2Login()
                 .authorizationEndpoint()
-                    .baseUri("/api/oauth2/authorize")
+                    .baseUri("/oauth2/authorize")
                     .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository())
                     .and()
                 .redirectionEndpoint()

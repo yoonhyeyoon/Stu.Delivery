@@ -49,9 +49,13 @@
 }
 
 .app-nav ul li a:hover {
-  color: #0f96f6;
+  color: #bf7a26;
 }
 
 .app-nav ul li a.active {
-  color: #0f96f6;
+  color: #bf7a26;
+}
+
+img {
+  size: 1em;
 }
