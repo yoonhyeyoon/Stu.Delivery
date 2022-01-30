@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.StudyCreatePostReq;
 import com.ssafy.api.response.StudyCreateRes;
 import com.ssafy.api.response.StudyListRes;
+import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.common.auth.CustomUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -53,6 +54,13 @@ public class StudyController {
         User master = userDetails.getUser();
         Study study = this.studyService.createStudy(master, studyCreatePostReq);
         return ResponseEntity.status(200).body(StudyCreateRes.of(study));
+    }
+
+    @GetMapping("/{study_id}")
+    @ApiOperation(value = "스터디 가져오기", notes = "스터디 정보를 가져온다.")
+    public ResponseEntity<StudyRes> getStudy(@PathVariable Long study_id) {
+        Study study = this.studyService.getStudy(study_id);
+        return ResponseEntity.status(200).body(StudyRes.of(study));
     }
 
     @PostMapping("/{study_id}")

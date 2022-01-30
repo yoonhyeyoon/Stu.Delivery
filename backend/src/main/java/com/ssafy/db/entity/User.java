@@ -9,10 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -87,5 +84,5 @@ public class User extends BaseEntity{
     private String providerId;
 
     @OneToMany(mappedBy = "user")
-    private List<UserStudy> userStudies = new ArrayList<>();
+    private List<StudyMember> studyMembers = new ArrayList<>();
 }

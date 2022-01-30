@@ -66,7 +66,7 @@ public class Study extends BaseEntity{
     private LocalDate finishAt;
 
     @OneToMany(mappedBy = "study")
-    private List<UserStudy> userStudies = new ArrayList<>();
+    private List<StudyMember> studyMembers = new ArrayList<>();
 
     public void addRegularSchedule (RegularSchedule regularSchedule) {
         this.regularSchedules.add(regularSchedule);
