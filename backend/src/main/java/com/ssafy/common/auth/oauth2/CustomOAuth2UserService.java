@@ -49,13 +49,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
 
-        Optional<User> userOptional = userRepository.findByUserId(oAuth2UserInfo.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user;
 
-        // DB에 해당 이메일(userId) 있을 때
+        // DB에 해당 이메일(email) 있을 때
         if (userOptional.isPresent()) {
             user = userOptional.get();
-            // 해당 userId에 대해 현재 로그인한 소셜과 DB에 저장된 소셜이 다를 경우
+            // 해당 email에 대해 현재 로그인한 소셜과 DB에 저장된 소셜이 다를 경우
             if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                     user.getProvider() + " account. Please use your " + user.getProvider() +
@@ -63,7 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             }
             user = updateExistingUser(user, oAuth2UserInfo);
         } else {
-            // DB에 해당 이메일(userId) 없을 때, 소셜에서 받아온 정보로 회원가입
+            // DB에 해당 이메일(email) 없을 때, 소셜에서 받아온 정보로 회원가입
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
         }
 
@@ -76,7 +76,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
         user.setNickName(oAuth2UserInfo.getName());
-        user.setUserId(oAuth2UserInfo.getEmail());
+        user.setEmail(oAuth2UserInfo.getEmail());
         user.setProfileImg(oAuth2UserInfo.getImageUrl());
         user.setAuthStatus(true);
         return userRepository.save(user);

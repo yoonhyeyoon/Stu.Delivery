@@ -74,7 +74,7 @@ function LoginForm() {
               className={styles.submit}
               className="text-white"
               variant="warning"
-              type="submit"
+              onClick={onClickLogin}
             >
               로그인
             </Button>

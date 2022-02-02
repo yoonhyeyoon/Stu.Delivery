@@ -10,18 +10,21 @@ const login = (id, pwd) => {
   if (!emailRule.test(id)) {
     alert("이메일 형식의 아이디를 입력해주세요.");
   } else {
+    console.log("로그인한다");
     axios({
       method: "post",
-      url: "http://localhost:8080/api/v1/auth/login",
+      url: "https://i6d201.p.ssafy.io/api/v1/auth/login",
       data: {
         id: id,
         password: pwd,
       },
     })
       .then((response) => {
-        if (response.data.jwtToken) {
+        if (response.data.accessToken) {
           // 로그인 성공시 쿠키에 jwt token 저장
-          setJwtToken(response.data.jwtToken);
+          console.log("success!");
+          setJwtToken(response.data.accessToken);
+          localStorage.setItem("isLogin", true);
           window.location.href = "/mypage";
         }
       })
