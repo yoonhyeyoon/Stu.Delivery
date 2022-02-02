@@ -1,7 +1,9 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
 import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
 import com.ssafy.api.response.StudyCreateRes;
 import com.ssafy.api.response.StudyListRes;
@@ -10,15 +12,19 @@ import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
 import com.ssafy.db.entity.Location;
 import com.ssafy.db.entity.RegularSchedule;
+import com.ssafy.db.entity.Schedule;
 import com.ssafy.db.entity.Study;
 import com.ssafy.db.entity.StudyBoard;
 import com.ssafy.db.entity.StudyMember;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RegularScheduleRepository;
+import com.ssafy.db.repository.ScheduleRepository;
 import com.ssafy.db.repository.StudyBoardRepository;
 import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -42,6 +48,9 @@ public class StudyServiceImpl implements StudyService {
 
     @Autowired
     StudyBoardRepository studyBoardRepository;
+
+    @Autowired
+    ScheduleRepository scheduleRepository;
 
     @Override
     public List<StudyListRes> getStudyList() {
@@ -112,7 +121,7 @@ public class StudyServiceImpl implements StudyService {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
         if (studyMemberRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
-            throw new ApiException(ExceptionEnum.CONFLICT_USER_STUDY);
+            throw new ApiException(ExceptionEnum.CONFLICT_STUDY_MEMBER);
         }
         StudyMember studyMember = new StudyMember();
         studyMember.setStudy(study);
@@ -145,10 +154,9 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<StudyBoardRes> listStudyBoard(Long studyId) {
-        if (!studyRepository.findById(studyId).isPresent()) {
-            throw new ApiException(ExceptionEnum.NOT_FOUND_STUDY);
-        }
-        List<StudyBoard> boards = studyBoardRepository.findAllByStudyId(studyId);
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        List<StudyBoard> boards = study.getStudyBoards();
         List<StudyBoardRes> res = new ArrayList<>();
         for (StudyBoard board : boards) {
             res.add(StudyBoardRes.of(board));
@@ -203,6 +211,102 @@ public class StudyServiceImpl implements StudyService {
         }
 
         studyBoardRepository.delete(studyBoard);
+        return;
+    }
+
+    @Override
+    public ScheduleRes createSchedule(User user, Long studyId, ScheduleReq req) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+
+        if (!studyMemberRepository.findByUserIdAndStudyId(user.getId(), studyId).isPresent()) {
+            throw new ApiException(ExceptionEnum.NOT_FOUND_STUDY_MEMBER);
+        }
+
+        Schedule schedule = new Schedule();
+        schedule.setStudy(study);
+        schedule.setTitle(req.getTitle());
+        schedule.setContent(req.getContent());
+        try {
+            LocalDateTime time = LocalDateTime.parse(req.getTime(), DateTimeFormatter.ISO_DATE_TIME);
+            schedule.setTime(time);
+        } catch (DateTimeParseException e) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+        }
+
+        Schedule resSchedule = scheduleRepository.save(schedule);
+        return ScheduleRes.of(resSchedule);
+    }
+
+    @Override
+    public List<ScheduleRes> listSchedule(Long studyId) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+
+        List<Schedule> schedules = study.getSchedules();
+        List<ScheduleRes> res = new ArrayList<>();
+        for(Schedule schedule: schedules) {
+            res.add(ScheduleRes.of(schedule));
+        }
+        return res;
+    }
+
+    @Override
+    public ScheduleRes getSchedule(Long studyId, Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_SCHEDULE));
+
+        if (!studyRepository.findById(studyId).isPresent()) {
+            throw new ApiException(ExceptionEnum.NOT_FOUND_STUDY);
+        }
+
+        if (schedule.getStudy().getId() != studyId) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_SCHEDULE);
+        }
+
+        return ScheduleRes.of(schedule);
+    }
+
+    @Override
+    public ScheduleRes updateSchedule(User user, Long studyId, Long scheduleId, ScheduleReq req) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_SCHEDULE));
+        if (study.getId() != schedule.getStudy().getId()) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_SCHEDULE);
+        }
+        if (!studyMemberRepository.findByUserIdAndStudyId(user.getId(), studyId).isPresent()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_SCHEDULE);
+        }
+
+        schedule.setTitle(req.getTitle());
+        schedule.setContent(req.getContent());
+        try {
+            LocalDateTime time = LocalDateTime.parse(req.getTime(), DateTimeFormatter.ISO_DATE_TIME);
+            schedule.setTime(time);
+        } catch (DateTimeParseException e) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+        }
+        scheduleRepository.save(schedule);
+
+        return ScheduleRes.of(schedule);
+    }
+
+    @Override
+    public void deleteSchedule(User user, Long studyId, Long scheduleId) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_SCHEDULE));
+        if (study.getId() != schedule.getStudy().getId()) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_SCHEDULE);
+        }
+        if (!studyMemberRepository.findByUserIdAndStudyId(user.getId(), studyId).isPresent()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_SCHEDULE);
+        }
+
+        scheduleRepository.delete(schedule);
         return;
     }
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("StudyBoardCreatePostResponse")
+@ApiModel("StudyBoardResponse")
 public class StudyBoardRes {
     @ApiModelProperty(name = "스터디보드 ID", example = "1")
     Long study_board_id;
