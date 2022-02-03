@@ -1,6 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.ChangePasswordReq;
+import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.UserRes;
@@ -14,10 +14,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,12 +39,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    UserRepository userRepository;
 
     @PostMapping()
     @ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
@@ -68,6 +64,29 @@ public class UserController {
 
     }
 
+    @DeleteMapping()
+    @ApiOperation(value = "회원 탈퇴")
+    public ResponseEntity<BaseResponseBody> signOut(@ApiIgnore Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        userService.deleteUser(user);
+        return ResponseEntity.ok(BaseResponseBody.of(200, "회원탈퇴 성공!"));
+    }
+
+    @PostMapping("/password-valid")
+    @ApiOperation(value = "비밀번호 확인", notes = "해당 비밀번호가 로그인한 사용자의 비밀번호와 일치하는지 확인한다.")
+    public ResponseEntity<BaseResponseBody> checkPassword(@ApiIgnore Authentication authentication,
+        @RequestBody Map<String, String> req) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        Boolean flag = userService.isValidPassword(user, req);
+        System.out.println(flag);
+        if (flag) {
+            return ResponseEntity.ok(BaseResponseBody.of(200, "맞는 비밀번호입니다."));
+        } else {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "틀린 비밀번호입니다."));
+        }
+    }
 
     @PatchMapping("/password")
     @ApiOperation(value = "비밀번호 변경", notes = "비밀번호를 변경한다.")
@@ -76,27 +95,14 @@ public class UserController {
         @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
         @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> changePwd(
+    public ResponseEntity<? extends BaseResponseBody> updatePassword(
         @ApiIgnore Authentication authentication,
-        @RequestBody @ApiParam(value = "변경할 비밀번호", required = true) ChangePasswordReq changePasswordReq) {
-        try {
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
-            String email = userDetails.getUsername();
-            User user = userService.getUserByEmail(email);
+        @RequestBody @ApiParam(value = "변경할 비밀번호", required = true) UserPasswordUpdateReq userPasswordUpdateReq) {
 
-            if (passwordEncoder.matches(changePasswordReq.getCur(), user.getPassword())) {
-                user.setPassword(passwordEncoder.encode(changePasswordReq.getPassword()));
-                userRepository.save(user);
-                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-            } else {
-                return ResponseEntity.status(400)
-                    .body(BaseResponseBody.of(400, "password not valid"));
-            }
-
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Failed : " + e));
-        }
-
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        userService.updatePassword(user, userPasswordUpdateReq);
+        return ResponseEntity.ok(BaseResponseBody.of(200, "비밀번호 변경 완료"));
     }
 
     @GetMapping("/me")
@@ -120,6 +126,7 @@ public class UserController {
     }
 
     @GetMapping("/updateUser")
+    @ApiOperation(value = "회원정보 수정", notes = "로그인한 회원의 정보를 수정한다.")
     public ResponseEntity<? extends BaseResponseBody> updateUser(
         @RequestBody UserUpdateReq userUpdateReq) {
 

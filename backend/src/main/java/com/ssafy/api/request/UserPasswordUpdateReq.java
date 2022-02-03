@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("ChangePasswordReq")
-public class ChangePasswordReq {
+public class UserPasswordUpdateReq {
 
     @ApiModelProperty(name = "현재 비밀번호", example = "test")
     String cur;
