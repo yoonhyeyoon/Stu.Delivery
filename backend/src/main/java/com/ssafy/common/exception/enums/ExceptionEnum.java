@@ -14,6 +14,7 @@ public enum ExceptionEnum {
     BAD_REQUEST_DATE(HttpStatus.BAD_REQUEST, "004", "잘못된 날짜 혹은 시간 혹은 요일 형식이 요청되었습니다."),
     
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "101", "해당 유저를 찾을 수 없습니다."),
+    UNAUTHORIZED_USER_PASSWORD(HttpStatus.UNAUTHORIZED, "104", "잘못된 비밀번호입니다."),
 
     NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, "201", "해당 스터디를 찾을 수 없습니다."),
 
