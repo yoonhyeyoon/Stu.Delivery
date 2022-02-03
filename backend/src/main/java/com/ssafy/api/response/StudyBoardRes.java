@@ -25,6 +25,9 @@ public class StudyBoardRes {
     @ApiModelProperty(name = "내용", example = "공지사항 내용입니다")
     String content;
 
+    @ApiModelProperty(name = "생성일", example = "2022-02-03T12:12:01.092")
+    String created_at;
+
     public static StudyBoardRes of(StudyBoard studyBoard) {
         StudyBoardRes res = new StudyBoardRes();
         res.setStudy_board_id(studyBoard.getId());
@@ -32,6 +35,7 @@ public class StudyBoardRes {
         res.setUser_id(studyBoard.getWriter().getId());
         res.setTitle(studyBoard.getTitle());
         res.setContent(studyBoard.getContent());
+        res.setCreated_at(studyBoard.getCreatedAt().toString());
         return res;
     }
 }
