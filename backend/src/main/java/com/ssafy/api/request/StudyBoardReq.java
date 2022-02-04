@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("StudyBoardCreatePostRequest")
+@ApiModel("StudyBoardRequest")
 public class StudyBoardReq {
     @ApiModelProperty(name = "제목", example = "공지사항")
     String title;

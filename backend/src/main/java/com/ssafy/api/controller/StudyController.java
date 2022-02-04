@@ -1,7 +1,9 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
 import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
 import com.ssafy.api.response.StudyCreateRes;
 import com.ssafy.api.response.StudyListRes;
@@ -115,4 +117,50 @@ public class StudyController {
         studyService.deleteStudyBoard(user, study_id, board_id);
         return ResponseEntity.ok(BaseResponseBody.of(200, "스터디 보드 삭제에 성공하였습니다."));
     }
+
+    @PostMapping("/{study_id}/schedule")
+    @ApiOperation(value = "스터디 일정 생성하기", notes = "해당 스터디에 일정을 추가한다.")
+    public ResponseEntity<ScheduleRes> createSchedule(@ApiIgnore Authentication authentication,
+        @PathVariable Long study_id, @RequestBody ScheduleReq req) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        ScheduleRes res = studyService.createSchedule(user, study_id, req);
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/{study_id}/schedule")
+    @ApiOperation(value = "스터디 일정 리스트 가져오기", notes = "일정 리스트를 가져온다.")
+    public ResponseEntity<List<ScheduleRes>> listSchedule(@PathVariable Long study_id) {
+        List<ScheduleRes> res = studyService.listSchedule(study_id);
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/{study_id}/schedule/{schedule_id}")
+    @ApiOperation(value = "스터디 일정 가져오기", notes = "해당 스터디 일정을 가져온다.")
+    public ResponseEntity<ScheduleRes> getSchedule(@PathVariable Long study_id, @PathVariable Long schedule_id) {
+        ScheduleRes res = studyService.getSchedule(study_id, schedule_id);
+        return ResponseEntity.ok(res);
+    }
+
+    @PutMapping("/{study_id}/schedule/{schedule_id}")
+    @ApiOperation(value = "스터디 일정 수정하기", notes = "해당 스터디 일정을 수정한다.")
+    public ResponseEntity<ScheduleRes> updateSchedule(@ApiIgnore Authentication authentication,
+        @PathVariable Long study_id, @PathVariable Long schedule_id,
+        @RequestBody ScheduleReq req) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        ScheduleRes res = studyService.updateSchedule(user, study_id, schedule_id, req);
+        return ResponseEntity.ok(res);
+    }
+
+    @DeleteMapping("/{study_id}/schedule/{schedule_id}")
+    @ApiOperation(value = "스터디 일정 삭제하기", notes = "해당 스터디 일정을 삭제한다.")
+    public ResponseEntity<BaseResponseBody> deleteSchedule(@ApiIgnore Authentication authentication,
+        @PathVariable Long study_id, @PathVariable Long schedule_id) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        studyService.deleteSchedule(user, study_id, schedule_id);
+        return ResponseEntity.ok(BaseResponseBody.of(200, "스터디 일정 삭제에 성공하였습니다."));
+    }
+
 }

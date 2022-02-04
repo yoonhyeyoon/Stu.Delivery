@@ -71,6 +71,9 @@ public class Study extends BaseEntity{
     @OneToMany(mappedBy = "study")
     private List<StudyBoard> studyBoards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "study")
+    private List<Schedule> schedules = new ArrayList<>();
+
     public void addRegularSchedule (RegularSchedule regularSchedule) {
         this.regularSchedules.add(regularSchedule);
         if (regularSchedule.getStudy() != this) {

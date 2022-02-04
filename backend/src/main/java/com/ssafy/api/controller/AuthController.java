@@ -1,11 +1,7 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.ChangePasswordReq;
-import com.ssafy.common.auth.CustomUserDetails;
-import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
