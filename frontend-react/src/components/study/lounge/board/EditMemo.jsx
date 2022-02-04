@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { insertMemo } from "../../../../redux/memos";
+import { updateMemo, removeMemo } from "../../../../redux/memos";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
@@ -8,16 +8,17 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function AddMemo() {
+function EditMemo({ defaultTitle, defaultContent, board_id }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(defaultTitle);
+  const [content, setContent] = useState(defaultContent);
   const contentLimit = 200;
+  const study_id = 1;
 
   const onTitleHandler = (event) => {
     setTitle(event.target.value);
@@ -34,17 +35,17 @@ function AddMemo() {
     };
     return header;
   };
-  const handleAddMemo = async (event) => {
+
+  const handleUpdateMemo = async (event) => {
     event.preventDefault();
     if (title === "") {
       return alert("제목을 입력하세요.");
     } else if (content === "") {
       return alert("내용을 입력하세요.");
     } else {
-      const study_id = 1;
       axios({
-        method: "post",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board`,
+        method: "put",
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${board_id}`,
         data: {
           title: title,
           content: content,
@@ -55,7 +56,7 @@ function AddMemo() {
           console.log(res);
           const resData = res.data;
           dispatch(
-            insertMemo(
+            updateMemo(
               resData.study_board_id,
               resData.title,
               resData.content,
@@ -69,13 +70,25 @@ function AddMemo() {
     }
   };
 
+  const handleRemoveMemo = async () => {
+    dispatch(removeMemo(board_id));
+    axios({
+      method: "delete",
+      url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${board_id}`,
+      headers: setHeader(),
+    });
+  };
+
   return (
     <div>
       <a onClick={handleShow} className={styles.btn}>
-        + 보드추가하기
+        수정
+      </a>
+      <a onClick={handleRemoveMemo} className={styles.btn}>
+        삭제
       </a>
       <Modal show={show} onHide={handleClose}>
-        <Form onSubmit={handleAddMemo}>
+        <Form onSubmit={handleUpdateMemo}>
           <Form.Control
             type="text"
             value={title}
@@ -101,4 +114,4 @@ function AddMemo() {
     </div>
   );
 }
-export default AddMemo;
+export default EditMemo;

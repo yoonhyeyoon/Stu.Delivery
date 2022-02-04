@@ -15,7 +15,7 @@ const login = (id, pwd) => {
       method: "post",
       url: "https://i6d201.p.ssafy.io/api/v1/auth/login",
       data: {
-        id: id,
+        email: id,
         password: pwd,
       },
     })

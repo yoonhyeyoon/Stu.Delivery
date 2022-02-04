@@ -16,7 +16,7 @@ class Header extends Component {
   clickLogo() {}
 
   render() {
-    console.log(this.props.isLogin);
+    // console.log(this.props.isLogin);
     const appName = "Stu.Delivery";
 
     // 로그아웃

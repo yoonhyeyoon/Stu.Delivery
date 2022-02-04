@@ -7,17 +7,29 @@ const MEMO_LOAD = "memos/MEMO_LOAD";
 // GET
 export const loadMemo = createAction(MEMO_LOAD, (memos) => memos);
 // POST
-export const insertMemo = createAction(MEMO_INSERT, (id, content) => ({
-  id: id,
-  content,
-}));
+export const insertMemo = createAction(
+  MEMO_INSERT,
+  (id, title, content, user, created) => ({
+    id: id,
+    title,
+    content,
+    user,
+    created,
+  })
+);
 // DELETE
 export const removeMemo = createAction(MEMO_REMOVE, (id) => id);
 // PUT
-export const updateMemo = createAction(MEMO_UPDATE, (id, content) => ({
-  id: id,
-  content: content,
-}));
+export const updateMemo = createAction(
+  MEMO_UPDATE,
+  (id, title, content, user, created) => ({
+    id: id,
+    title,
+    content,
+    user,
+    created,
+  })
+);
 
 // Reducer
 const memos = handleActions(
@@ -33,10 +45,18 @@ const memos = handleActions(
       ...state,
       memos: state.memos.filter((memo) => memo.id !== id),
     }),
-    [MEMO_UPDATE]: (state, { payload: id, content }) => ({
+    [MEMO_UPDATE]: (state, { payload: id, title, content, user, created }) => ({
       ...state,
       memos: state.memos.map((memo) =>
-        memo.id === id ? { ...memo, content: content } : memo
+        memo.id === id
+          ? {
+              ...memo,
+              title: title,
+              content: content,
+              user: user,
+              created: created,
+            }
+          : memo
       ),
     }),
   },

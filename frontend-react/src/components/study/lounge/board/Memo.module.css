@@ -1,7 +1,8 @@
+/* add */
 .frame {
   height: 20rem;
   background-color: #f2f2e8;
-  padding: 35px;
+  margin: 35px;
 }
 .btn {
   text-decoration: none;
@@ -10,4 +11,28 @@
 }
 .btn:hover {
   color: #bf7a26;
+}
+
+/* memo */
+.form{
+  /* margin-top:40px; */
+  position:absolute;
+  width:200px;
+  height:210px;
+  background-color:#f2dcc2;
+  cursor: move;
+}
+.textAria{
+  position:absolute;
+  width:180px;
+  height:140px;
+  margin:10px;
+  overflow:hide;
+}
+.bottom{
+  position:absolute;
+  margin:160px 10px 10px 10px;
+  width:180px;
+  height:30px;
+  text-align: right;
 }
