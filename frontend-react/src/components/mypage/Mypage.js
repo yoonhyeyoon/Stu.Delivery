@@ -6,6 +6,7 @@ import MyStudy from "./study/MyStudy";
 import Dashboard from "./dashboard/Dashboard";
 import Withdrawal from "./withdrawal/Withdrawal";
 import Update from "./update/Update";
+import CheckPwd from "./update/checkpwd/checkpwd";
 
 const Sidebar = () => {
   return (
@@ -35,7 +36,8 @@ const MyPage = () => {
     <div className="container">
       <Sidebar />
       <Routes>
-        <Route path="update/check" element={<Update />}></Route>
+        <Route path="update/check" element={<CheckPwd />}></Route>
+        <Route path="update" element={<Update />}></Route>
         <Route path="study" element={<MyStudy />}></Route>
         <Route path="dashboard" element={<Dashboard />}></Route>
         <Route path="withdrawal" element={<Withdrawal />}></Route>

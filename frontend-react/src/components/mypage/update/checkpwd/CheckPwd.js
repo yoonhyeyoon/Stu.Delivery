@@ -33,12 +33,11 @@ const CheckPwd = () => {
           </Form.Group>
           <div className="d-grid gap-1">
             <Button
-              className={styles.submit}
-              className="text-white"
+              className={`${styles.submit} text-white`}
               variant="warning"
               onClick={check}
             >
-              로그인
+              비밀번호 확인
             </Button>
           </div>
         </Form>
