@@ -1,16 +1,16 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
-import com.ssafy.common.util.MailUtils;
+import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.AuthProvider;
 import java.time.LocalDateTime;
 
-import com.ssafy.db.entity.Attendance;
-import com.ssafy.db.entity.Goal;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,6 @@ import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -100,6 +96,30 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(User user) {
 		userRepository.save(user);
+	}
+
+	@Override
+	public void deleteUser(User user) {
+		userRepository.delete(user);
+	}
+
+	@Override
+	public Boolean isValidPassword(User user, Map<String, String> req) {
+		String password = req.get("password");
+		if (password == null) {
+			throw new ApiException(ExceptionEnum.RUNTIME_EXCEPTION);
+		}
+		return passwordEncoder.matches(password, user.getPassword());
+	}
+
+	@Override
+	public void updatePassword(User user, UserPasswordUpdateReq req) {
+		if (!passwordEncoder.matches(req.getCur(), user.getPassword())) {
+			throw new ApiException(ExceptionEnum.UNAUTHORIZED_USER_PASSWORD);
+		}
+		user.setPassword(passwordEncoder.encode(req.getPassword()));
+		userRepository.save(user);
+		return;
 	}
 
 }

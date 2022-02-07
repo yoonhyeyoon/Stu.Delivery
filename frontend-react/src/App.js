@@ -13,6 +13,7 @@ import Welcome from "./components/welcome/Welcome";
 import Index from "./components/welcome/Index";
 import GlobalStyles from "./common/styles/GlobalStyles";
 import StudyList from "./components/studylist/StudyList";
+import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -46,6 +47,7 @@ function App() {
           <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
           <Route
             path="/oauth2/redirect"
             element={<OAuth2RedirectHandler />}
