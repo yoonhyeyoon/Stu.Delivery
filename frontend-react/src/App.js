@@ -47,7 +47,6 @@ function App() {
           <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
           <Route
             path="/oauth2/redirect"
             element={<OAuth2RedirectHandler />}
