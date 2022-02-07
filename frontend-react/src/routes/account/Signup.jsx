@@ -115,6 +115,7 @@ function Signup() {
 
   return (
     <div>
+      <div className={styles.backImage}></div>
       <div className={styles.back}>
         <Container className={styles.box}>
           <Form onSubmit={onSubmit} className={styles.form}>
@@ -204,4 +205,5 @@ function Signup() {
     </div>
   );
 }
+
 export default Signup;
