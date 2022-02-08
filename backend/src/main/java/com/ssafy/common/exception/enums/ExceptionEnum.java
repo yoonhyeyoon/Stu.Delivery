@@ -17,6 +17,7 @@ public enum ExceptionEnum {
     UNAUTHORIZED_USER_PASSWORD(HttpStatus.UNAUTHORIZED, "104", "잘못된 비밀번호입니다."),
 
     NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, "201", "해당 스터디를 찾을 수 없습니다."),
+    UNAUTHORIZED_STUDY(HttpStatus.UNAUTHORIZED, "204", "현재 로그인한 사용자는 해당 요청에 대한 권한이 없습니다."),
 
     NOT_FOUND_STUDY_MEMBER(HttpStatus.NOT_FOUND, "301", "해당 유저는 해당 스터디의 멤버가 아닙니다."),
     CONFLICT_STUDY_MEMBER(HttpStatus.CONFLICT, "302", "이미 가입된 유저입니다."),

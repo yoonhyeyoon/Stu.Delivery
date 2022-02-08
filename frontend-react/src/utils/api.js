@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
+const ACCESS_TOKEN = "accessToken";
 
 const login = (id, pwd) => {
   const emailRule =
@@ -38,6 +39,7 @@ const login = (id, pwd) => {
 
 const setJwtToken = (jwtToken) => {
   localStorage.setItem("JWT", jwtToken, { sameSite: "strict" });
+  // cookies.set("jwt_token", jwtToken, { sameSite: "strict" });
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

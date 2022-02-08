@@ -1,0 +1,14 @@
+/* 배경색 - 회색 */
+.progress-div {
+  background-color: rgb(233, 233, 233);
+  border-radius: 0.5rem;
+}
+
+/* 진행 색깔 - 주황색 */
+.progress {
+  background-color: rgb(255, 129, 46);
+  height: 10px;
+  transition: 1s ease;
+  transition-delay: 0.5s;
+  border-radius: 1rem;
+}
