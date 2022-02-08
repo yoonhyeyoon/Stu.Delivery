@@ -2,7 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
-import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
 import com.ssafy.api.response.StudyCreateRes;
@@ -14,7 +14,8 @@ import java.util.List;
 public interface StudyService {
     // 스터디
     List<StudyListRes> getStudyList();
-    StudyCreateRes createStudy(User master, StudyCreatePostReq studyCreatePostReq);
+    StudyCreateRes createStudy(User master, StudyReq studyReq);
+    StudyCreateRes updateStudy(User master, Long studyId, StudyReq studyReq);
     void joinStudy(User user, Long studyId);
     StudyRes getStudy(Long studyId);
 

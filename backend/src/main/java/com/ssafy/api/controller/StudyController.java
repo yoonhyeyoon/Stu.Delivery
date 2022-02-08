@@ -2,7 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
-import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
 import com.ssafy.api.response.StudyCreateRes;
@@ -46,11 +46,22 @@ public class StudyController {
     @PostMapping
     @ApiOperation(value = "스터디 생성하기", notes = "스터디를 생성한다.")
     public ResponseEntity<StudyCreateRes> createStudy(
-        @ApiIgnore Authentication authentication, @RequestBody StudyCreatePostReq studyCreatePostReq
+        @ApiIgnore Authentication authentication, @RequestBody StudyReq studyCreatePostReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
         User master = userDetails.getUser();
         StudyCreateRes res = this.studyService.createStudy(master, studyCreatePostReq);
+        return ResponseEntity.ok(res);
+    }
+
+    @PutMapping("/{study_id}")
+    @ApiOperation(value = "스터디 수정하기", notes = "스터디 정보를 수정한다.")
+    public ResponseEntity<StudyCreateRes> updateStudy(
+        @ApiIgnore Authentication authentication, @PathVariable Long study_id, @RequestBody StudyReq studyReq
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User master = userDetails.getUser();
+        StudyCreateRes res = this.studyService.updateStudy(master, study_id, studyReq);
         return ResponseEntity.ok(res);
     }
 
