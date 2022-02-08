@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { insertMemo } from "../../../../redux/memos";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
 
@@ -9,6 +9,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 function AddMemo() {
+  const user = useSelector((state) => state.user.user);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -27,7 +29,7 @@ function AddMemo() {
   };
 
   const setHeader = () => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("JWT");
     const header = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -63,6 +65,7 @@ function AddMemo() {
               resData.created_at
             )
           );
+          window.location.reload();
         })
         .catch((err) => console.log(err.response.data));
       handleClose();
@@ -71,9 +74,11 @@ function AddMemo() {
 
   return (
     <div>
-      <a onClick={handleShow} className={styles.btn}>
-        + 보드추가하기
-      </a>
+      {localStorage.getItem("isMember") ? (
+        <a onClick={handleShow} className={styles.btn}>
+          + 보드 추가하기
+        </a>
+      ) : null}
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleAddMemo}>
           <Form.Control

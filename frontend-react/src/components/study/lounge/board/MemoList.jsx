@@ -26,7 +26,7 @@ function MemoList() {
   useEffect(() => {
     const study_id = 1;
     const fetchMemo = async () => {
-      axios({
+      await axios({
         method: "get",
         url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board`,
       })
@@ -43,17 +43,7 @@ function MemoList() {
     <div className={styles.frame} ref={memoContainer}>
       <AddMemo />
       {memos &&
-        memos.map((memo) => (
-          <Memo
-            key={memo.study_board_id}
-            title={memo.title}
-            content={memo.content}
-            created={memo.created_at}
-            user_id={memo.user_id}
-            id={memo.study_board_id}
-            box={box}
-          />
-        ))}
+        memos.map((memo) => <Memo key={memo.study_board_id} memo={memo} />)}
     </div>
   );
 }

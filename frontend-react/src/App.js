@@ -10,10 +10,17 @@ import Main from "./routes/main/Main";
 import Lounge from "./routes/study/Lounge";
 import MyPage from "./components/mypage/Mypage";
 import Welcome from "./components/welcome/Welcome";
+import Info from "./routes/study/Info";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setHeader } from "./utils/api";
+import { isLoad, loadUser } from "./redux/user";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("JWT");
@@ -32,6 +39,24 @@ function App() {
     }
   });
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      await axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/users/me",
+        headers: setHeader(),
+      })
+        .then((res) => {
+          // localStorage.setItem("user", res.data.id);
+          // action 발생
+          dispatch(loadUser(res.data));
+          dispatch(isLoad(true));
+        })
+        .catch((err) => console.log(err.request));
+    };
+    fetchUserInfo();
+  }, []);
+
   return (
     <div className="App">
       <Router>
@@ -45,7 +70,8 @@ function App() {
             path="/oauth2/redirect"
             element={<OAuth2RedirectHandler />}
           ></Route>
-          <Route path="/lounge" element={<Lounge />}></Route>
+          <Route path="/study" element={<Lounge />}></Route>
+          <Route path="/study/info" element={<Info />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
         </Routes>
       </Router>

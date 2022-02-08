@@ -21,8 +21,8 @@ class Header extends Component {
 
     // 로그아웃
     const onLogout = () => {
-      localStorage.removeItem("JWT");
-      localStorage.removeItem("isLogin");
+      // 전체삭제
+      localStorage.clear();
       document.location.href = "/main";
     };
 

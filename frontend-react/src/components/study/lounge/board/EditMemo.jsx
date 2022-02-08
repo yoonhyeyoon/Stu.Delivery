@@ -1,97 +1,102 @@
 import React, { useState } from "react";
 import { updateMemo, removeMemo } from "../../../../redux/memos";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { setHeader } from "../../../../utils/api";
 
-function EditMemo({ defaultTitle, defaultContent, board_id }) {
+function EditMemo({ memo }) {
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const dispatch = useDispatch();
-  const [title, setTitle] = useState(defaultTitle);
-  const [content, setContent] = useState(defaultContent);
+  const [newTitle, setNewTitle] = useState(memo.title);
+  const [newContent, setNewContent] = useState(memo.content);
   const contentLimit = 200;
   const study_id = 1;
 
   const onTitleHandler = (event) => {
-    setTitle(event.target.value);
+    setNewTitle(event.target.value);
   };
   const onContentHandler = (event) => {
-    setContent(event.target.value);
-  };
-
-  const setHeader = () => {
-    const token = localStorage.getItem("accessToken");
-    const header = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return header;
+    setNewContent(event.target.value);
   };
 
   const handleUpdateMemo = async (event) => {
     event.preventDefault();
-    if (title === "") {
+    if (newTitle === "") {
       return alert("제목을 입력하세요.");
-    } else if (content === "") {
+    } else if (newContent === "") {
       return alert("내용을 입력하세요.");
     } else {
       axios({
         method: "put",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${board_id}`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${memo.study_board_id}`,
         data: {
-          title: title,
-          content: content,
+          title: newTitle,
+          content: newContent,
         },
         headers: setHeader(),
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           const resData = res.data;
           dispatch(
             updateMemo(
-              resData.study_board_id,
+              resData.study_memo.board_id,
               resData.title,
               resData.content,
               resData.user_id,
               resData.created_at
             )
           );
+          window.location.reload();
         })
-        .catch((err) => console.log(err.response.data));
+        .catch((err) => console.log(err.response));
       handleClose();
     }
   };
 
   const handleRemoveMemo = async () => {
-    dispatch(removeMemo(board_id));
+    dispatch(removeMemo(memo.study_board_id));
     axios({
       method: "delete",
-      url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${board_id}`,
+      url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${memo.study_board_id}`,
       headers: setHeader(),
-    });
+    })
+      .then((res) => {
+        console.log(res.data);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err.response.data));
   };
 
   return (
     <div>
-      <a onClick={handleShow} className={styles.btn}>
-        수정
-      </a>
-      <a onClick={handleRemoveMemo} className={styles.btn}>
-        삭제
-      </a>
+      {memo.user_id === user.id ? (
+        <>
+          <a onClick={handleShow} className={styles.btn}>
+            수정
+          </a>
+          <a onClick={handleRemoveMemo} className={styles.btn}>
+            삭제
+          </a>
+        </>
+      ) : null}
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleUpdateMemo}>
           <Form.Control
             type="text"
-            value={title}
+            value={newTitle}
             placeholder="제목"
             onChange={onTitleHandler}
           />
@@ -100,12 +105,12 @@ function EditMemo({ defaultTitle, defaultContent, board_id }) {
             cols="30"
             rows="10"
             placeholder="내요오옹"
-            value={content}
+            value={newContent}
             onChange={onContentHandler}
           ></Form.Control>
           <div>
             <small>
-              {content.length}/{contentLimit}
+              {newContent.length}/{contentLimit}
             </small>
             <Button type="submit">게시</Button>
           </div>

@@ -6,7 +6,7 @@ import styles from "./Memo.module.css";
 import Draggable from "react-draggable";
 import EditMemo from "./EditMemo";
 
-function Memo({ title, content, user_id, id, created, box }) {
+function Memo({ memo }) {
   // const [pos, setPos] = useState({ x: 0, y: 0 });
   // const handleStart = (e, data) => {
   //   setPos({ x: data.x, y: data.y });
@@ -25,41 +25,6 @@ function Memo({ title, content, user_id, id, created, box }) {
   //     e.target.style.top = `${pos.y}px`;
   //   }
   // };
-
-  const dispatch = useDispatch();
-  const [updateTitle, setUpdateTitle] = useState(content);
-  const [updateContent, setUpdateContent] = useState(content);
-  const contentLimit = 200;
-
-  const onTitleHandler = (event) => {
-    setUpdateTitle(event.target.value);
-  };
-  const onContentHandler = (event) => {
-    setUpdateContent(event.target.value);
-  };
-
-  const handleUpdateMemo = async () => {
-    const memo = {
-      title: updateTitle,
-      content: updateContent,
-    };
-    axios({
-      method: "put",
-      url: "",
-      data: memo,
-    })
-      .then((res) => {
-        const resData = res.data;
-        dispatch(updateMemo(resData.id, updateTitle, updateContent));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleRemoveMemo = async () => {
-    dispatch(removeMemo(id));
-    axios.delete("");
-  };
-
   return (
     <div>
       {/* <input type="text" defaultValue={title} onChange={onTitleHandler} />
@@ -83,16 +48,12 @@ function Memo({ title, content, user_id, id, created, box }) {
         <div className={styles.postIt}>
           <div className={styles.form}>
             <div className={styles.textAria}>
-              <h4>{title}</h4>
-              <p>{content}</p>
+              <h4>{memo.title}</h4>
+              <p>{memo.content}</p>
             </div>
             <div className={styles.bottom}>
-              {created.slice(0, 10)}
-              <EditMemo
-                defaultTitle={title}
-                defaultContent={content}
-                board_id={id}
-              />
+              {memo.created_at && memo.created_at.slice(0, 10)}
+              <EditMemo memo={memo} />
             </div>
           </div>
         </div>
