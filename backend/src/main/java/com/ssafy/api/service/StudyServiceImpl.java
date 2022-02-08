@@ -2,7 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
-import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
 import com.ssafy.api.response.StudyCreateRes;
@@ -24,7 +24,6 @@ import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public StudyCreateRes createStudy(User master, StudyCreatePostReq req) {
+    public StudyCreateRes createStudy(User master, StudyReq req) {
         // 스터디 생성
         Study study = new Study();
         study.setMaster(master);
@@ -89,6 +88,58 @@ public class StudyServiceImpl implements StudyService {
         studyMember.setUser(master);
         studyMember.setLocation(Location.offline);
         studyMemberRepository.save(studyMember);
+
+        // 정기 일정 추가
+        List<Map<String, String>> schList = req.getRegular_schedules();
+        List<RegularSchedule> regularSchedules = new ArrayList<>();
+        for (Map<String, String> schMap : schList) {
+            String dayOfWeek = schMap.get("day_of_week");
+            String time = schMap.get("time");
+            if (dayOfWeek == null || time == null) {
+                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+            }
+            RegularSchedule regularSchedule;
+            try {
+                regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
+            } catch (IllegalArgumentException e) {
+                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+            } catch (DateTimeParseException e) {
+                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+            }
+            regularSchedule.setStudy(resStudy);
+            regularSchedules.add(regularSchedule);
+        }
+
+        regularScheduleRepository.saveAll(regularSchedules);
+
+        return StudyCreateRes.of(resStudy);
+    }
+
+    @Override
+    @Transactional
+    public StudyCreateRes updateStudy(User master, Long studyId, StudyReq req) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        if (study.getMaster().getId() != master.getId()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY);
+        }
+        study.setName(req.getName());
+        study.setIntroduction(req.getIntroduction());
+        study.setIsPrivate(req.getIs_private());
+        study.setPassword(req.getPassword());
+        study.setThumbnailUrl(req.getThumbnail_url());
+        study.setLinkUrl(req.getLink_url());
+        study.setMaxUserNum(req.getMax_user_num());
+        try {
+            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+        } catch (DateTimeParseException e) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+        }
+        Study resStudy = studyRepository.save(study);
+
+        // 기존 정기 일정 삭제
+        regularScheduleRepository.deleteByStudyId(studyId);
 
         // 정기 일정 추가
         List<Map<String, String>> schList = req.getRegular_schedules();
