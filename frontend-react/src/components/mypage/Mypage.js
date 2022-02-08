@@ -6,7 +6,7 @@ import MyStudy from "./study/MyStudy";
 import Dashboard from "./dashboard/Dashboard";
 import Withdrawal from "./withdrawal/Withdrawal";
 import Update from "./update/Update";
-import CheckPwd from "./update/checkpwd/checkpwd";
+import CheckPwd from "./update/checkpwd/CheckPwd";
 
 const Sidebar = () => {
   return (

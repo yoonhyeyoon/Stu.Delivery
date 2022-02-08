@@ -94,7 +94,7 @@ function Signup() {
       method: "post",
       url: "https://i6d201.p.ssafy.io/api/v1/users",
       data: {
-        id: email,
+        email: email,
         password: password,
         nickname: nickname,
       },
