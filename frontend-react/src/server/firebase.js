@@ -1,9 +1,10 @@
-import firebase from "firebase/app";
-import database from "firebase/database";
+import firebase from "firebase/compat/app";
+// import database from "firebase/database";
 
 var firebaseConfig = {
-  apiKey: "", // Add API Key
-  databaseURL: "", // Add databaseURL
+  apiKey: "AIzaSyBPBQofP4OergJ-yK8YYvZH4l3nJojF0kg", // Add API Key
+  databaseURL:
+    "https://study-meet-97589-default-rtdb.asia-southeast1.firebasedatabase.app/", // Add databaseURL
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
