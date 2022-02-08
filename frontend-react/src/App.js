@@ -13,6 +13,8 @@ import Welcome from "./components/welcome/Welcome";
 import Index from "./components/welcome/Index";
 import GlobalStyles from "./common/styles/GlobalStyles";
 import StudyList from "./components/studylist/StudyList";
+// import StudyLive from "./components/studylive/StudyLive";
+import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -50,6 +52,8 @@ function App() {
             path="/oauth2/redirect"
             element={<OAuth2RedirectHandler />}
           ></Route>
+          {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
+          <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
           <Route path="/lounge" element={<Lounge />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
         </Routes>
