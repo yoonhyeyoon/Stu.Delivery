@@ -10,6 +10,11 @@ import Main from "./routes/main/Main";
 import Lounge from "./routes/study/Lounge";
 import MyPage from "./components/mypage/Mypage";
 import Welcome from "./components/welcome/Welcome";
+import Index from "./components/welcome/Index";
+import GlobalStyles from "./common/styles/GlobalStyles";
+import StudyList from "./components/studylist/StudyList";
+// import StudyLive from "./components/studylive/StudyLive";
+import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -34,10 +39,12 @@ function App() {
 
   return (
     <div className="App">
+      <GlobalStyles />
       <Router>
         <Header authenticated={authenticated} isLogin={isLogin} />
         <Routes>
-          <Route path="/" element={<Welcome />}></Route>
+          <Route path="/" element={<Index />}></Route>
+          <Route path="/studylist" element={<StudyList />}></Route>
           <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
@@ -45,6 +52,8 @@ function App() {
             path="/oauth2/redirect"
             element={<OAuth2RedirectHandler />}
           ></Route>
+          {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
+          <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
           <Route path="/lounge" element={<Lounge />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
         </Routes>

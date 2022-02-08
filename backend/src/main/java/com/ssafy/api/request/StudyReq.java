@@ -9,8 +9,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("StudyCreatePostRequest")
-public class StudyCreatePostReq {
+@ApiModel("StudyRequest")
+public class StudyReq {
     @ApiModelProperty(name = "스터디 이름", example = "알고리즘 스터디")
     String name;
     @ApiModelProperty(name = "스터디 소개글", example = "알고리즘 스터디입니다.")
