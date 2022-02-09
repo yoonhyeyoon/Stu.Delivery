@@ -63,10 +63,10 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public StudyCreateRes createStudy(User master, StudyReq req) {
+    public StudyCreateRes createStudy(User user, StudyReq req) {
         // 스터디 생성
         Study study = new Study();
-        study.setMaster(master);
+        study.setMaster(user);
         study.setName(req.getName());
         study.setIntroduction(req.getIntroduction());
         study.setIsPrivate(req.getIs_private());
@@ -85,7 +85,7 @@ public class StudyServiceImpl implements StudyService {
         // 스터디장 스터디 가입
         StudyMember studyMember = new StudyMember();
         studyMember.setStudy(study);
-        studyMember.setUser(master);
+        studyMember.setUser(user);
         studyMember.setLocation(Location.offline);
         studyMemberRepository.save(studyMember);
 
@@ -117,10 +117,10 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public StudyCreateRes updateStudy(User master, Long studyId, StudyReq req) {
+    public StudyCreateRes updateStudy(User user, Long studyId, StudyReq req) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
-        if (study.getMaster().getId() != master.getId()) {
+        if (study.getMaster().getId() != user.getId()) {
             throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY);
         }
         study.setName(req.getName());
@@ -168,6 +168,24 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public StudyRes getStudy(Long studyId) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        return StudyRes.of(study);
+    }
+
+    @Override
+    public void deleteStudy(User user, Long studyId) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        if (study.getMaster().getId() != user.getId()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY);
+        }
+        studyRepository.delete(study);
+        return;
+    }
+
+    @Override
     public void joinStudy(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
@@ -182,10 +200,23 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public StudyRes getStudy(Long studyId) {
-        Study study = studyRepository.findById(studyId)
-            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
-        return StudyRes.of(study);
+    public void deleteStudyMember(User user, Long studyId, String email) {
+//        Study study = studyRepository.findById(studyId)
+//            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+//        if (!(study.getMaster().getId() == user.getId() || user.getEmail() == email)) {
+//            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_MEMBER);
+//        }
+//
+//        // 스터디장이 다른 회원을 탈퇴시킬 때
+//        if (study.getMaster().getId() == user.getId()) {
+//
+//        }
+//
+//        // 스터디장이 탈퇴를 할 때
+//
+//        // 스터디원이 탈퇴를 할 때
+//
+//        StudyMember studyMember = studyMemberRepository.findByUserIdAndStudyId(user.getId(), )
     }
 
     @Override

@@ -10,6 +10,9 @@ import lombok.Setter;
 @Setter
 @ApiModel("ScheduleResponse")
 public class ScheduleRes {
+    @ApiModelProperty(name = "일정 ID", example = "1")
+    Long id;
+
     @ApiModelProperty(name = "스터디 ID", example = "1")
     Long study_id;
 
@@ -24,6 +27,7 @@ public class ScheduleRes {
 
     public static ScheduleRes of(Schedule schedule) {
         ScheduleRes res = new ScheduleRes();
+        res.setId(schedule.getId());
         res.setStudy_id(schedule.getStudy().getId());
         res.setTitle(schedule.getTitle());
         res.setContent(schedule.getContent());
