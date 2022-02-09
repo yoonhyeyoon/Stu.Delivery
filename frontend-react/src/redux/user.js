@@ -1,7 +1,5 @@
-import axios from "axios";
-import { useDispatch } from "react-redux";
 import { createAction, handleActions } from "redux-actions";
-import { setHeader } from "../utils/api";
+
 const GET_USER = "user/GET_USER";
 const IS_LOADED = "study/STUDY_INFO_UPDATE";
 

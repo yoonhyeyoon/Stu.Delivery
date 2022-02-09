@@ -7,9 +7,12 @@ import styles from "./Memo.module.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { is_member_check, setHeader } from "../../../../utils/api";
 
 function AddMemo() {
+  const study = useSelector((state) => state.study.study);
   const user = useSelector((state) => state.user.user);
+  const isMember = is_member_check(study, user);
 
   const [show, setShow] = useState(false);
 
@@ -28,14 +31,6 @@ function AddMemo() {
     setContent(event.target.value);
   };
 
-  const setHeader = () => {
-    const token = localStorage.getItem("JWT");
-    const header = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return header;
-  };
   const handleAddMemo = async (event) => {
     event.preventDefault();
     if (title === "") {
@@ -74,7 +69,7 @@ function AddMemo() {
 
   return (
     <div>
-      {localStorage.getItem("isMember") ? (
+      {isMember ? (
         <a onClick={handleShow} className={styles.btn}>
           + 보드 추가하기
         </a>

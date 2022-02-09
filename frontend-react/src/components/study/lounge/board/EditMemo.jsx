@@ -11,7 +11,7 @@ import { setHeader } from "../../../../utils/api";
 
 function EditMemo({ memo }) {
   const user = useSelector((state) => state.user.user);
-  console.log(user);
+  // console.log(user);
 
   const [show, setShow] = useState(false);
 
@@ -59,10 +59,10 @@ function EditMemo({ memo }) {
               resData.created_at
             )
           );
-          window.location.reload();
         })
         .catch((err) => console.log(err.response));
       handleClose();
+      window.location.reload();
     }
   };
 
@@ -74,7 +74,7 @@ function EditMemo({ memo }) {
       headers: setHeader(),
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         window.location.reload();
       })
       .catch((err) => console.log(err.response.data));

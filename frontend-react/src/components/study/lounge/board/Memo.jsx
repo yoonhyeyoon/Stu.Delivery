@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { updateMemo, removeMemo } from "../../../../redux/memos";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
 import Draggable from "react-draggable";
 import EditMemo from "./EditMemo";
 
 function Memo({ memo }) {
+  const user = useSelector((state) => state.user.user);
   // const [pos, setPos] = useState({ x: 0, y: 0 });
   // const handleStart = (e, data) => {
   //   setPos({ x: data.x, y: data.y });

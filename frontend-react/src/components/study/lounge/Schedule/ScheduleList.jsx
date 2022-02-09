@@ -5,28 +5,33 @@ import axios from "axios";
 import Schedule from "./Schedule.jsx";
 import AddSchedule from "./AddSchedule.jsx";
 import styles from "./Schedule.module.css";
+import DataGridPro from "@mui/x-data-grid-pro";
 
-function ScheduleList({ startDate }) {
-  const ExampleCustomInput = ({ value, onClick }) => (
-    <button className="example-custom-input" onClick={onClick}>
-      {value}
-    </button>
-  );
+function ScheduleList() {
+  const [schedules, setSchedules] = useState();
+  useEffect(() => {
+    const study_id = 1;
+    const fetchSchedule = async () => {
+      await axios({
+        method: "get",
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/schedule`,
+      })
+        .then((res) => {
+          // console.log(res.data);
+          setSchedules(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+    fetchSchedule();
+  }, []);
+
   return (
     <div className={styles.frame}>
       <AddSchedule />
-      {/* {memos &&
-        memos.map((memo) => (
-          <Schedule
-            key={memo.study_board_id}
-            title={memo.title}
-            content={memo.content}
-            created={memo.created_at}
-            user_id={memo.user_id}
-            id={memo.study_board_id}
-            box={box}
-          />
-        ))} */}
+      {schedules &&
+        schedules.map((schedule) => (
+          <Schedule key={schedule.id} schedule={schedule} />
+        ))}
     </div>
   );
 }

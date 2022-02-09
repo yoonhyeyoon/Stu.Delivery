@@ -3,9 +3,15 @@ import styles from "./StudyHeader.module.css";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { setHeader } from "../../../../utils/api";
+import { is_member_check, setHeader } from "../../../../utils/api";
+import { useSelector } from "react-redux";
 
 function StudyBtn() {
+  const study = useSelector((state) => state.study.study);
+  const user = useSelector((state) => state.user.user);
+  const isMember = is_member_check(study, user);
+
+  // console.log(study, user, isMember);
   const handleSignUpStudy = async (event) => {
     event.preventDefault();
     const study_id = 1;
@@ -16,7 +22,6 @@ function StudyBtn() {
     })
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("isMember", true);
         window.location.reload();
       })
       .catch((err) => {
@@ -27,7 +32,7 @@ function StudyBtn() {
 
   return (
     <>
-      {localStorage.getItem("isMember") ? (
+      {isMember ? (
         <Button className={styles.btn}>
           <Link to="/study">스터디 라운지</Link>
         </Button>

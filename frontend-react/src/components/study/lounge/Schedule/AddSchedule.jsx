@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 // import { insertMemo } from "../../../../redux/memos";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Schedule.module.css";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import Button from "@material-ui/core/Button";
 import Form from "react-bootstrap/Form";
 import SelectDate from "./SelectDate";
+import { is_member_check, setHeader } from "../../../../utils/api";
 
 function AddSchedule() {
+  const study = useSelector((state) => state.study.study);
+  const user = useSelector((state) => state.user.user);
+  const isMember = is_member_check(study, user);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -28,14 +33,6 @@ function AddSchedule() {
     setContent(event.target.value);
   };
 
-  const setHeader = () => {
-    const token = localStorage.getItem("accessToken");
-    const header = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return header;
-  };
   const handleAddSchedule = async (event) => {
     event.preventDefault();
     if (title === "") {
@@ -66,6 +63,7 @@ function AddSchedule() {
           //     resData.created_at
           //   )
           // );
+          window.location.reload();
         })
         .catch((err) => console.log(err.response.data));
       handleClose();
@@ -73,14 +71,14 @@ function AddSchedule() {
   };
   return (
     <div>
-      {localStorage.getItem("isMember") ? (
+      {isMember ? (
         <a onClick={handleShow} className={styles.btn}>
           + 일정 추가하기
         </a>
       ) : null}
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleAddSchedule}>
-          <SelectDate startDate={startDate} />
+          <SelectDate startDate={startDate} setStartDate={setStartDate} />
           <Form.Control
             type="text"
             value={title}
