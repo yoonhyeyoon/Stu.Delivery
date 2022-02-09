@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -49,8 +51,8 @@ public class StudyController {
         @ApiIgnore Authentication authentication, @RequestBody StudyReq studyCreatePostReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
-        User master = userDetails.getUser();
-        StudyCreateRes res = this.studyService.createStudy(master, studyCreatePostReq);
+        User user = userDetails.getUser();
+        StudyCreateRes res = this.studyService.createStudy(user, studyCreatePostReq);
         return ResponseEntity.ok(res);
     }
 
@@ -60,8 +62,8 @@ public class StudyController {
         @ApiIgnore Authentication authentication, @PathVariable Long study_id, @RequestBody StudyReq studyReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
-        User master = userDetails.getUser();
-        StudyCreateRes res = this.studyService.updateStudy(master, study_id, studyReq);
+        User user = userDetails.getUser();
+        StudyCreateRes res = this.studyService.updateStudy(user, study_id, studyReq);
         return ResponseEntity.ok(res);
     }
 
@@ -81,6 +83,28 @@ public class StudyController {
         User user = userDetails.getUser();
         studyService.joinStudy(user, study_id);
         return ResponseEntity.ok(BaseResponseBody.of(200, "스터디 가입에 성공하였습니다."));
+    }
+
+    @DeleteMapping("/{study_id}")
+    @ApiOperation(value = "스터디 삭제하기", notes = "스터디장이 해당 스터디를 삭제한다.")
+    public ResponseEntity<BaseResponseBody> deleteStudy(
+        @ApiIgnore Authentication authentication, @PathVariable Long study_id
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        studyService.deleteStudy(user, study_id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/{study_id}/members")
+    @ApiOperation(value = "스터디 탈퇴하기", notes = "해당 이메일의 스터디원을 탈퇴시킨다.")
+    public ResponseEntity<BaseResponseBody> deleteStudyMember(
+        @ApiIgnore Authentication authentication, @PathVariable Long study_id, @RequestParam String email
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        studyService.deleteStudyMember(user, study_id, email);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/{study_id}/board")
