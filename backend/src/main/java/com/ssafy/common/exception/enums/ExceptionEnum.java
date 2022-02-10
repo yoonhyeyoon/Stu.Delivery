@@ -33,6 +33,9 @@ public enum ExceptionEnum {
     BAD_REQUEST_SCHEDULE(HttpStatus.BAD_REQUEST, "503", "해당 일정은 주어진 study_id에 속한 글이 아닙니다."),
     UNAUTHORIZED_SCHEDULE(HttpStatus.UNAUTHORIZED, "504", "현재 로그인한 사용자는 해당 일정의 수정 또는 삭제 권한이 없습니다."),
 
+    NOT_FOUND_CATEGORY(HttpStatus.NOT_FOUND, "601", "해당 카테고리를 찾을 수 없습니다."),
+    CONFLICT_CATEGORY(HttpStatus.CONFLICT, "602", "이미 해당 카테고리가 존재합니다."),
+
     UNAUTHORIZED_REDIRECT_URI(HttpStatus.UNAUTHORIZED, "904", "인증되지 않은 리디렉션 URI 입니다. 인증을 진행할 수 없습니다.");
 
     private final HttpStatus status;
