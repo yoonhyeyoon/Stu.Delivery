@@ -224,6 +224,11 @@ public class StudyServiceImpl implements StudyService {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
 
+        // 스터디보드 5개로 제한
+        if (study.getStudyBoards().size() >= 5) {
+            throw new ApiException(ExceptionEnum.CONFLICT_STUDY_BOARD);
+        }
+
         // 스터디보드 생성
         StudyBoard studyBoard = new StudyBoard();
         studyBoard.setWriter(user);
@@ -288,7 +293,7 @@ public class StudyServiceImpl implements StudyService {
         if (study.getId() != studyBoard.getStudy().getId()) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_STUDY_BOARD);
         }
-        if (studyBoard.getWriter().getId() != user.getId()) {
+        if (studyBoard.getWriter().getId() != user.getId() && study.getMaster().getId() != user.getId()) {
             throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_BOARD);
         }
 
