@@ -13,7 +13,6 @@ import Welcome from "./components/welcome/Welcome";
 import Index from "./components/welcome/Index";
 import GlobalStyles from "./common/styles/GlobalStyles";
 import StudyList from "./components/studylist/StudyList";
-// import StudyLive from "./components/studylive/StudyLive";
 import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 
 function App() {
