@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./StudyHeader.module.css";
 import Button from "react-bootstrap/Button";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { style } from "@mui/system";
 
 function StudyNameUrl({ study }) {
   const doCopy = (text) => {
@@ -34,9 +36,10 @@ function StudyNameUrl({ study }) {
       <h1>{study.name}</h1>
       <div>
         {study.link_url}
-        <a onClick={() => doCopy(study.link_url)}>
-          <i className="far fa-copy"></i>
-        </a>
+        <ContentCopyIcon
+          onClick={() => doCopy(study.link_url)}
+          className={styles.copy}
+        />
       </div>
     </div>
   );

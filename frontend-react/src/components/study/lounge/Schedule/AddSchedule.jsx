@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Schedule.module.css";
-import Modal from "react-bootstrap/Modal";
+import { Modal } from "@mui/material";
 import Button from "@material-ui/core/Button";
 import Form from "react-bootstrap/Form";
 import SelectDate from "./SelectDate";
 import { is_member_check, setHeader } from "../../../../utils/api";
+import EditIcon from "@mui/icons-material/Edit";
+import { ModalBody } from "react-bootstrap";
+import CloseIcon from "@mui/icons-material/Close";
 
 function AddSchedule() {
   const study = useSelector((state) => state.study.study);
@@ -36,9 +39,9 @@ function AddSchedule() {
   const handleAddSchedule = async (event) => {
     event.preventDefault();
     if (title === "") {
-      return alert("제목을 입력하세요.");
+      return alert("일정명을 입력하세요.");
     } else if (content === "") {
-      return alert("내용을 입력하세요.");
+      return alert("상세내용을 입력하세요.");
     } else {
       const study_id = 1;
       axios({
@@ -71,35 +74,77 @@ function AddSchedule() {
   };
   return (
     <div>
-      {isMember ? (
-        <a onClick={handleShow} className={styles.btn}>
-          + 일정 추가하기
-        </a>
-      ) : null}
-      <Modal show={show} onHide={handleClose}>
-        <Form onSubmit={handleAddSchedule}>
-          <SelectDate startDate={startDate} setStartDate={setStartDate} />
-          <Form.Control
-            type="text"
-            value={title}
-            placeholder="일정명"
-            onChange={onTitleHandler}
-          />
-          <Form.Control
-            as="textarea"
-            cols="30"
-            rows="10"
-            placeholder="상세내용"
-            value={content}
-            onChange={onContentHandler}
-          ></Form.Control>
-          <div>
-            <small>
+      <div className={styles.frameHeader}>
+        {isMember ? (
+          <EditIcon onClick={handleShow} className={styles.btn} />
+        ) : null}
+      </div>
+      {/* <Modal show={show} onHide={handleClose}>
+        <Form className={styles.bg}>
+          <Modal.Header>
+            <Modal.Title>
+              스터디 일정
+              <CloseIcon className={styles.close} onClick={handleClose} />
+            </Modal.Title>
+          </Modal.Header>
+          <ModalBody>
+            <SelectDate startDate={startDate} setStartDate={setStartDate} />
+            <Form.Control
+              size="lg"
+              type="text"
+              className={styles.bg}
+              value={title}
+              placeholder="일정명"
+              onChange={onTitleHandler}
+            />
+            <Form.Control
+              className={styles.bg}
+              as="textarea"
+              cols="30"
+              rows="10"
+              placeholder="상세내용"
+              value={content}
+              onChange={onContentHandler}
+            />
+          </ModalBody>
+          <Modal.Footer>
+            <p>
               {content.length}/{contentLimit}
-            </small>
-            <Button type="submit">게시</Button>
-          </div>
+            </p>
+            <EditIcon onClick={handleAddSchedule} className={styles.btn} />
+            {/* <Button onClick={handleRemoveMemo}>삭제</Button> */}
+      {/* </Modal.Footer>
         </Form>
+      </Modal> */}
+      <Modal open={show} onClose={handleClose}>
+        <div className={styles.modal}>
+          <CloseIcon className={styles.close} onClick={handleClose} />
+          <form>
+            <div className={styles.modalTextAria}>
+              <SelectDate startDate={startDate} setStartDate={setStartDate} />
+              <h3>일정명</h3>
+              <input
+                className={styles.title}
+                value={title}
+                onChange={onTitleHandler}
+              />
+              <h3>상세내용</h3>
+              <textarea
+                className={styles.content}
+                value={content}
+                onChange={onContentHandler}
+              />
+            </div>
+            <div className={styles.modalBottom}>
+              <h3>
+                {content.length}/{contentLimit}
+              </h3>
+              <button onClick={handleAddSchedule}>글쓰기</button>
+              {/* {memo.created_at && memo.created_at.slice(0, 10)}
+              <EditMemo memo={memo} /> */}
+            </div>
+          </form>
+        </div>
       </Modal>
     </div>
   );

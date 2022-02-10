@@ -4,7 +4,7 @@ import { loadMemo } from "../../../../redux/memos";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./StudyHeader.module.css";
-import Button from "react-bootstrap/Button";
+// import Button from "@material-ui/core/Button";
 import StudyNameUrl from "./StudyNameUrl";
 import StudyBtn from "./StudyBtn";
 
@@ -17,9 +17,9 @@ function StudyHeader() {
         <>
           <StudyNameUrl study={study} />
           {window.location.pathname === "/study" ? (
-            <Button className={styles.btn}>
+            <button className={styles.btn}>
               <Link to="/study/info">스터디 정보</Link>
-            </Button>
+            </button>
           ) : (
             <StudyBtn />
           )}

@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Schedule.module.css";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Button from "@material-ui/core/Button";
 import { setHeader } from "../../../../utils/api";
 import SelectDate from "./SelectDate";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Form from "react-bootstrap/Form";
+import { ModalBody, ModalTitle } from "react-bootstrap";
+import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
 
 function Schedule({ schedule }) {
   const [show, setShow] = useState(false);
@@ -68,33 +77,77 @@ function Schedule({ schedule }) {
   };
   return (
     <>
-      <div onClick={handleShow} className={styles.form}>
-        <p>{schedule.title}</p>
-      </div>
+      <ListItem
+        alignItems="flex-start"
+        secondaryAction={
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            title="Delete"
+            onClick={handleRemoveMemo}
+          >
+            <DeleteIcon />
+          </IconButton>
+        }
+        className={styles.form}
+      >
+        <ListItemText
+          className={styles.textAria}
+          onClick={handleShow}
+          primary={schedule.title}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: "block" }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                {newStartDate.toLocaleString()}
+              </Typography>
+              {schedule.content}
+            </React.Fragment>
+          }
+        />
+      </ListItem>
       <Modal show={show} onHide={handleClose}>
-        <Form onSubmit={handleUpdateSchedule}>
-          <SelectDate startDate={newStartDate} setStartDate={setNewStartDate} />
-          <Form.Control
-            type="text"
-            value={newTitle}
-            placeholder="일정명"
-            onChange={onTitleHandler}
-          />
-          <Form.Control
-            as="textarea"
-            cols="30"
-            rows="10"
-            placeholder="상세내용"
-            value={newContent}
-            onChange={onContentHandler}
-          />
-          <div>
-            <small>
+        <Form className={styles.bg}>
+          <Modal.Header>
+            <Modal.Title>
+              스터디 일정
+              <CloseIcon className={styles.close} onClick={handleClose} />
+            </Modal.Title>
+          </Modal.Header>
+          <ModalBody>
+            <SelectDate
+              startDate={newStartDate}
+              setStartDate={setNewStartDate}
+            />
+            <Form.Control
+              size="lg"
+              type="text"
+              className={styles.bg}
+              value={newTitle}
+              placeholder="일정명"
+              onChange={onTitleHandler}
+            />
+            <Form.Control
+              className={styles.bg}
+              as="textarea"
+              cols="30"
+              rows="10"
+              placeholder="상세내용"
+              value={newContent}
+              onChange={onContentHandler}
+            />
+          </ModalBody>
+          <Modal.Footer>
+            <p>
               {newContent.length}/{contentLimit}
-            </small>
-            <Button type="submit">수정</Button>
-            <Button onClick={handleRemoveMemo}>삭제</Button>
-          </div>
+            </p>
+            <EditIcon onClick={handleUpdateSchedule} className={styles.btn} />
+            {/* <Button onClick={handleRemoveMemo}>삭제</Button> */}
+          </Modal.Footer>
         </Form>
       </Modal>
     </>

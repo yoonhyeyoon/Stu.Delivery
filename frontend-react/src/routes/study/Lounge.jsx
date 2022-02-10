@@ -5,6 +5,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { loadStudy } from "../../redux/study";
+import Calendar from "../../components/study/lounge/Schedule/Calendar";
+import ScheduleFrame from "../../components/study/lounge/Schedule/ScheduleFrame";
 
 function Lounge() {
   const dispatch = useDispatch();
@@ -27,7 +29,7 @@ function Lounge() {
     <>
       <StudyHeader />
       <MemoList />
-      <ScheduleList />
+      <ScheduleFrame />
     </>
   );
 }

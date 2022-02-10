@@ -7,9 +7,6 @@ import { loadStudy } from "../../redux/study";
 
 function Info() {
   const dispatch = useDispatch();
-  const study = useSelector((state) => state.study.study);
-  const user = useSelector((state) => state.user.user);
-
   useEffect(() => {
     const study_id = 1;
     const fetchStudyInfo = async () => {
