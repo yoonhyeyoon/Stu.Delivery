@@ -4,13 +4,11 @@ import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
-import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.AuthProvider;
 import java.time.LocalDateTime;
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

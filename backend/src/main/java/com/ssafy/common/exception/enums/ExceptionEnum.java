@@ -17,11 +17,14 @@ public enum ExceptionEnum {
     UNAUTHORIZED_USER_PASSWORD(HttpStatus.UNAUTHORIZED, "104", "잘못된 비밀번호입니다."),
 
     NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, "201", "해당 스터디를 찾을 수 없습니다."),
+    UNAUTHORIZED_STUDY(HttpStatus.UNAUTHORIZED, "204", "현재 로그인한 사용자는 해당 요청에 대한 권한이 없습니다."),
 
     NOT_FOUND_STUDY_MEMBER(HttpStatus.NOT_FOUND, "301", "해당 유저는 해당 스터디의 멤버가 아닙니다."),
     CONFLICT_STUDY_MEMBER(HttpStatus.CONFLICT, "302", "이미 가입된 유저입니다."),
+    UNAUTHORIZED_STUDY_MEMBER(HttpStatus.UNAUTHORIZED, "304", "현재 로그인한 사용자는 해당 요청에 대한 권한이 없습니다."),
 
     NOT_FOUND_STUDY_BOARD(HttpStatus.NOT_FOUND, "401", "해당 스터디 보드 게시글을 찾을 수 없습니다."),
+    CONFLICT_STUDY_BOARD(HttpStatus.CONFLICT, "402", "가능한 스터디 보드 게시글의 갯수를 초과하였습니다."),
     BAD_REQUEST_STUDY_BOARD(HttpStatus.BAD_REQUEST, "403", "해당 게시글은 주어진 study_id에 속한 글이 아닙니다."),
     UNAUTHORIZED_STUDY_BOARD(HttpStatus.UNAUTHORIZED, "404", "현재 로그인한 사용자는 해당 게시글의 수정 또는 삭제 권한이 없습니다."),
 

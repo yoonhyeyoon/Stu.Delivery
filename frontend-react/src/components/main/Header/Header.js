@@ -18,13 +18,13 @@ class Header extends Component {
   clickLogo() {}
 
   render() {
-    console.log(this.props.isLogin);
+    // console.log(this.props.isLogin);
     const appName = "Stu.Delivery";
 
     // 로그아웃
     const onLogout = () => {
-      localStorage.removeItem("JWT");
-      localStorage.removeItem("isLogin");
+      // 전체삭제
+      localStorage.clear();
       document.location.href = "/main";
     };
 

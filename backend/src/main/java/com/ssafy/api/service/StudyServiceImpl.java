@@ -2,7 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
-import com.ssafy.api.request.StudyCreatePostReq;
+import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
 import com.ssafy.api.response.StudyCreateRes;
@@ -24,7 +24,6 @@ import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -64,10 +63,10 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public StudyCreateRes createStudy(User master, StudyCreatePostReq req) {
+    public StudyCreateRes createStudy(User user, StudyReq req) {
         // 스터디 생성
         Study study = new Study();
-        study.setMaster(master);
+        study.setMaster(user);
         study.setName(req.getName());
         study.setIntroduction(req.getIntroduction());
         study.setIsPrivate(req.getIs_private());
@@ -86,7 +85,7 @@ public class StudyServiceImpl implements StudyService {
         // 스터디장 스터디 가입
         StudyMember studyMember = new StudyMember();
         studyMember.setStudy(study);
-        studyMember.setUser(master);
+        studyMember.setUser(user);
         studyMember.setLocation(Location.offline);
         studyMemberRepository.save(studyMember);
 
@@ -117,6 +116,76 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
+    public StudyCreateRes updateStudy(User user, Long studyId, StudyReq req) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        if (study.getMaster().getId() != user.getId()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY);
+        }
+        study.setName(req.getName());
+        study.setIntroduction(req.getIntroduction());
+        study.setIsPrivate(req.getIs_private());
+        study.setPassword(req.getPassword());
+        study.setThumbnailUrl(req.getThumbnail_url());
+        study.setLinkUrl(req.getLink_url());
+        study.setMaxUserNum(req.getMax_user_num());
+        try {
+            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+        } catch (DateTimeParseException e) {
+            throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+        }
+        Study resStudy = studyRepository.save(study);
+
+        // 기존 정기 일정 삭제
+        regularScheduleRepository.deleteByStudyId(studyId);
+
+        // 정기 일정 추가
+        List<Map<String, String>> schList = req.getRegular_schedules();
+        List<RegularSchedule> regularSchedules = new ArrayList<>();
+        for (Map<String, String> schMap : schList) {
+            String dayOfWeek = schMap.get("day_of_week");
+            String time = schMap.get("time");
+            if (dayOfWeek == null || time == null) {
+                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+            }
+            RegularSchedule regularSchedule;
+            try {
+                regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
+            } catch (IllegalArgumentException e) {
+                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+            } catch (DateTimeParseException e) {
+                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+            }
+            regularSchedule.setStudy(resStudy);
+            regularSchedules.add(regularSchedule);
+        }
+
+        regularScheduleRepository.saveAll(regularSchedules);
+
+        return StudyCreateRes.of(resStudy);
+    }
+
+    @Override
+    public StudyRes getStudy(Long studyId) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        return StudyRes.of(study);
+    }
+
+    @Override
+    public void deleteStudy(User user, Long studyId) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        if (study.getMaster().getId() != user.getId()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY);
+        }
+        studyRepository.delete(study);
+        return;
+    }
+
+    @Override
     public void joinStudy(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
@@ -131,16 +200,34 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public StudyRes getStudy(Long studyId) {
-        Study study = studyRepository.findById(studyId)
-            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
-        return StudyRes.of(study);
+    public void deleteStudyMember(User user, Long studyId, String email) {
+//        Study study = studyRepository.findById(studyId)
+//            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+//        if (!(study.getMaster().getId() == user.getId() || user.getEmail() == email)) {
+//            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_MEMBER);
+//        }
+//
+//        // 스터디장이 다른 회원을 탈퇴시킬 때
+//        if (study.getMaster().getId() == user.getId()) {
+//
+//        }
+//
+//        // 스터디장이 탈퇴를 할 때
+//
+//        // 스터디원이 탈퇴를 할 때
+//
+//        StudyMember studyMember = studyMemberRepository.findByUserIdAndStudyId(user.getId(), )
     }
 
     @Override
     public StudyBoardRes createStudyBoard(User user, Long studyId, StudyBoardReq req) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+
+        // 스터디보드 5개로 제한
+        if (study.getStudyBoards().size() >= 5) {
+            throw new ApiException(ExceptionEnum.CONFLICT_STUDY_BOARD);
+        }
 
         // 스터디보드 생성
         StudyBoard studyBoard = new StudyBoard();
@@ -206,7 +293,7 @@ public class StudyServiceImpl implements StudyService {
         if (study.getId() != studyBoard.getStudy().getId()) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_STUDY_BOARD);
         }
-        if (studyBoard.getWriter().getId() != user.getId()) {
+        if (studyBoard.getWriter().getId() != user.getId() && study.getMaster().getId() != user.getId()) {
             throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_BOARD);
         }
 
