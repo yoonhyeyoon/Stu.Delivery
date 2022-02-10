@@ -200,23 +200,51 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public void updateMaster(User user, Long studyId, String email) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+
+        StudyMember studyMember = study.getStudyMembers().stream()
+            .filter(member -> member.getUser().getEmail().equals(email))
+            .findFirst()
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY_MEMBER));
+
+        if (study.getMaster().getId() != user.getId()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_MEMBER);
+        }
+
+        study.setMaster(studyMember.getUser());
+        studyRepository.save(study);
+
+        return;
+    }
+
+    @Override
     public void deleteStudyMember(User user, Long studyId, String email) {
-//        Study study = studyRepository.findById(studyId)
-//            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
-//        if (!(study.getMaster().getId() == user.getId() || user.getEmail() == email)) {
-//            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_MEMBER);
-//        }
-//
-//        // 스터디장이 다른 회원을 탈퇴시킬 때
-//        if (study.getMaster().getId() == user.getId()) {
-//
-//        }
-//
-//        // 스터디장이 탈퇴를 할 때
-//
-//        // 스터디원이 탈퇴를 할 때
-//
-//        StudyMember studyMember = studyMemberRepository.findByUserIdAndStudyId(user.getId(), )
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+
+        StudyMember studyMember = study.getStudyMembers().stream()
+            .filter(member -> member.getUser().getEmail().equals(email))
+            .findFirst()
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY_MEMBER));
+
+        if (study.getMaster().getId() == user.getId()) {
+            if (study.getMaster().getEmail().equals(email)) {
+                // 스터디장이 탈퇴를 할 때
+                throw new ApiException(ExceptionEnum.CONFLICT_STUDY_MASTER_DELETE);
+            } else {
+                // 스터디장이 다른 회원을 탈퇴시킬 때
+                studyMemberRepository.delete(studyMember);
+            }
+        } else if (user.getEmail().equals(email)) {
+            // 스터디원이 탈퇴를 할 때
+            studyMemberRepository.delete(studyMember);
+        } else {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_MEMBER);
+        }
+
+        return;
     }
 
     @Override
@@ -265,7 +293,8 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public StudyBoardRes updateStudyBoard(User user, Long studyId, Long boardId, StudyBoardReq req) {
+    public StudyBoardRes updateStudyBoard(User user, Long studyId, Long boardId,
+        StudyBoardReq req) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
         StudyBoard studyBoard = studyBoardRepository.findById(boardId)
@@ -293,7 +322,8 @@ public class StudyServiceImpl implements StudyService {
         if (study.getId() != studyBoard.getStudy().getId()) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_STUDY_BOARD);
         }
-        if (studyBoard.getWriter().getId() != user.getId() && study.getMaster().getId() != user.getId()) {
+        if (studyBoard.getWriter().getId() != user.getId()
+            && study.getMaster().getId() != user.getId()) {
             throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_BOARD);
         }
 
@@ -315,7 +345,8 @@ public class StudyServiceImpl implements StudyService {
         schedule.setTitle(req.getTitle());
         schedule.setContent(req.getContent());
         try {
-            LocalDateTime time = LocalDateTime.parse(req.getTime(), DateTimeFormatter.ISO_DATE_TIME);
+            LocalDateTime time = LocalDateTime.parse(req.getTime(),
+                DateTimeFormatter.ISO_DATE_TIME);
             schedule.setTime(time);
         } catch (DateTimeParseException e) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
@@ -332,7 +363,7 @@ public class StudyServiceImpl implements StudyService {
 
         List<Schedule> schedules = study.getSchedules();
         List<ScheduleRes> res = new ArrayList<>();
-        for(Schedule schedule: schedules) {
+        for (Schedule schedule : schedules) {
             res.add(ScheduleRes.of(schedule));
         }
         return res;
@@ -370,7 +401,8 @@ public class StudyServiceImpl implements StudyService {
         schedule.setTitle(req.getTitle());
         schedule.setContent(req.getContent());
         try {
-            LocalDateTime time = LocalDateTime.parse(req.getTime(), DateTimeFormatter.ISO_DATE_TIME);
+            LocalDateTime time = LocalDateTime.parse(req.getTime(),
+                DateTimeFormatter.ISO_DATE_TIME);
             schedule.setTime(time);
         } catch (DateTimeParseException e) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);

@@ -74,17 +74,6 @@ public class StudyController {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/{study_id}")
-    @ApiOperation(value = "스터디 가입하기", notes = "로그인한 사용자가 해당 스터디에 가입한다.")
-    public ResponseEntity<BaseResponseBody> joinStudy(
-        @ApiIgnore Authentication authentication, @PathVariable Long study_id
-    ) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
-        User user = userDetails.getUser();
-        studyService.joinStudy(user, study_id);
-        return ResponseEntity.ok(BaseResponseBody.of(200, "스터디 가입에 성공하였습니다."));
-    }
-
     @DeleteMapping("/{study_id}")
     @ApiOperation(value = "스터디 삭제하기", notes = "스터디장이 해당 스터디를 삭제한다.")
     public ResponseEntity<BaseResponseBody> deleteStudy(
@@ -96,7 +85,29 @@ public class StudyController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/{study_id}/members")
+    @PostMapping("/{study_id}/member")
+    @ApiOperation(value = "스터디 가입하기", notes = "로그인한 사용자가 해당 스터디에 가입한다.")
+    public ResponseEntity<BaseResponseBody> joinStudy(
+        @ApiIgnore Authentication authentication, @PathVariable Long study_id
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        studyService.joinStudy(user, study_id);
+        return ResponseEntity.ok(BaseResponseBody.of(200, "스터디 가입에 성공하였습니다."));
+    }
+
+    @PutMapping("/{study_id}/member")
+    @ApiOperation(value = "스터디장 위임하기", notes = "스터디장이 다른 회원에게 스터디장을 위임한다.")
+    public ResponseEntity<BaseResponseBody> updateMaster(
+        @ApiIgnore Authentication authentication, @PathVariable Long study_id, @RequestParam String email
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        studyService.updateMaster(user, study_id, email);
+        return ResponseEntity.ok(BaseResponseBody.of(200, "스터디장 위임에 성공하였습니다."));
+    }
+
+    @DeleteMapping("/{study_id}/member")
     @ApiOperation(value = "스터디 탈퇴하기", notes = "해당 이메일의 스터디원을 탈퇴시킨다.")
     public ResponseEntity<BaseResponseBody> deleteStudyMember(
         @ApiIgnore Authentication authentication, @PathVariable Long study_id, @RequestParam String email
