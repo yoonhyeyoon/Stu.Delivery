@@ -16,6 +16,7 @@ public class StudyRes {
     Long id;
     String name;
     String introduction;
+    Long master_id;
     Boolean is_private;
     String thumbnail_url;
     String link_url;
@@ -30,6 +31,7 @@ public class StudyRes {
         res.setId(study.getId());
         res.setName(study.getName());
         res.setIntroduction(study.getIntroduction());
+        res.setMaster_id(study.getMaster().getId());
         res.setIs_private(study.getIsPrivate());
         res.setThumbnail_url(study.getThumbnailUrl());
         res.setLink_url(study.getLinkUrl());
