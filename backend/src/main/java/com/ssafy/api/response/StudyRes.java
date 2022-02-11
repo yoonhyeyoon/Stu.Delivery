@@ -21,6 +21,8 @@ public class StudyRes {
     String thumbnail_url;
     String link_url;
     Integer max_user_num;
+    String private_room_id;
+    String meeting_room_id;
     String start_at;
     String finish_at;
     List<RegularScheduleListRes> regular_schedules;
@@ -36,6 +38,8 @@ public class StudyRes {
         res.setThumbnail_url(study.getThumbnailUrl());
         res.setLink_url(study.getLinkUrl());
         res.setMax_user_num(study.getMaxUserNum());
+        res.setPrivate_room_id(study.getPrivateRoomId());
+        res.setMeeting_room_id(study.getMeetingRoomId());
         res.setStart_at(study.getStartAt().toString());
         res.setFinish_at(study.getFinishAt().toString());
         res.setRegular_schedules(study.getRegularSchedules().stream().map((RegularSchedule rs) -> {
