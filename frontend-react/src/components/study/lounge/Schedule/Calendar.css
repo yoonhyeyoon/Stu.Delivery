@@ -1,0 +1,36 @@
+/* override day number color and size */
+.fc-day-number {
+  font-size: 1.5em;
+  color: #5c005c;
+}
+
+/* override day title color and size */
+.fc-day-header {
+  font-size: 1.5em;
+  color: #00b294;
+}
+
+.fc-unthemed {
+  box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.8);
+  background: #81b4b4;
+  font-family: sans-serif;
+}
+.fc-left {
+  margin: 2%;
+  /* border: 1px solid red; */
+}
+.fc-day {
+  margin: 0 4px;
+  padding: 4px 8px;
+  color: rgba(0, 0, 0, 0.65);
+  text-align: left;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-top: 2px solid #e8e8e8;
+}
+
+.fc .fc-col-header-cell-cushion {
+  display: inline-block;
+  padding: 2px 4px;
+}

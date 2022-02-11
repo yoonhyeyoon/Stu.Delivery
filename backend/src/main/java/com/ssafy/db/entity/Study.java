@@ -73,6 +73,9 @@ public class Study extends BaseEntity{
     private List<StudyBoard> studyBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+    private List<StudyCategory> studyCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
 
     public void addRegularSchedule (RegularSchedule regularSchedule) {

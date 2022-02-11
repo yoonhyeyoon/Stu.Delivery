@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Schedule.module.css";
-import Modal from "react-bootstrap/Modal";
+import { Modal } from "@mui/material";
 import Button from "@material-ui/core/Button";
 import { setHeader } from "../../../../utils/api";
 import SelectDate from "./SelectDate";
@@ -110,7 +110,7 @@ function Schedule({ schedule }) {
           }
         />
       </ListItem>
-      <Modal show={show} onHide={handleClose}>
+      {/* <Modal show={show} onHide={handleClose}>
         <Form className={styles.bg}>
           <Modal.Header>
             <Modal.Title>
@@ -147,8 +147,41 @@ function Schedule({ schedule }) {
             </p>
             <EditIcon onClick={handleUpdateSchedule} className={styles.btn} />
             {/* <Button onClick={handleRemoveMemo}>삭제</Button> */}
-          </Modal.Footer>
+      {/* </Modal.Footer>
         </Form>
+      </Modal> */}
+      <Modal open={show} onClose={handleClose}>
+        <div className={styles.modal}>
+          <CloseIcon className={styles.close} onClick={handleClose} />
+          <form>
+            <div className={styles.modalTextAria}>
+              <SelectDate
+                startDate={newStartDate}
+                setStartDate={setNewStartDate}
+              />
+              <h3>일정명</h3>
+              <input
+                className={styles.title}
+                value={newTitle}
+                onChange={onTitleHandler}
+              />
+              <h3>상세내용</h3>
+              <textarea
+                className={styles.content}
+                value={newContent}
+                onChange={onContentHandler}
+              />
+            </div>
+            <div className={styles.modalBottom}>
+              <h3>
+                {newContent.length}/{contentLimit}
+              </h3>
+              <button onClick={handleUpdateSchedule}>수정하기</button>
+              {/* {memo.created_at && memo.created_at.slice(0, 10)}
+              <EditMemo memo={memo} /> */}
+            </div>
+          </form>
+        </div>
       </Modal>
     </>
   );

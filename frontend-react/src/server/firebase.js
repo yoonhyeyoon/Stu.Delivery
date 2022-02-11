@@ -2,9 +2,8 @@ import firebase from "firebase/compat/app";
 // import database from "firebase/database";
 
 var firebaseConfig = {
-  apiKey: "AIzaSyBPBQofP4OergJ-yK8YYvZH4l3nJojF0kg", // Add API Key
-  databaseURL:
-    "https://study-meet-97589-default-rtdb.asia-southeast1.firebasedatabase.app/", // Add databaseURL
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY, // Add API Key
+  databaseURL: process.env.REACT_APP_FIREBASE_DB_URL, // Add databaseURL
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);

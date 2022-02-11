@@ -21,6 +21,7 @@ public interface StudyService {
 
     // 스터디 멤버
     void joinStudy(User user, Long studyId);
+    void updateMaster(User user, Long studyId, String email);
     void deleteStudyMember(User user, Long studyId, String email);
 
     // 스터디 보드
