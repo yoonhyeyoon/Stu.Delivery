@@ -22,13 +22,16 @@ import com.ssafy.db.repository.ScheduleRepository;
 import com.ssafy.db.repository.StudyBoardRepository;
 import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +66,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public StudyCreateRes createStudy(User user, StudyReq req) {
+    public StudyRes createStudy(User user, StudyReq req) {
         // 스터디 생성
         Study study = new Study();
         study.setMaster(user);
@@ -74,17 +77,27 @@ public class StudyServiceImpl implements StudyService {
         study.setThumbnailUrl(req.getThumbnail_url());
         study.setLinkUrl(req.getLink_url());
         study.setMaxUserNum(req.getMax_user_num());
+        // 개인 열람실, 회의실 session ID 생성
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String uniqueId = sdf.format(Calendar.getInstance().getTime()) + "_"
+            + RandomStringUtils.randomAlphanumeric(6);
+        String privateRoomId = "p_" + uniqueId;
+        String meetingRoomId = "m_" + uniqueId;
+        study.setPrivateRoomId(privateRoomId);
+        study.setMeetingRoomId(meetingRoomId);
+        // 날짜 형식 변환 후 저장
         try {
             study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
             study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
         } catch (DateTimeParseException e) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
         }
+        // 스터디 DB에 생성
         Study resStudy = studyRepository.save(study);
 
         // 스터디장 스터디 가입
         StudyMember studyMember = new StudyMember();
-        studyMember.setStudy(study);
+        studyMember.setStudy(resStudy);
         studyMember.setUser(user);
         studyMember.setLocation(Location.offline);
         studyMemberRepository.save(studyMember);
@@ -112,12 +125,12 @@ public class StudyServiceImpl implements StudyService {
 
         regularScheduleRepository.saveAll(regularSchedules);
 
-        return StudyCreateRes.of(resStudy);
+        return StudyRes.of(resStudy);
     }
 
     @Override
     @Transactional
-    public StudyCreateRes updateStudy(User user, Long studyId, StudyReq req) {
+    public StudyRes updateStudy(User user, Long studyId, StudyReq req) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
         if (study.getMaster().getId() != user.getId()) {
@@ -140,6 +153,7 @@ public class StudyServiceImpl implements StudyService {
 
         // 기존 정기 일정 삭제
         regularScheduleRepository.deleteByStudyId(studyId);
+        resStudy.getRegularSchedules().clear();
 
         // 정기 일정 추가
         List<Map<String, String>> schList = req.getRegular_schedules();
@@ -164,7 +178,7 @@ public class StudyServiceImpl implements StudyService {
 
         regularScheduleRepository.saveAll(regularSchedules);
 
-        return StudyCreateRes.of(resStudy);
+        return StudyRes.of(resStudy);
     }
 
     @Override

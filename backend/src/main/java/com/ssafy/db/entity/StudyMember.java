@@ -28,4 +28,12 @@ public class StudyMember extends BaseEntity{
     @NotNull
     @Enumerated(EnumType.STRING)
     private Location location;
+
+    public void setStudy(Study study) {
+        this.study = study;
+
+        if (!study.getStudyMembers().contains(this)) {
+            study.getStudyMembers().add(this);
+        }
+    }
 }

@@ -47,23 +47,23 @@ public class StudyController {
 
     @PostMapping
     @ApiOperation(value = "스터디 생성하기", notes = "스터디를 생성한다.")
-    public ResponseEntity<StudyCreateRes> createStudy(
+    public ResponseEntity<StudyRes> createStudy(
         @ApiIgnore Authentication authentication, @RequestBody StudyReq studyCreatePostReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
         User user = userDetails.getUser();
-        StudyCreateRes res = this.studyService.createStudy(user, studyCreatePostReq);
+        StudyRes res = this.studyService.createStudy(user, studyCreatePostReq);
         return ResponseEntity.ok(res);
     }
 
     @PutMapping("/{study_id}")
     @ApiOperation(value = "스터디 수정하기", notes = "스터디 정보를 수정한다.")
-    public ResponseEntity<StudyCreateRes> updateStudy(
+    public ResponseEntity<StudyRes> updateStudy(
         @ApiIgnore Authentication authentication, @PathVariable Long study_id, @RequestBody StudyReq studyReq
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
         User user = userDetails.getUser();
-        StudyCreateRes res = this.studyService.updateStudy(user, study_id, studyReq);
+        StudyRes res = this.studyService.updateStudy(user, study_id, studyReq);
         return ResponseEntity.ok(res);
     }
 

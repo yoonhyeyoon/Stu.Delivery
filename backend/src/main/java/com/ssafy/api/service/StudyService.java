@@ -14,8 +14,8 @@ import java.util.List;
 public interface StudyService {
     // 스터디
     List<StudyListRes> getStudyList();
-    StudyCreateRes createStudy(User user, StudyReq studyReq);
-    StudyCreateRes updateStudy(User user, Long studyId, StudyReq studyReq);
+    StudyRes createStudy(User user, StudyReq studyReq);
+    StudyRes updateStudy(User user, Long studyId, StudyReq studyReq);
     StudyRes getStudy(Long studyId);
     void deleteStudy(User user, Long studyId);
 
