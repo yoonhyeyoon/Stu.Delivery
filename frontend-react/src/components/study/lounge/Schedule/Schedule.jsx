@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Schedule.module.css";
 import { Modal } from "@mui/material";
 import Button from "@material-ui/core/Button";
-import { setHeader } from "../../../../utils/api";
+import { is_member_check, setHeader } from "../../../../utils/api";
 import SelectDate from "./SelectDate";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -15,13 +15,18 @@ import Form from "react-bootstrap/Form";
 import { ModalBody, ModalTitle } from "react-bootstrap";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
 
 function Schedule({ schedule }) {
+  const study = useSelector((state) => state.study.study);
+  const user = useSelector((state) => state.user.user);
+  const isMember = is_member_check(study, user);
+
   const [show, setShow] = useState(false);
   const study_id = 1;
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    if (localStorage.getItem("isMember")) {
+    if (isMember) {
       setShow(true);
     }
   };
@@ -80,14 +85,16 @@ function Schedule({ schedule }) {
       <ListItem
         alignItems="flex-start"
         secondaryAction={
-          <IconButton
-            edge="end"
-            aria-label="delete"
-            title="Delete"
-            onClick={handleRemoveMemo}
-          >
-            <DeleteIcon />
-          </IconButton>
+          isMember ? (
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              title="Delete"
+              onClick={handleRemoveMemo}
+            >
+              <DeleteIcon />
+            </IconButton>
+          ) : null
         }
         className={styles.form}
       >

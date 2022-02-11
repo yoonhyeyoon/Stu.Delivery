@@ -58,7 +58,7 @@ function App() {
           dispatch(loadUser(res.data));
           dispatch(isLoad(true));
         })
-        .catch((err) => console.log(err.request));
+        .catch((err) => console.log(err.request.data));
     };
     fetchUserInfo();
   }, []);
