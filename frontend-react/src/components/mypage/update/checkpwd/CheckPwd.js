@@ -15,7 +15,7 @@ const CheckPwd = () => {
 
   const check = () => {
     axios({
-      method: "poste",
+      method: "post",
       url: "https://i6d201.p.ssafy.io/api/v1/auth/password-valid",
       headers: {
         "Content-type": "application/json",

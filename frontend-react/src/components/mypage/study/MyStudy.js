@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { setHeader } from "../../../utils/api";
 import styles from "./MyStudy.module.css";
 import dayjs from "dayjs";
 
@@ -22,18 +23,18 @@ import {
   Checkbox,
 } from "@mui/material";
 
-// import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
 const MyStudy = () => {
   const [title, setTitle] = useState(""); // 스터디명
   const [category, setCategory] = useState([]); // 카테고리
-  const [date, setDate] = useState([null, null]);
-  const [password, setPassword] = useState(""); // 스터디 비밀번호
-  const [url, setUrl] = useState("https://i6d201.p.ssafy.io/study"); // 스터디 URL
+  const [categoryList, setCategoryList] = useState([]); // 서버에서 받아온 카테고리 목록 저장
+  const [date, setDate] = useState([null, null]); // 시작일, 종료일 담은 배열
+  const [introduce, setIntroduce] = useState(""); // 스터디 소개글
+  const [password, setPassword] = useState(null); // 스터디 비밀번호
+  const [participant, setParticipant] = useState(0);
+  const [url, setUrl] = useState(""); // 스터디 URL
   const [thumbnail, setThumbnail] = useState(""); // 썸네일
+  const [thumbnailUrl, setThumbnailUrl] = useState(""); // 썸네일 Url
+  const imgInput = useRef();
 
   // control details modal
   const [detailOpen, setDetailOpen] = useState(false);
@@ -51,6 +52,38 @@ const MyStudy = () => {
     setIsPrivate(event.target.checked);
     console.log(isPrivate);
   };
+
+  const onImgButtonClick = () => {
+    imgInput.current.click();
+  };
+
+  const onImgChange = async (event) => {
+    let reader = new FileReader();
+    let file = event.target.files[0];
+    reader.onloadend = () => {
+      setThumbnail(file);
+      console.log(reader.result);
+      setThumbnailUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "https://i6d201.p.ssafy.io/api/v1/category",
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        setCategoryList(response.data);
+      })
+      .catch((e) => {
+        console.log("error!");
+      });
+  }, []);
 
   let startDateKor = "";
 
@@ -84,8 +117,70 @@ const MyStudy = () => {
     setCategory([...category, input]);
   };
 
-  const submit = () => {
-    console.log("submit!");
+  const onIntroduceHandler = (event) => {
+    setIntroduce(event.target.value);
+  };
+
+  const onCheckEnter = (event) => {
+    if (event.key === "Enter") {
+      setIntroduce(introduce + "\n");
+      console.log(introduce);
+    }
+  };
+
+  const onPasswordHandler = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const onParticipantHandler = (event) => {
+    setParticipant(event.target.value);
+  };
+
+  const onUrlHandler = (event) => {
+    setUrl(event.target.value);
+  };
+
+  const submit = async () => {
+    console.log(title);
+    console.log(date);
+    console.log(introduce);
+    console.log(password);
+    console.log(url);
+    console.log(thumbnail);
+    console.log(thumbnailUrl);
+    console.log(isPrivate);
+
+    if (title === "") {
+      alert("스터디 이름을 입력해주세요.");
+    } else if (introduce === "") {
+      alert("스터디 소개글을 입력해주세요.");
+    } else if (thumbnailUrl === "") {
+      alert("썸네일을 설정해주세요.");
+    } else if (participant === 0) {
+      alert("스터디 참가 인원을 선택해주세요.");
+    } else {
+      await axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/users/me",
+        headers: setHeader(),
+        data: {
+          name: title,
+          introduction: introduce,
+          is_private: isPrivate,
+          password: password,
+          thumbnail_url: thumbnailUrl,
+          link_url: "https://i6d201.p.ssafy.io/study/" + url,
+          max_user_num: participant,
+          start_at: dayjs(date[0]).format("YYYY-MM-DD"),
+        },
+      })
+        .then((response) => {
+          alert("스터디 생성이 완료되었습니다.");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -123,10 +218,12 @@ const MyStudy = () => {
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
                 스터디 일정
               </FormLabel>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                onblur={setKoreanDate}
+              >
                 <Stack spacing={3} sx={{ mb: 5 }} alignItems="center">
                   <DesktopDateRangePicker
-                    fullWidth
                     startText="스터디 시작일"
                     endText="스터디 종료일"
                     value={date}
@@ -171,6 +268,8 @@ const MyStudy = () => {
                 rows={4}
                 type="password"
                 autoComplete="current-password"
+                onChange={onIntroduceHandler}
+                onKeyPress={onCheckEnter}
                 sx={{ mb: 5 }}
               />
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
@@ -199,14 +298,14 @@ const MyStudy = () => {
                 </Typography>
                 <Container maxWidth="sm" sx={{ mb: 5 }}>
                   <Typography>{"스터디명: " + title}</Typography>
-                  <Typography>{"시작일: "}</Typography>
+                  <Typography>
+                    {"시작일: " + dayjs(date[0]).format("YYYY-MM-DD")}
+                  </Typography>
                   <Typography>{"일정: "}</Typography>
                   <Typography>{"카테고리: "}</Typography>
                   <Typography>{"스터디장: "}</Typography>
                   <Typography>소개글</Typography>
-                  <Typography>
-                    {"어떻게 언어 이름이 엄준식이냐 ㄹㅇㅋㅋ"}
-                  </Typography>
+                  <Typography>{introduce}</Typography>
                 </Container>
               </Box>
               <Stack spacing={2} direction="row">
@@ -266,6 +365,7 @@ const MyStudy = () => {
                             type="password"
                             label="비밀번호를 입력해주세요"
                             variant="outlined"
+                            onChange={onPasswordHandler}
                           />
                         </Stack>
                         <Stack spacing={1}>
@@ -280,6 +380,24 @@ const MyStudy = () => {
                             margin="normal"
                             label="만들고 싶은 URL을 입력해주세요"
                             variant="outlined"
+                            onChange={onUrlHandler}
+                          />
+                        </Stack>
+                        <Stack spacing={1}>
+                          <Typography
+                            variant="subtitle1"
+                            gutterBottom
+                            component="div"
+                          >
+                            스터디 인원 설정
+                          </Typography>
+                          <TextField
+                            margin="normal"
+                            type="number"
+                            InputProps={{ inputProps: { min: 2, max: 10 } }}
+                            label="참여 가능 인원을 선택해주세요."
+                            variant="outlined"
+                            onChange={onParticipantHandler}
                           />
                         </Stack>
                         <Button onClick={handleDetailClose}>확인</Button>
@@ -306,8 +424,28 @@ const MyStudy = () => {
                       세부설정
                     </Typography>
                     <Container maxWidth="sm">
-                      <Stack spacing={5}>
-                        <Button>썸네일 업로드</Button>
+                      <Stack spacing={5} alignItems="center">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="profile_img"
+                          name="profile_img"
+                          ref={imgInput}
+                          onChange={onImgChange}
+                          style={{ display: "none" }}
+                        />
+                        {thumbnail !== "" ? (
+                          <img
+                            className="profile_preview"
+                            src={thumbnailUrl}
+                            alt="profile"
+                            loading="lazy"
+                            style={{ width: "50%", height: "50%" }}
+                          />
+                        ) : null}
+                        <Button onClick={onImgButtonClick}>
+                          썸네일 업로드
+                        </Button>
                         <Button onClick={handleThumbnailClose}>확인</Button>
                       </Stack>
                     </Container>
@@ -320,6 +458,7 @@ const MyStudy = () => {
                 variant="contained"
                 style={{ background: "rgba(191, 122, 38, 0.7)" }}
                 sx={{ mt: 3, mb: 2 }}
+                onClick={submit}
               >
                 확인
               </Button>
