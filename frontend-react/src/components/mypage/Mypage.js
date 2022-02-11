@@ -33,16 +33,18 @@ const Sidebar = () => {
 
 const MyPage = () => {
   return (
-    <div className="container">
-      <Sidebar />
-      <Routes>
-        <Route path="update/check" element={<CheckPwd />}></Route>
-        <Route path="update" element={<Update />}></Route>
-        <Route path="study" element={<MyStudy />}></Route>
-        <Route path="dashboard" element={<Dashboard />}></Route>
-        <Route path="withdrawal" element={<Withdrawal />}></Route>
-      </Routes>
-    </div>
+    <>
+      {/* <Sidebar /> */}
+      <div className="container">
+        <Routes>
+          <Route path="update/check" element={<CheckPwd />}></Route>
+          <Route path="update" element={<Update />}></Route>
+          <Route path="study" element={<MyStudy />}></Route>
+          <Route path="dashboard" element={<Dashboard />}></Route>
+          <Route path="withdrawal" element={<Withdrawal />}></Route>
+        </Routes>
+      </div>
+    </>
   );
 };
 
