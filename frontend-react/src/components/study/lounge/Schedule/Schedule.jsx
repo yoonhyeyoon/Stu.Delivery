@@ -176,7 +176,12 @@ function Schedule({ schedule }) {
               <h3>
                 {newContent.length}/{contentLimit}
               </h3>
-              <button onClick={handleUpdateSchedule}>수정하기</button>
+              <button
+                className={styles.modalBtn}
+                onClick={handleUpdateSchedule}
+              >
+                수정하기
+              </button>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>

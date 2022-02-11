@@ -83,7 +83,8 @@ function App() {
             ></Route>
             {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
             <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
-            <Route path="/lounge" element={<Lounge />}></Route>
+            <Route path="/study" element={<Lounge />}></Route>
+            <Route path="/study/info" element={<Info />}></Route>
             <Route path="/mypage/*" element={<MyPage />}></Route>
           </Routes>
         </Router>

@@ -63,7 +63,7 @@ function SelectDate({ startDate, setStartDate }) {
           mask="___/__/__ __:__ _M"
           renderInput={({ inputRef, inputProps, InputProps }) => (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <input ref={inputRef} {...inputProps} />
+              <input className={styles.date} ref={inputRef} {...inputProps} />
               {InputProps?.endAdornment}
             </Box>
           )}

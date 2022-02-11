@@ -92,7 +92,7 @@
   text-align: right;
 } */
 
-input[type="text"] {
+.title {
   width: 420px;
   height: 50px;
   /* background-color: #f2f2e8; */

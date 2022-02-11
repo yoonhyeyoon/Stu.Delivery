@@ -111,7 +111,11 @@ function AddMemo() {
             <div className={styles.modalTextAria}>
               {/* <h2 id="unstyled-modal-title">제목</h2> */}
               <h3>메모</h3>
-              <input type="text" value={title} onChange={onTitleHandler} />
+              <input
+                className={styles.title}
+                value={title}
+                onChange={onTitleHandler}
+              />
               <h3>상세내용</h3>
               <textarea
                 className={styles.content}

@@ -139,7 +139,9 @@ function AddSchedule() {
               <h3>
                 {content.length}/{contentLimit}
               </h3>
-              <button onClick={handleAddSchedule}>글쓰기</button>
+              <button className={styles.modalBtn} onClick={handleAddSchedule}>
+                글쓰기
+              </button>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>
