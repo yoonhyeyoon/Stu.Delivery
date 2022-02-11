@@ -1,7 +1,5 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
 const ACCESS_TOKEN = "accessToken";
 
 const login = (id, pwd) => {
@@ -43,21 +41,10 @@ const setJwtToken = (jwtToken) => {
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export { login, setJwtToken, setHeader };
+export { login, setJwtToken };
 
-// export const fetchUserInfo = () => {
-//   return axios({
-//     method: "get",
-//     url: "https://i6d201.p.ssafy.io/api/v1/users/me",
-//     headers: setHeader(),
-//   })
-//     .then((res) => {
-//       res.data
-//     })
-//     .catch((err) => console.log(err.request));
-
-// api header
-const setHeader = () => {
+// api header 가져다 쓰기
+export const setHeader = () => {
   const token = localStorage.getItem("JWT");
   const header = {
     "Content-Type": "application/json",
@@ -65,3 +52,15 @@ const setHeader = () => {
   };
   return header;
 };
+
+// 스터디 멤버인지 확인
+export function is_member_check(study, user) {
+  const memberCheck = (member) => {
+    return member.id === user.id;
+  };
+  if (study.members && user) {
+    if (study.members.find(memberCheck)) {
+      return true;
+    }
+  }
+}

@@ -3,18 +3,19 @@ import { updateMemo, removeMemo } from "../../../../redux/memos";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
-
-import Modal from "react-bootstrap/Modal";
+import EditIcon from "@mui/icons-material/Edit";
+import { Modal } from "@mui/material";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { setHeader } from "../../../../utils/api";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function EditMemo({ memo }) {
   const user = useSelector((state) => state.user.user);
-  console.log(user);
-
+  const study = useSelector((state) => state.study.study);
+  // console.log(study);
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -59,10 +60,10 @@ function EditMemo({ memo }) {
               resData.created_at
             )
           );
-          window.location.reload();
         })
         .catch((err) => console.log(err.response));
       handleClose();
+      window.location.reload();
     }
   };
 
@@ -74,49 +75,47 @@ function EditMemo({ memo }) {
       headers: setHeader(),
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         window.location.reload();
       })
       .catch((err) => console.log(err.response.data));
   };
 
   return (
-    <div>
-      {memo.user_id === user.id ? (
+    <>
+      {memo.user_id === user.id || study.master_id === user.id ? (
         <>
-          <a onClick={handleShow} className={styles.btn}>
-            수정
-          </a>
-          <a onClick={handleRemoveMemo} className={styles.btn}>
-            삭제
-          </a>
+          <EditIcon onClick={handleShow} className={styles.btn} />
+          <DeleteIcon onClick={handleRemoveMemo} className={styles.btn} />
         </>
       ) : null}
-      <Modal show={show} onHide={handleClose}>
-        <Form onSubmit={handleUpdateMemo}>
-          <Form.Control
-            type="text"
-            value={newTitle}
-            placeholder="제목"
-            onChange={onTitleHandler}
-          />
-          <Form.Control
-            as="textarea"
-            cols="30"
-            rows="10"
-            placeholder="내요오옹"
-            value={newContent}
-            onChange={onContentHandler}
-          ></Form.Control>
-          <div>
-            <small>
-              {newContent.length}/{contentLimit}
-            </small>
-            <Button type="submit">게시</Button>
-          </div>
-        </Form>
+      <Modal open={show} onClose={handleClose}>
+        <div className={styles.modal}>
+          <CloseIcon className={styles.close} onClick={handleClose} />
+          <form>
+            <div className={styles.modalTextAria}>
+              {/* <h2 id="unstyled-modal-title">제목</h2> */}
+              <h3>메모</h3>
+              <input type="text" value={newTitle} onChange={onTitleHandler} />
+              <h3>상세내용</h3>
+              <textarea
+                className={styles.content}
+                value={newContent}
+                onChange={onContentHandler}
+              />
+            </div>
+            <div className={styles.modalBottom}>
+              <h3>
+                {newContent.length}/{contentLimit}
+              </h3>
+              <button onClick={handleUpdateMemo}>수정하기</button>
+              {/* {memo.created_at && memo.created_at.slice(0, 10)}
+              <EditMemo memo={memo} /> */}
+            </div>
+          </form>
+        </div>
       </Modal>
-    </div>
+    </>
   );
 }
 export default EditMemo;

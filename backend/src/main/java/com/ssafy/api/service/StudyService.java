@@ -14,13 +14,14 @@ import java.util.List;
 public interface StudyService {
     // 스터디
     List<StudyListRes> getStudyList();
-    StudyCreateRes createStudy(User user, StudyReq studyReq);
-    StudyCreateRes updateStudy(User user, Long studyId, StudyReq studyReq);
+    StudyRes createStudy(User user, StudyReq studyReq);
+    StudyRes updateStudy(User user, Long studyId, StudyReq studyReq);
     StudyRes getStudy(Long studyId);
     void deleteStudy(User user, Long studyId);
 
     // 스터디 멤버
     void joinStudy(User user, Long studyId);
+    void updateMaster(User user, Long studyId, String email);
     void deleteStudyMember(User user, Long studyId, String email);
 
     // 스터디 보드

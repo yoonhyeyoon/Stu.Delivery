@@ -40,11 +40,13 @@ function MemoList() {
     fetchMemo();
   }, [dispatch]);
   return (
-    <div className={styles.frame} ref={memoContainer}>
+    <>
       <AddMemo />
-      {memos &&
-        memos.map((memo) => <Memo key={memo.study_board_id} memo={memo} />)}
-    </div>
+      <div className={styles.frame} ref={memoContainer}>
+        {memos &&
+          memos.map((memo) => <Memo key={memo.study_board_id} memo={memo} />)}
+      </div>
+    </>
   );
 }
 export default MemoList;
