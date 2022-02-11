@@ -50,7 +50,7 @@
     "socket.io": "^4.4.1",
     "styled-components": "^5.3.3",
     "universal-cookie": "^4.0.4",
-    "yarn": "^1.22.17"
+    "yarn": "^1.22.17",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
