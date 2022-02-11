@@ -49,7 +49,7 @@ class Header extends Component {
                 <Nav className="nav-justified w-100 nav-fill app-nav">
                   <Nav.Link href="/">내 스터디</Nav.Link>
                   <Nav.Link href="/studylist">스터디 목록</Nav.Link>
-                  <Nav.Link href="/">스터디 만들기</Nav.Link>
+                  <Nav.Link href="/create">스터디 만들기</Nav.Link>
                   {localStorage.getItem("isLogin") ? (
                     <ul>
                       <li>
