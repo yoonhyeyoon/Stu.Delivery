@@ -63,6 +63,12 @@ public class Study extends BaseEntity{
 
     private LocalDate finishAt;
 
+    @Column(length = 50)
+    private String privateRoomId;
+
+    @Column(length = 50)
+    private String meetingRoomId;
+
     @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
     private List<RegularSchedule> regularSchedules = new ArrayList<>();
 
@@ -77,6 +83,13 @@ public class Study extends BaseEntity{
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
+
+    public void addStudyMember (StudyMember studyMember) {
+        this.studyMembers.add(studyMember);
+        if (studyMember.getStudy() != this) {
+            studyMember.setStudy(this);
+        }
+    }
 
     public void addRegularSchedule (RegularSchedule regularSchedule) {
         this.regularSchedules.add(regularSchedule);
