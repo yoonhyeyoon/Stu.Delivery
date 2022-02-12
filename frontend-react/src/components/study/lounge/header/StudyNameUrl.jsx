@@ -5,8 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./StudyHeader.module.css";
 import Button from "react-bootstrap/Button";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { style } from "@mui/system";
 
-function StudyNameUrl({ info }) {
+function StudyNameUrl({ study }) {
   const doCopy = (text) => {
     if (!document.queryCommandSupported("copy")) {
       return alert("복사하기가 지원되지 않는 브라우저입니다.");
@@ -30,13 +32,14 @@ function StudyNameUrl({ info }) {
   };
 
   return (
-    <div className={styles.textAria}>
-      <h1>{info.name}</h1>
+    <div className={styles.text_aria}>
+      <h1>{study.name}</h1>
       <div>
-        {info.link_url}
-        <a onClick={() => doCopy(info.link_url)}>
-          <i className="far fa-copy"></i>
-        </a>
+        {study.link_url}
+        <ContentCopyIcon
+          onClick={() => doCopy(study.link_url)}
+          className={styles.copy}
+        />
       </div>
     </div>
   );

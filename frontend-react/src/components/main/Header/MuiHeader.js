@@ -27,6 +27,12 @@ const route_pages = {
 };
 
 const ResponsiveAppBar = () => {
+  // 로그아웃
+  const onLogout = () => {
+    localStorage.clear();
+    document.location.href = "/";
+  };
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [toggle, setToggle] = useState({
@@ -87,16 +93,21 @@ const ResponsiveAppBar = () => {
   if (localStorage.getItem("isLogin")) {
     item = (
       <>
-        <Tooltip title="Logout?">
-          <IconButton
-            onClick={() => {
-              window.location.href = "/mypage/update/check";
-            }}
-            sx={{ p: 0 }}
-          >
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-          </IconButton>
-        </Tooltip>
+        <IconButton
+          onClick={() => {
+            window.location.href = "/mypage/update/check";
+          }}
+          sx={{ p: 0 }}
+        >
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+        </IconButton>
+        <Button
+          key="login"
+          onClick={onLogout}
+          sx={{ my: 2, color: "white", display: "block" }}
+        >
+          로그아웃
+        </Button>
       </>
     );
   } else {

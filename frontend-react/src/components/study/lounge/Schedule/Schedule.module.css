@@ -1,14 +1,150 @@
 .frame {
-  height: 20rem;
-  width: 20rem;
+  overflow: auto;
+  height: 520px;
+  width: 25rem;
   background-color: #f2f2e8;
   margin: 35px;
+}
+.frame_header {
+  height: 2rem;
+  width: 25rem;
+  background-color: #f2f2e8;
+  margin-left: 35px;
 }
 .btn {
   text-decoration: none;
   color: black;
   cursor: pointer;
+  margin-left: 5px;
 }
 .btn:hover {
   color: #bf7a26;
+}
+.close {
+  cursor: pointer;
+  margin-left: 19.5rem;
+  float: right;
+}
+.close:hover {
+  color: #bf7a26;
+}
+/* schedule */
+.form{
+  /* margin-top:40px; */
+  /* position:absolute; */
+  margin-bottom: 10px;
+  width:200px;
+  height:100px;
+  background-color:#f2dcc2;
+  /* cursor: pointer; */
+}
+.text_aria{
+  cursor: pointer;
+}
+
+.bg{
+  margin-top: 1rem;
+  background-color: #f2dcc2;
+  border: 2px solid black;
+}
+.bg:focus{
+  border-color: black !important;
+  background-color: #f2f2e8;
+  box-shadow: none !important;
+  outline: none;
+}
+
+
+
+.modal {
+  width:530px;
+  height:600px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f2dcc2;
+  border: 2px solid #000;
+  box-shadow: 24;
+  padding: 4;
+};
+
+.modal_textAria {
+  /* position:absolute; */
+  width:180px;
+  height:140px;
+  /* margin:10px; */
+  /* overflow:hide; */
+}
+
+.title {
+  width: 420px;
+  height: 50px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  display: flex;
+  margin: auto;
+  font-size: 25px;
+}
+
+.date {
+  width: 400px;
+  height: 50px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  /* display: flex; */
+  /* margin: auto; */
+  font-size: 25px;
+  margin-left: 6rem
+}
+
+.content {
+  width: 420px;
+  height: 300px;
+  /* background-color: #f2f2e8; */
+  border: 2px solid black;
+  border-radius: 5px;
+  display: flex;
+  margin: auto;
+  font-size: 20px;
+}
+
+h3 {
+  text-align: center;
+}
+
+.modal_btn {
+  border: 2px solid black;
+  font-size: 25px;
+  /* font-weight: 400; */
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  color: black;
+  background-color: #f2f2e8;
+  width: 8rem;
+  display: inline-block;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2) 0 2px 2px 0
+}
+
+.modal_btn:active,
+.modal_btn:hover,
+.modal_btn:focus {
+  background: var(--button-hover-bg-color);
+  outline: 0;
+}
+
+.schedule_wrap {
+	display: flex;
+  /* justify-content: space-between; */
+}
+
+.schedule_wrap .schedule_calendar .schedule_list {
+  text-align: center;
+  /* display: inline-block; */
+  /* box-sizing: border-box; */
+  position: absolute;
+  /* width: 50%; */
 }
