@@ -5,6 +5,7 @@ import Study from "./Study";
 import Categories from "./Categories";
 import items from "./data";
 import "./Study.css";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,22 @@ const HomeSubContainer = styled.div`
 const allCategories = ["all", ...new Set(items.map((item) => item.category))];
 
 function StudyList() {
+  const [studyList, setStudyList] = useState();
+  useEffect(() => {
+    const fetchStudyList = async () => {
+      await axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/study",
+      })
+        .then((res) => {
+          console.log(res.data);
+          setStudyList(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+    fetchStudyList();
+  }, []);
+
   const [studyItems, setStudyItems] = useState(items);
   const [categories, setCategories] = useState(allCategories);
 
@@ -39,6 +56,10 @@ function StudyList() {
         </div>
         <Categories categories={categories} filterItems={filterItems} />
         <Study items={studyItems} />
+        <div>
+          {studyList &&
+            studyList.map((study) => <Study key={study.id} study={study} />)}
+        </div>
       </section>
       <HomeSubContainer>
         <Footer></Footer>

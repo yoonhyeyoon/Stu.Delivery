@@ -16,8 +16,10 @@ import { ModalBody, ModalTitle } from "react-bootstrap";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 function Schedule({ schedule }) {
+  const params = useParams();
   const study = useSelector((state) => state.study.study);
   const user = useSelector((state) => state.user.user);
   const isMember = is_member_check(study, user);
@@ -50,7 +52,7 @@ function Schedule({ schedule }) {
     } else {
       axios({
         method: "put",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/schedule/${schedule.id}`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/schedule/${schedule.id}`,
         data: {
           title: newTitle,
           content: newContent,
@@ -71,7 +73,7 @@ function Schedule({ schedule }) {
     event.preventDefault();
     axios({
       method: "delete",
-      url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/schedule/${schedule.id}`,
+      url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/schedule/${schedule.id}`,
       headers: setHeader(),
     })
       .then((res) => {
@@ -161,7 +163,7 @@ function Schedule({ schedule }) {
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
-            <div className={styles.modalTextAria}>
+            <div className={styles.modal_text_aria}>
               <SelectDate
                 startDate={newStartDate}
                 setStartDate={setNewStartDate}
@@ -179,12 +181,14 @@ function Schedule({ schedule }) {
                 onChange={onContentHandler}
               />
             </div>
-            <div className={styles.modalBottom}>
-              <h3>
-                {newContent.length}/{contentLimit}
-              </h3>
+            <div className={styles.modal_bottom}>
+              <div className={styles.modal_len}>
+                <h3>
+                  {newContent.length}/{contentLimit}
+                </h3>
+              </div>
               <button
-                className={styles.modalBtn}
+                className={styles.modal_btn}
                 onClick={handleUpdateSchedule}
               >
                 수정하기

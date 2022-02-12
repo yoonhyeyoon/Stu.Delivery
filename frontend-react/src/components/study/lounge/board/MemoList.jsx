@@ -5,8 +5,10 @@ import axios from "axios";
 import Memo from "./Memo";
 import AddMemo from "./AddMemo";
 import styles from "./Memo.module.css";
+import { useParams } from "react-router";
 
 function MemoList() {
+  const params = useParams();
   const memoContainer = useRef();
   const [box, setBox] = useState({});
   // useEffect(() => {
@@ -24,11 +26,10 @@ function MemoList() {
   const memos = useSelector((state) => state.memos.memos); // 조회
 
   useEffect(() => {
-    const study_id = 1;
     const fetchMemo = async () => {
       await axios({
         method: "get",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/board`,
       })
         .then((res) => {
           // console.log(res.data);

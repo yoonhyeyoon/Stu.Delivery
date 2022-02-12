@@ -20,7 +20,7 @@ function Memo({ memo }) {
   return (
     <div className={styles.hvrGrow}>
       <div className={styles.form}>
-        <div onClick={handleShow} className={styles.textAria}>
+        <div onClick={handleShow} className={styles.text_aria}>
           <h4>{memo.title}</h4>
           <p>{memo.content}</p>
         </div>
@@ -32,11 +32,11 @@ function Memo({ memo }) {
       <Modal open={show} onClose={handleClose}>
         <div className={styles.modal}>
           <div>
-            <div className={styles.modalTextAria}>
+            <div className={styles.modal_text_aria}>
               <h2>{memo.title}</h2>
               <p>{memo.content}</p>
             </div>
-            <div className={styles.modalBottom}>
+            <div className={styles.modal_bottom}>
               {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} />
             </div>

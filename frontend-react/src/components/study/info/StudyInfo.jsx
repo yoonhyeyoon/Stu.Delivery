@@ -1,53 +1,40 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import Members from "./Members";
 
 function StudyInfo() {
-  const [info, setInfo] = useState();
-
-  useEffect(() => {
-    const study_id = 1;
-    const fetchStudyInfo = async () => {
-      axios({
-        method: "get",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}`,
-      })
-        .then((res) => {
-          // console.log(res);
-          setInfo(res.data);
-        })
-        .catch((err) => console.log(err));
-    };
-    fetchStudyInfo();
-  }, []);
-
+  const study = useSelector((state) => state.study.study);
+  // console.log(study.members.length);
   return (
     <div>
-      {info && (
+      {study ? (
         <div>
-          <h1>스터디 정보</h1>
           <div>
             <h5>스터디 이름</h5>
-            <p>{info.name}</p>
+            <p>{study.name}</p>
           </div>
           <div>
             <h5>카테고리</h5>
           </div>
           <div>
             <h5>스터디 설명</h5>
-            <p>{info.introduction}</p>
+            <p>{study.introduction}</p>
           </div>
           <div>
-            <h5>스터디 회원</h5>
-            {info.members.length}/{info.max_user_num}
-            <ul>
-              {info.members.map((member) => (
+            <h5>
+              스터디 회원 ({study.members && study.members.length}/
+              {study.max_user_num})
+            </h5>
+            <Members members={study.members} />
+            {/* <ul>
+              {study.members.map((member) => (
                 <li key={member.id}>{member.nickname}</li>
               ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

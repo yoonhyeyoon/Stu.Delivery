@@ -9,8 +9,11 @@ import Form from "react-bootstrap/Form";
 import { is_member_check, setHeader } from "../../../../utils/api";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import { useParams } from "react-router";
 
 function AddMemo() {
+  const params = useParams();
+
   const study = useSelector((state) => state.study.study);
   const user = useSelector((state) => state.user.user);
   const isMember = is_member_check(study, user);
@@ -39,10 +42,9 @@ function AddMemo() {
     } else if (content === "") {
       return alert("내용을 입력하세요.");
     } else {
-      const study_id = 1;
       axios({
         method: "post",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/board`,
         data: {
           title: title,
           content: content,
@@ -76,7 +78,7 @@ function AddMemo() {
   return (
     <>
       {isMember ? (
-        <a onClick={handleShow} className={styles.btn}>
+        <a onClick={handleShow} className={styles.add_btn}>
           + 보드 추가하기
         </a>
       ) : null}
@@ -108,7 +110,7 @@ function AddMemo() {
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
-            <div className={styles.modalTextAria}>
+            <div className={styles.modal_tex_aria}>
               {/* <h2 id="unstyled-modal-title">제목</h2> */}
               <h3>메모</h3>
               <input
@@ -123,11 +125,13 @@ function AddMemo() {
                 onChange={onContentHandler}
               />
             </div>
-            <div className={styles.modalBottom}>
+            <div className={styles.modal_bottom}>
               <h3>
                 {content.length}/{contentLimit}
               </h3>
-              <button onClick={handleAddMemo}>글쓰기</button>
+              <button className={styles.modal_btn} onClick={handleAddMemo}>
+                글쓰기
+              </button>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>

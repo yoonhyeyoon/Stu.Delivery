@@ -10,8 +10,10 @@ import Form from "react-bootstrap/Form";
 import { setHeader } from "../../../../utils/api";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams } from "react-router";
 
 function EditMemo({ memo }) {
+  const params = useParams();
   const user = useSelector((state) => state.user.user);
   const study = useSelector((state) => state.study.study);
   // console.log(study);
@@ -23,7 +25,6 @@ function EditMemo({ memo }) {
   const [newTitle, setNewTitle] = useState(memo.title);
   const [newContent, setNewContent] = useState(memo.content);
   const contentLimit = 200;
-  const study_id = 1;
 
   const onTitleHandler = (event) => {
     setNewTitle(event.target.value);
@@ -41,7 +42,7 @@ function EditMemo({ memo }) {
     } else {
       axios({
         method: "put",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${memo.study_board_id}`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/board/${memo.study_board_id}`,
         data: {
           title: newTitle,
           content: newContent,
@@ -71,7 +72,7 @@ function EditMemo({ memo }) {
     dispatch(removeMemo(memo.study_board_id));
     axios({
       method: "delete",
-      url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/board/${memo.study_board_id}`,
+      url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/board/${memo.study_board_id}`,
       headers: setHeader(),
     })
       .then((res) => {
@@ -93,7 +94,7 @@ function EditMemo({ memo }) {
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
-            <div className={styles.modalTextAria}>
+            <div className={styles.modal_text_aria}>
               {/* <h2 id="unstyled-modal-title">제목</h2> */}
               <h3>메모</h3>
               <input
@@ -108,11 +109,13 @@ function EditMemo({ memo }) {
                 onChange={onContentHandler}
               />
             </div>
-            <div className={styles.modalBottom}>
+            <div className={styles.modal_bottom}>
               <h3>
                 {newContent.length}/{contentLimit}
               </h3>
-              <button onClick={handleUpdateMemo}>수정하기</button>
+              <button className={styles.modal_btn} onClick={handleUpdateMemo}>
+                수정하기
+              </button>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>
