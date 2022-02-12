@@ -99,7 +99,7 @@ function Schedule({ schedule }) {
         className={styles.form}
       >
         <ListItemText
-          className={styles.textAria}
+          className={styles.text_aria}
           onClick={handleShow}
           primary={schedule.title}
           secondary={

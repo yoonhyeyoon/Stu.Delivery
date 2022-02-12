@@ -2,20 +2,31 @@
   height: 12rem;
   width: 100%;
   background-color: #f2f2e8;
-  margin-top: 4rem;
 }
-.textAria {
+.text_aria {
   position:absolute;
   margin: 2rem;
 }
 .btn {
   margin: 8rem 2rem;
   width: 10rem;
-  border: #bf7a26;
-  background-color: #bf7a26;
+  border: 1px solid #bf7a26 !important;
+  background-color: rgba(191, 122, 38, 0.7) !important ;
   color: white;
   cursor: pointer;
 }
+.btn > a {
+  color: white;
+}
+.btn > a:hover {
+  color: white;
+}
+
+.btn:focus .btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .copy:hover {
   color: #bf7a26;
 }

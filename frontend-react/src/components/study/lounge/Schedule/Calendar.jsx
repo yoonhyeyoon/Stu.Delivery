@@ -5,8 +5,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import styled from "styled-components";
 // import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
-
-// import "./Calendar.css";
+import styles from "./Schedule.module.css";
+import "./Calendar.css";
 
 function Calendar({ schedules }) {
   const study = useSelector((state) => state.study.study);
@@ -19,10 +19,7 @@ function Calendar({ schedules }) {
         events.push({
           title: schedules[i].title,
           date: schedules[i].time,
-          backgroundColor: "rgb(0, 185, 186)",
-          textColor: "#000000",
-          // display: "background",
-          // backgroundColor: "#00b9ba",
+          backgroundColor: "#bf7a26",
         });
       }
       return events;
@@ -30,18 +27,19 @@ function Calendar({ schedules }) {
   };
   // console.log(scheduleEvent(schedules));
   return (
-    <div>
+    <div className={styles.schedule_calendar}>
       <FullCalendar
-        defaultView="dayGridMonth"
+        // style="width: 80%; display: inline-block;"
+        // defaultView="dayGridMonth"
         plugins={[dayGridPlugin]}
         // weekends={false}
         height={600}
         events={scheduleEvent(schedules)}
         locale="ko"
-        minDate={study.start_at}
-        color="yellow"
-        textColor="black"
-        eventBackgroundColor="#ffffff"
+        // minDate={study.start_at}
+        // color="yellow"
+        // textColor="black"
+        // eventBackgroundColor="#ffffff"
       />
     </div>
   );
