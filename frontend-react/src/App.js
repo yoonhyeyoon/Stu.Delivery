@@ -18,7 +18,11 @@ import { isLoad, loadUser } from "./redux/user";
 import Index from "./components/welcome/Index";
 import GlobalStyles from "./common/styles/GlobalStyles";
 import StudyList from "./components/studylist/StudyList";
+// import StudyLive from "./components/studylive/StudyLive";
 import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
+import StudyGroup from "./components/studylive/studygroup/StudyGroup";
+import VideoConference from "./components/studylive/studygroup/Webrtc/VideoConference";
+import "./global.color.css";
 import MyStudy from "./components/mypage/study/MyStudy";
 import ResponsiveAppBar from "./components/main/Header/MuiHeader";
 
@@ -83,6 +87,8 @@ function App() {
             ></Route>
             {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
             <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
+            <Route path="/studygroup" element={<StudyGroup />}></Route>
+            <Route path="/videoconference" element={<VideoConference />}></Route>
             <Route path="/study" element={<Lounge />}></Route>
             <Route path="/study/info" element={<Info />}></Route>
             <Route path="/mypage/*" element={<MyPage />}></Route>
