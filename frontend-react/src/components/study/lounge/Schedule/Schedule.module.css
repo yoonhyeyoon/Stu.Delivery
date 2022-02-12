@@ -1,11 +1,11 @@
 .frame {
   overflow: auto;
-  height: 20rem;
+  height: 520px;
   width: 25rem;
   background-color: #f2f2e8;
-  margin-left: 35px;
+  margin: 35px;
 }
-.frameHeader {
+.frame_header {
   height: 2rem;
   width: 25rem;
   background-color: #f2f2e8;
@@ -38,7 +38,7 @@
   background-color:#f2dcc2;
   /* cursor: pointer; */
 }
-.textAria{
+.text_aria{
   cursor: pointer;
 }
 
@@ -69,7 +69,7 @@
   padding: 4;
 };
 
-.modalTextAria {
+.modal_textAria {
   /* position:absolute; */
   width:180px;
   height:140px;
@@ -115,7 +115,7 @@ h3 {
   text-align: center;
 }
 
-.modalBtn {
+.modal_btn {
   border: 2px solid black;
   font-size: 25px;
   /* font-weight: 400; */
@@ -129,9 +129,22 @@ h3 {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2) 0 2px 2px 0
 }
 
-.modalBtn:active,
-.modalBtn:hover,
-.modalBtn:focus {
+.modal_btn:active,
+.modal_btn:hover,
+.modal_btn:focus {
   background: var(--button-hover-bg-color);
   outline: 0;
+}
+
+.schedule_wrap {
+	display: flex;
+  /* justify-content: space-between; */
+}
+
+.schedule_wrap .schedule_calendar .schedule_list {
+  text-align: center;
+  /* display: inline-block; */
+  /* box-sizing: border-box; */
+  position: absolute;
+  /* width: 50%; */
 }

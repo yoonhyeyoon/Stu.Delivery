@@ -18,7 +18,7 @@ function ScheduleList({ schedules }) {
   }
 
   return (
-    <>
+    <div className={styles.schedule_list}>
       <AddSchedule />
       <Box className={styles.frame}>
         <List>
@@ -32,7 +32,7 @@ function ScheduleList({ schedules }) {
           </TransitionGroup>
         </List>
       </Box>
-    </>
+    </div>
   );
 }
 export default ScheduleList;

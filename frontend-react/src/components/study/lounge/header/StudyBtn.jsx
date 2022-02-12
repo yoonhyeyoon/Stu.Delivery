@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { is_member_check, setHeader } from "../../../../utils/api";
 import { useSelector } from "react-redux";
+// import Button from "@material-ui/core/Button";
+import Button from "react-bootstrap/Button";
 
 function StudyBtn() {
   const study = useSelector((state) => state.study.study);
@@ -32,13 +34,19 @@ function StudyBtn() {
   return (
     <>
       {isMember ? (
-        <button className={styles.btn}>
-          <Link to="/study">스터디 라운지</Link>
-        </button>
+        <Button className={styles.btn}>
+          <Link to="/study" className={styles.btn_link}>
+            스터디 라운지
+          </Link>
+        </Button>
       ) : (
-        <button onClick={handleSignUpStudy} className={styles.btn}>
+        <Button
+          class="btn btn-primary shadow-none"
+          onClick={handleSignUpStudy}
+          className={styles.btn}
+        >
           스터디 가입
-        </button>
+        </Button>
       )}
     </>
   );

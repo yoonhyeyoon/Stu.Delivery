@@ -32,7 +32,7 @@ function StudyNameUrl({ study }) {
   };
 
   return (
-    <div className={styles.textAria}>
+    <div className={styles.text_aria}>
       <h1>{study.name}</h1>
       <div>
         {study.link_url}

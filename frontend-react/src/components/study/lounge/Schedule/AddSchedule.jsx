@@ -74,7 +74,7 @@ function AddSchedule() {
   };
   return (
     <div>
-      <div className={styles.frameHeader}>
+      <div className={styles.frame_header}>
         {isMember ? (
           <EditIcon onClick={handleShow} className={styles.btn} />
         ) : null}
@@ -120,7 +120,7 @@ function AddSchedule() {
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
-            <div className={styles.modalTextAria}>
+            <div className={styles.modal_textAria}>
               <SelectDate startDate={startDate} setStartDate={setStartDate} />
               <h3>일정명</h3>
               <input
@@ -135,11 +135,11 @@ function AddSchedule() {
                 onChange={onContentHandler}
               />
             </div>
-            <div className={styles.modalBottom}>
+            <div className={styles.modal_bottom}>
               <h3>
                 {content.length}/{contentLimit}
               </h3>
-              <button className={styles.modalBtn} onClick={handleAddSchedule}>
+              <button className={styles.modal_btn} onClick={handleAddSchedule}>
                 글쓰기
               </button>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}

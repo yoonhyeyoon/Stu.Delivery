@@ -2,6 +2,7 @@ import Calendar from "./Calendar";
 import ScheduleList from "./ScheduleList";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import styles from "./Schedule.module.css";
 
 function ScheduleFrame() {
   const [schedules, setSchedules] = useState();
@@ -22,7 +23,7 @@ function ScheduleFrame() {
     fetchSchedule();
   }, []);
   return (
-    <div>
+    <div className={styles.schedule_wrap}>
       {schedules ? (
         <>
           <ScheduleList schedules={schedules} />
