@@ -8,8 +8,10 @@ const StudyGroup = (props) => {
   let history = useNavigate();
 
   return (
-    <div className="study-group">
-      <VideoConference />
+    <div>
+      <div className="study-group">
+        <VideoConference />
+      </div>
     </div>
   );
 };
