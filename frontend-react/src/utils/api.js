@@ -25,7 +25,7 @@ const login = (id, pwd) => {
           console.log("success!");
           setJwtToken(response.data.accessToken);
           localStorage.setItem("isLogin", true);
-          window.location.href = "/mypage";
+          window.location.href = "/";
         }
       })
       .catch((e) => {

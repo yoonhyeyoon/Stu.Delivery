@@ -1,5 +1,5 @@
 import React from "react";
-import { ACCESS_TOKEN } from "../../../constants";
+import { setJwtToken } from "../../../utils/api";
 import { Navigate, useLocation } from "react-router-dom";
 
 const OAuth2RedirectHandler = (props) => {
@@ -22,11 +22,11 @@ const OAuth2RedirectHandler = (props) => {
   // 토큰을 성공적으로 받았을 경우 /profile로 이동, 토큰 실패시 error state 추가
   if (token) {
     console.log("set token!");
-    localStorage.setItem(ACCESS_TOKEN, token);
+    setJwtToken(token);
     return (
       <Navigate
         to={{
-          pathname: "/mypage",
+          pathname: "/mypage/dashboard",
           // eslint-disable-next-line no-restricted-globals
           state: { from: location },
         }}
@@ -37,7 +37,7 @@ const OAuth2RedirectHandler = (props) => {
     return (
       <Navigate
         to={{
-          pathname: "/mypage",
+          pathname: "/",
           // eslint-disable-next-line no-restricted-globals
           state: { from: location, error: error },
         }}

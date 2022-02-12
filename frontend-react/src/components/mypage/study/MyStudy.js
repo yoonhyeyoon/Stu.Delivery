@@ -157,6 +157,8 @@ const MyStudy = () => {
     } else {
       console.log(date[0].toISOString());
       console.log(dayjs(date[0]).format("YYYY-MM-DD"));
+
+      let link_url = "https://i6d201.p.ssafy.io/study/" + url;
       await axios({
         method: "post",
         url: "https://i6d201.p.ssafy.io/api/v1/study",
@@ -167,10 +169,11 @@ const MyStudy = () => {
           is_private: isPrivate,
           password: "password",
           thumbnail_url: "thumbnailUrl",
-          link_url: "https://i6d201.p.ssafy.io/study/" + url,
+          link_url: link_url,
           max_user_num: participant,
           start_at: dayjs(date[0]).format("YYYY-MM-DD"),
           finish_at: dayjs(date[1]).format("YYYY-MM-DD"),
+          regular_schedules: [],
         },
       })
         .then((response) => {
