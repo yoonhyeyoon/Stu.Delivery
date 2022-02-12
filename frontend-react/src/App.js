@@ -92,8 +92,8 @@ function App() {
               path="/videoconference"
               element={<VideoConference />}
             ></Route>
-            <Route path="/study" element={<Lounge />}></Route>
-            <Route path="/study/info" element={<Info />}></Route>
+            <Route path="/study/:id" element={<Lounge />}></Route>
+            <Route path="/study/:id/info" element={<Info />}></Route>
             <Route path="/mypage/*" element={<MyPage />}></Route>
           </Routes>
         </Router>

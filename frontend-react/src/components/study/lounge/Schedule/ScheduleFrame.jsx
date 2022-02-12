@@ -3,8 +3,11 @@ import ScheduleList from "./ScheduleList";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styles from "./Schedule.module.css";
+import { useParams } from "react-router";
 
 function ScheduleFrame() {
+  const params = useParams();
+
   const [schedules, setSchedules] = useState();
 
   useEffect(() => {
@@ -12,7 +15,7 @@ function ScheduleFrame() {
     const fetchSchedule = async () => {
       await axios({
         method: "get",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/schedule`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/schedule`,
       })
         .then((res) => {
           // console.log(res.data);

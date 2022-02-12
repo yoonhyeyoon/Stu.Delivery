@@ -69,7 +69,7 @@
   padding: 4;
 };
 
-.modal_textAria {
+.modal_text_aria {
   /* position:absolute; */
   width:180px;
   height:140px;
@@ -112,20 +112,30 @@
 }
 
 h3 {
+  /* position: block; */
   text-align: center;
 }
 
+.modal_bottom {
+  /* display: flex; */
+  justify-content: center;
+  /* flex-direction: column; */
+}
+
+.modal_len {
+  display: flex;
+  justify-content: center;
+}
+
 .modal_btn {
+  display: flex;
+  justify-content: center;
   border: 2px solid black;
   font-size: 25px;
-  /* font-weight: 400; */
-  text-align: center;
-  text-decoration: none;
   border-radius: 5px;
   color: black;
   background-color: #f2f2e8;
   width: 8rem;
-  display: inline-block;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2) 0 2px 2px 0
 }
 

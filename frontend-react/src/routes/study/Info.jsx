@@ -4,15 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { loadStudy } from "../../redux/study";
+import { useParams } from "react-router";
 
 function Info() {
+  const params = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
-    const study_id = 1;
     const fetchStudyInfo = async () => {
       axios({
         method: "get",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}`,
       })
         .then((res) => {
           // console.log(res);

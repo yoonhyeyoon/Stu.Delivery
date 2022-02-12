@@ -11,8 +11,11 @@ import { is_member_check, setHeader } from "../../../../utils/api";
 import EditIcon from "@mui/icons-material/Edit";
 import { ModalBody } from "react-bootstrap";
 import CloseIcon from "@mui/icons-material/Close";
+import { useParams } from "react-router";
 
 function AddSchedule() {
+  const params = useParams();
+
   const study = useSelector((state) => state.study.study);
   const user = useSelector((state) => state.user.user);
   const isMember = is_member_check(study, user);
@@ -43,10 +46,9 @@ function AddSchedule() {
     } else if (content === "") {
       return alert("상세내용을 입력하세요.");
     } else {
-      const study_id = 1;
       axios({
         method: "post",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study_id}/schedule`,
+        url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/schedule`,
         data: {
           title: title,
           content: content,
@@ -120,7 +122,7 @@ function AddSchedule() {
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
-            <div className={styles.modal_textAria}>
+            <div className={styles.modal_text_aria}>
               <SelectDate startDate={startDate} setStartDate={setStartDate} />
               <h3>일정명</h3>
               <input
