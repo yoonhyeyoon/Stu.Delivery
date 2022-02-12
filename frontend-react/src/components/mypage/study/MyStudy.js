@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { setHeader } from "../../../utils/api";
-import styles from "./MyStudy.module.css";
 import dayjs from "dayjs";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -9,6 +8,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDateRangePicker from "@mui/lab/DesktopDateRangePicker";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
+  Autocomplete,
   CssBaseline,
   Typography,
   Modal,
@@ -18,9 +18,7 @@ import {
   TextField,
   Container,
   Switch,
-  FormControlLabel,
   FormLabel,
-  Checkbox,
 } from "@mui/material";
 
 const MyStudy = () => {
@@ -32,7 +30,7 @@ const MyStudy = () => {
   const [password, setPassword] = useState(null); // 스터디 비밀번호
   const [participant, setParticipant] = useState(0);
   const [url, setUrl] = useState(""); // 스터디 URL
-  const [thumbnail, setThumbnail] = useState(""); // 썸네일
+  const [thumbnail, setThumbnail] = useState("asdf"); // 썸네일
   const [thumbnailUrl, setThumbnailUrl] = useState(""); // 썸네일 Url
   const imgInput = useRef();
 
@@ -81,7 +79,7 @@ const MyStudy = () => {
         setCategoryList(response.data);
       })
       .catch((e) => {
-        console.log("error!");
+        console.log(e);
       });
   }, []);
 
@@ -154,31 +152,35 @@ const MyStudy = () => {
       alert("스터디 이름을 입력해주세요.");
     } else if (introduce === "") {
       alert("스터디 소개글을 입력해주세요.");
-    } else if (thumbnailUrl === "") {
-      alert("썸네일을 설정해주세요.");
     } else if (participant === 0) {
       alert("스터디 참가 인원을 선택해주세요.");
     } else {
+      console.log(date[0].toISOString());
+      console.log(dayjs(date[0]).format("YYYY-MM-DD"));
+
+      let link_url = "https://i6d201.p.ssafy.io/study/" + url;
       await axios({
-        method: "get",
-        url: "https://i6d201.p.ssafy.io/api/v1/users/me",
+        method: "post",
+        url: "https://i6d201.p.ssafy.io/api/v1/study",
         headers: setHeader(),
         data: {
           name: title,
           introduction: introduce,
           is_private: isPrivate,
-          password: password,
-          thumbnail_url: thumbnailUrl,
-          link_url: "https://i6d201.p.ssafy.io/study/" + url,
+          password: "password",
+          thumbnail_url: "thumbnailUrl",
+          link_url: link_url,
           max_user_num: participant,
           start_at: dayjs(date[0]).format("YYYY-MM-DD"),
+          finish_at: dayjs(date[1]).format("YYYY-MM-DD"),
+          regular_schedules: [],
         },
       })
         .then((response) => {
           alert("스터디 생성이 완료되었습니다.");
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.response);
         });
     }
   };
@@ -246,7 +248,21 @@ const MyStudy = () => {
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
                 카테고리
               </FormLabel>
-              <TextField
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={categoryList}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    label="category"
+                    fullWidth
+                    sx={{ mb: 5 }}
+                  />
+                )}
+              />
+              {/* <TextField
                 margin="dense"
                 fullWidth
                 name="category"
@@ -254,7 +270,7 @@ const MyStudy = () => {
                 id="password"
                 autoComplete="current-password"
                 sx={{ mb: 5 }}
-              />
+              /> */}
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
                 소개글
               </FormLabel>

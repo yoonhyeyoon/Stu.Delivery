@@ -25,7 +25,7 @@ const login = (id, pwd) => {
           console.log("success!");
           setJwtToken(response.data.accessToken);
           localStorage.setItem("isLogin", true);
-          window.location.href = "/mypage";
+          window.location.href = "/";
         }
       })
       .catch((e) => {
@@ -37,7 +37,6 @@ const login = (id, pwd) => {
 
 const setJwtToken = (jwtToken) => {
   localStorage.setItem("JWT", jwtToken, { sameSite: "strict" });
-  // cookies.set("jwt_token", jwtToken, { sameSite: "strict" });
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

@@ -15,17 +15,14 @@ const CheckPwd = () => {
   const check = () => {
     axios({
       method: "post",
-      url: "https://i6d201.p.ssafy.io/api/v1/auth/password-valid",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: setHeader(),
-      },
+      url: "https://i6d201.p.ssafy.io/api/v1/users/password-valid",
+      headers: setHeader(),
       data: {
         password: inputPw,
       },
     })
       .then((response) => {
-        window.location.href = "/update";
+        window.location.href = "/mypage/update";
       })
       .catch(() => {
         alert("비밀번호를 다시 입력해주세요.");

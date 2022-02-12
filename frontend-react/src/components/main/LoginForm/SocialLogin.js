@@ -1,8 +1,7 @@
 function SocialLogin() {
   const API_BASE_URL = "https://i6d201.p.ssafy.io/api";
-  const ACCESS_TOKEN = "accessToken";
 
-  const OAUTH2_REDIRECT_URI = "http://localhost:3000/oauth2/redirect";
+  const OAUTH2_REDIRECT_URI = "https://i6d201.p.ssafy.io/oauth2/redirect";
 
   const GOOGLE_AUTH_URL =
     API_BASE_URL +
