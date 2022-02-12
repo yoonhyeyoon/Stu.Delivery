@@ -7,11 +7,10 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import { ACCESS_TOKEN } from "../../../../constants";
+import { setHeader } from "../../../../utils/api";
 
 const CheckPwd = () => {
   const [inputPw, setInputPw] = useState();
-  const accessToken = localStorage.getItem(ACCESS_TOKEN);
 
   const check = () => {
     axios({
@@ -19,7 +18,7 @@ const CheckPwd = () => {
       url: "https://i6d201.p.ssafy.io/api/v1/auth/password-valid",
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: setHeader(),
       },
       data: {
         password: inputPw,

@@ -14,6 +14,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Tooltip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
@@ -85,14 +86,18 @@ const ResponsiveAppBar = () => {
 
   if (localStorage.getItem("isLogin")) {
     item = (
-      <IconButton
-        onClick={() => {
-          window.location.href = "/mypage/update/check";
-        }}
-        sx={{ p: 0 }}
-      >
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-      </IconButton>
+      <>
+        <Tooltip title="Logout?">
+          <IconButton
+            onClick={() => {
+              window.location.href = "/mypage/update/check";
+            }}
+            sx={{ p: 0 }}
+          >
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          </IconButton>
+        </Tooltip>
+      </>
     );
   } else {
     item = (
