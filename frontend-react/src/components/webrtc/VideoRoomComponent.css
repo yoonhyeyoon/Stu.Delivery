@@ -888,3 +888,9 @@
   height: 100%;
   margin-top: 40px;
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
