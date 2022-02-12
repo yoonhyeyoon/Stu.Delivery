@@ -7,21 +7,17 @@ const unjoin = () => {
 
   axios({
     method: "delete",
-    url: "https://i6d201.p.ssafy.io/api/v1/auth/login",
-    headers: {
-      "Content-type": "application/json",
-      Authorization: setHeader(),
-    },
+    url: "https://i6d201.p.ssafy.io/api/v1/users",
+    headers: setHeader(),
   })
     .then((response) => {
-      console.log("회원탈퇴 되었습니다.");
       alert("회원탈퇴가 완료되었습니다.");
       localStorage.clear(); // localStorage 비우기
       window.location.href = "/";
     })
     .catch((e) => {
       alert("오류가 발생하였습니다. 다시 시도해주세요.");
-      console.log("Error!");
+      console.log(e.response);
     });
 };
 

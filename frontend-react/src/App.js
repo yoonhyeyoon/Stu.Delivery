@@ -23,31 +23,14 @@ import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 import StudyGroup from "./components/studylive/studygroup/StudyGroup";
 import VideoConference from "./components/studylive/studygroup/Webrtc/VideoConference";
 import "./global.color.css";
-import MyStudy from "./components/mypage/study/MyStudy";
 import ResponsiveAppBar from "./components/main/Header/MuiHeader";
+import CreateStudy from "./components/mypage/study/CreateStudy";
+import MyStudy from "./components/main/mystudy/Mystudy";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const [authenticated, setAuthenticated] = useState(false);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const token = localStorage.getItem("JWT");
-    const oauth = localStorage.getItem("accessToken");
-
-    if (token) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-
-    if (oauth) {
-      setAuthenticated(true);
-    } else {
-      setAuthenticated(false);
-    }
-  });
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -77,10 +60,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Index />}></Route>
             <Route path="/studylist" element={<StudyList />}></Route>
-            <Route path="/create" element={<MyStudy />}></Route>
+            <Route path="/create" element={<CreateStudy />}></Route>
             <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/mystudy" element={<MyStudy />}></Route>
             <Route
               path="/oauth2/redirect"
               element={<OAuth2RedirectHandler />}

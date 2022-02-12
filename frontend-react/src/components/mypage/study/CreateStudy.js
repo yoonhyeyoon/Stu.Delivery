@@ -21,7 +21,7 @@ import {
   FormLabel,
 } from "@mui/material";
 
-const MyStudy = () => {
+const CreateStudy = () => {
   const [title, setTitle] = useState(""); // 스터디명
   const [category, setCategory] = useState([]); // 카테고리
   const [categoryList, setCategoryList] = useState([]); // 서버에서 받아온 카테고리 목록 저장
@@ -135,6 +135,7 @@ const MyStudy = () => {
   };
 
   const onUrlHandler = (event) => {
+    console.log(event);
     setUrl(event.target.value);
   };
 
@@ -182,6 +183,10 @@ const MyStudy = () => {
         .catch((error) => {
           console.log(error.response);
         });
+
+      // await axios({
+      //   method: "post"
+      // })
     }
   };
 
@@ -486,4 +491,4 @@ const MyStudy = () => {
   );
 };
 
-export default MyStudy;
+export default CreateStudy;
