@@ -161,7 +161,7 @@ class VideoConference extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
+      mySessionId: "SessionAqwer",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       mainStreamManager: undefined,
       publisher: undefined,

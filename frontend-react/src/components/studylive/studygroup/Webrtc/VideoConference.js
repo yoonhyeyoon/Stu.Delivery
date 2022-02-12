@@ -30,18 +30,25 @@ class VideoConference extends Component {
   componentDidMount() {
     this.joinSession();
     window.addEventListener("beforeunload", this.onbeforeunload);
+
+    console.log("!!!!componentDidMount");
   }
 
   componentWillUnmount() {
     this.leaveSession();
     window.removeEventListener("beforeunload", this.onbeforeunload);
+
+    console.log("!!!!componentwillunmount");
   }
 
   onbeforeunload(event) {
     this.leaveSession();
+
+    console.log("!!!!onbeforeunload");
   }
 
   handleMainVideoStream(stream) {
+    console.log("!!!!handlemainVideoStream");
     if (this.state.mainStreamManager !== stream) {
       this.setState({
         mainStreamManager: stream,
@@ -51,6 +58,7 @@ class VideoConference extends Component {
   }
 
   deleteSubscriber(streamManager) {
+    console.log("!!!!deleteSubscriber");
     let subscribers = this.state.subscribers;
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
@@ -62,6 +70,7 @@ class VideoConference extends Component {
   }
 
   joinSession() {
+    console.log("!!!!joinSession");
     // --- 1) Get an OpenVidu object ---
     this.OV = new OpenVidu();
     // --- 2) Init a session ---
@@ -149,7 +158,7 @@ class VideoConference extends Component {
 
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
+    console.log("!!!!leaveSession");
     const mySession = this.state.session;
 
     if (mySession) {
@@ -161,7 +170,7 @@ class VideoConference extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
+      mySessionId: "SessionAqwe",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       mainStreamManager: undefined,
       publisher: undefined,
@@ -216,12 +225,14 @@ class VideoConference extends Component {
    */
 
   getToken() {
+    console.log("!!!!getToken");
     return this.createSession(this.state.mySessionId).then((sessionId) =>
       this.createToken(sessionId)
     );
   }
 
   createSession(sessionId) {
+    console.log("!!!!createSession; " + sessionId);
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({ customSessionId: sessionId });
       axios
@@ -265,6 +276,7 @@ class VideoConference extends Component {
   }
 
   createToken(sessionId) {
+    console.log("!!!!createToken: " + sessionId);
     return new Promise((resolve, reject) => {
       var data = {};
       axios
