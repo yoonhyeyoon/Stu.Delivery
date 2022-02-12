@@ -10,7 +10,12 @@
 }
 .btn {
   margin: 8rem 2rem;
+  width: 10rem;
   border: #bf7a26;
   background-color: #bf7a26;
+  color: white;
   cursor: pointer;
+}
+.copy:hover {
+  color: #bf7a26;
 }

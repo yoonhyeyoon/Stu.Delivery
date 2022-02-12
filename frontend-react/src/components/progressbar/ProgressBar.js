@@ -10,6 +10,7 @@ const ProgressBar = ({ width, percent }) => {
   useEffect(() => {
     setValue(percent * width);
   });
+
   return (
     <div className="progress-div" style={{ width: width }}>
       <div style={{ width: `${progress}px` }} className="progress" />

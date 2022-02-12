@@ -23,6 +23,8 @@ import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 import StudyGroup from "./components/studylive/studygroup/StudyGroup";
 import VideoConference from "./components/studylive/studygroup/Webrtc/VideoConference";
 import "./global.color.css";
+import MyStudy from "./components/mypage/study/MyStudy";
+import ResponsiveAppBar from "./components/main/Header/MuiHeader";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -60,7 +62,7 @@ function App() {
           dispatch(loadUser(res.data));
           dispatch(isLoad(true));
         })
-        .catch((err) => console.log(err.request));
+        .catch((err) => console.log(err.request.data));
     };
     fetchUserInfo();
   }, []);
@@ -68,28 +70,31 @@ function App() {
   return (
     <div className="App">
       <GlobalStyles />
-      <Router>
-        <Header authenticated={authenticated} isLogin={isLogin} />
-        <Routes>
-          <Route path="/" element={<Index />}></Route>
-          <Route path="/studylist" element={<StudyList />}></Route>
-          <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route
-            path="/oauth2/redirect"
-            element={<OAuth2RedirectHandler />}
-          ></Route>
-          <Route path="/study" element={<Lounge />}></Route>
-          <Route path="/study/info" element={<Info />}></Route>
-          {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
-          <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
-          <Route path="/studygroup" element={<StudyGroup />}></Route>
-          <Route path="/videoconference" element={<VideoConference />}></Route>
-          <Route path="/mypage/*" element={<MyPage />}></Route>
-        </Routes>
-      </Router>
-
+      <div className="content">
+        <Router>
+          {/* <Header authenticated={authenticated} isLogin={isLogin} /> */}
+          <ResponsiveAppBar />
+          <Routes>
+            <Route path="/" element={<Index />}></Route>
+            <Route path="/studylist" element={<StudyList />}></Route>
+            <Route path="/create" element={<MyStudy />}></Route>
+            <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route
+              path="/oauth2/redirect"
+              element={<OAuth2RedirectHandler />}
+            ></Route>
+            {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
+            <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
+            <Route path="/studygroup" element={<StudyGroup />}></Route>
+            <Route path="/videoconference" element={<VideoConference />}></Route>
+            <Route path="/study" element={<Lounge />}></Route>
+            <Route path="/study/info" element={<Info />}></Route>
+            <Route path="/mypage/*" element={<MyPage />}></Route>
+          </Routes>
+        </Router>
+      </div>
       {/* <Footer /> */}
     </div>
   );

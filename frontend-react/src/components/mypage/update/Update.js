@@ -1,5 +1,8 @@
 import React, { useState, useRef } from "react";
 import Datepicker from "react-datepicker";
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { LocalizationProvider, DesktopDatePicker } from "@mui/lab";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -23,6 +26,8 @@ const Update = () => {
   const [nameMessage, setNameMessage] = useState(
     "2글자 이상 6글자 이하로 입력해주세요."
   );
+
+  const [open, setOpen] = useState(false); // modal창 띄우는 용도
 
   const onImgChange = async (event) => {
     let reader = new FileReader();
@@ -106,11 +111,19 @@ const Update = () => {
         </Form.Group>
         <Form.Group as={Row} className="mb-3">
           <Col sm>
-            <Datepicker
-              selected={birthday}
-              onChange={onBirthdayHandler}
-              placeholder="생년월일"
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                label="생년월일"
+                value={birthday}
+                minDate={new Date("1900-01-01")}
+                inputFormat={"yyyy-MM-dd"}
+                mask={"____-__-__"}
+                onChange={(newValue) => {
+                  setBirthday(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
           </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3">
