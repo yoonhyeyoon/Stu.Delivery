@@ -111,8 +111,9 @@ function AddMemo() {
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
             <div className={styles.modal_tex_aria}>
-              {/* <h2 id="unstyled-modal-title">제목</h2> */}
-              <h3>메모</h3>
+              <div className={styles.modal_memo}>
+                <h3>메모</h3>
+              </div>
               <input
                 className={styles.title}
                 value={title}
@@ -129,9 +130,11 @@ function AddMemo() {
               <h3>
                 {content.length}/{contentLimit}
               </h3>
-              <button className={styles.modal_btn} onClick={handleAddMemo}>
-                글쓰기
-              </button>
+              <div className={styles.modal_btn_wrap}>
+                <button className={styles.modal_btn} onClick={handleAddMemo}>
+                  글쓰기
+                </button>
+              </div>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>

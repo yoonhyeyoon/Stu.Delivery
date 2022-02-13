@@ -11,14 +11,9 @@ function StudyInfo() {
       {study ? (
         <div>
           <div>
-            <h5>스터디 이름</h5>
-            <p>{study.name}</p>
-          </div>
-          <div>
             <h5>카테고리</h5>
           </div>
           <div>
-            <h5>스터디 설명</h5>
             <p>{study.introduction}</p>
           </div>
           <div>

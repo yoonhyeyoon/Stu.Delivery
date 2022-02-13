@@ -27,7 +27,7 @@ function StudyList() {
         url: "https://i6d201.p.ssafy.io/api/v1/study",
       })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           setStudyList(res.data);
         })
         .catch((err) => console.log(err));
