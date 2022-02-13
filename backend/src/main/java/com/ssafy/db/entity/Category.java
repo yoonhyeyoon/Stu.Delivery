@@ -21,4 +21,7 @@ public class Category extends BaseEntity {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<StudyCategory> studyCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    private List<UserCategory> userCategories = new ArrayList<>();
 }

@@ -2,6 +2,8 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.UserRes;
 import com.ssafy.db.entity.User;
 
 import java.util.Map;
@@ -13,10 +15,11 @@ import java.io.UnsupportedEncodingException;
  */
 public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo) throws Exception;
+	UserRes getUserDetail(User user);
 	User getUserByEmail(String email);
 	Boolean isEmailPresent(String email);
 	String updateAuthStatus(String email, String authKey);
-	void updateUser(User user);
+	UserRes updateUser(User user, UserUpdateReq req);
 	void deleteUser(User user);
 	Boolean isValidPassword(User user, Map<String, String> req);
 	void updatePassword(User user, UserPasswordUpdateReq req);

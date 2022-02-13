@@ -3,6 +3,7 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -54,7 +55,7 @@ public class User extends BaseEntity{
     )
     private String profileImg;
 
-    private Date birth;
+    private LocalDate birth;
 
     private String determination;
 
@@ -83,6 +84,9 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
     private List<StudyBoard> studyBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserCategory> userCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Attendance> attendanceList = new ArrayList<>();

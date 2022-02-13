@@ -1,40 +1,40 @@
 package com.ssafy.api.response;
 
-import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Category;
 import com.ssafy.db.entity.User;
-
+import com.ssafy.db.entity.UserCategory;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import java.sql.Time;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 회원 본인 정보 조회 API ([GET] /api/v1/users/me) 요청에 대한 응답값 정의.
- */
 @Getter
 @Setter
 @ApiModel("UserResponse")
-public class UserRes{
-	@ApiModelProperty(name = "id", value = "1")
-	Long id;
+public class UserRes {
 
-	@ApiModelProperty(name="email", value = "")
-	String email;
+    Long id;
+    String email;
+    String nick_name;
+    String profile_img;
+    String birth;
+    String determination;
+    List<CategoryRes> categories;
 
-	@ApiModelProperty(name="Nickname")
-	String nickname;
+    public static UserRes of(User user) {
+        UserRes res = new UserRes();
+        res.setId(user.getId());
+        res.setEmail(user.getEmail());
+        res.setNick_name(user.getNickName());
+        res.setProfile_img(user.getProfileImg());
+        res.setBirth(user.getBirth().toString());
+        res.setDetermination(user.getDetermination());
+        res.setCategories(user.getUserCategories().stream().map((UserCategory uc) -> {
+            return CategoryRes.of(uc.getCategory());
+        }).collect(Collectors.toList()));
+        return res;
+    }
 
-	@ApiModelProperty(name="Profile Image")
-	String profile_img;
-	
-	public static UserRes of(User user) {
-		UserRes res = new UserRes();
-		res.setId((user.getId()));
-		res.setEmail(user.getEmail());
-		res.setNickname(user.getNickName());
-		res.setProfile_img(user.getProfileImg());
-		return res;
-	}
 }

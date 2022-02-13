@@ -4,11 +4,11 @@ import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.UserRes;
+import com.ssafy.api.response.UserSimpleRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.CustomUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,11 +18,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +39,15 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping()
+    @ApiOperation(value = "회원 정보 가져오기(수정페이지용)", notes = "로그인한 회원의 정보 수정 페이지에 뿌려줄 회원 정보를 가져온다.")
+    public ResponseEntity<UserRes> getUserDetail(@ApiIgnore Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        UserRes res = userService.getUserDetail(user);
+        return ResponseEntity.ok(res);
+    }
 
     @PostMapping()
     @ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
@@ -62,6 +71,17 @@ public class UserController {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "email already exist"));
         }
 
+    }
+
+    @PutMapping()
+    @ApiOperation(value = "회원정보 수정", notes = "로그인한 회원의 정보를 수정한다.")
+    public ResponseEntity<UserRes> updateUser(
+        @ApiIgnore Authentication authentication, @RequestBody UserUpdateReq req) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        UserRes res = userService.updateUser(user, req);
+
+        return ResponseEntity.ok(res);
     }
 
     @DeleteMapping()
@@ -113,7 +133,7 @@ public class UserController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<UserSimpleRes> getUserInfo(@ApiIgnore Authentication authentication) {
         /*
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
@@ -122,17 +142,7 @@ public class UserController {
         String email = userDetails.getUsername();
         User user = userService.getUserByEmail(email);
 
-        return ResponseEntity.status(200).body(UserRes.of(user));
-    }
-
-    @GetMapping("/updateUser")
-    @ApiOperation(value = "회원정보 수정", notes = "로그인한 회원의 정보를 수정한다.")
-    public ResponseEntity<? extends BaseResponseBody> updateUser(
-        @RequestBody UserUpdateReq userUpdateReq) {
-
-        userService.updateUser(userUpdateReq.getUser());
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body(UserSimpleRes.of(user));
     }
 
     @ApiOperation(value = "이메일 중복 확인", notes = "이미 등록된 이메일인지 확인한다.")

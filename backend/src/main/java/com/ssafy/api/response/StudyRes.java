@@ -27,7 +27,7 @@ public class StudyRes {
     String start_at;
     String finish_at;
     List<RegularScheduleListRes> regular_schedules;
-    List<UserRes> members;
+    List<UserSimpleRes> members;
     List<CategoryRes> categories;
 
     public static StudyRes of(Study study) {
@@ -48,7 +48,7 @@ public class StudyRes {
             return RegularScheduleListRes.of(rs);
         }).collect(Collectors.toList()));
         res.setMembers(study.getStudyMembers().stream().map((StudyMember sm) -> {
-            return UserRes.of(sm.getUser());
+            return UserSimpleRes.of(sm.getUser());
         }).collect(Collectors.toList()));
         res.setCategories(study.getStudyCategories().stream().map((StudyCategory sc) -> {
             return CategoryRes.of(sc.getCategory());

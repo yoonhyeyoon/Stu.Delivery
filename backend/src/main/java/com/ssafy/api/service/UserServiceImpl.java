@@ -1,14 +1,27 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserPasswordUpdateReq;
+import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.UserRes;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
 import com.ssafy.db.entity.AuthProvider;
+import com.ssafy.db.entity.Category;
+import com.ssafy.db.entity.UserCategory;
+import com.ssafy.db.repository.UserCategoryRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	UserCategoryRepository userCategoryRepository;
 
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
@@ -62,6 +78,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserRes getUserDetail(User user) {
+		return UserRes.of(user);
+	}
+
+	@Override
 	public User getUserByEmail(String email) {
 		// 디비에 유저 정보 조회 (email 을 통한 조회).
 		User user = userRepositorySupport.findUserByEmail(email).orElseThrow(() -> new ApiException(
@@ -92,8 +113,45 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(User user) {
-		userRepository.save(user);
+	@Transactional
+	public UserRes updateUser(User user, UserUpdateReq req) {
+		user.setNickName(req.getNick_name());
+		user.setProfileImg(req.getProfile_img());
+		if (req.getBirth() != null) {
+			try {
+				user.setBirth(LocalDate.parse(req.getBirth(), DateTimeFormatter.ISO_DATE));
+			} catch(DateTimeParseException e) {
+				throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+			}
+		}
+		user.setDetermination(req.getDetermination());
+
+		User resUser = userRepository.save(user);
+		if (req.getCategories() != null) {
+			List<UserCategory> userCategoryList = new ArrayList<>();
+
+			for (Map<String, String> categoryMap : req.getCategories()) {
+				Category category = new Category();
+				category.setId(Long.parseLong(categoryMap.get("id")));
+				category.setName(categoryMap.get("name"));
+
+				UserCategory userCategory = new UserCategory();
+				userCategory.setUser(resUser);
+				userCategory.setCategory(category);
+
+				userCategoryList.add(userCategory);
+			}
+
+			userCategoryRepository.deleteAllByUserId(user.getId());
+			try {
+				List<UserCategory> resUserCategoryList = userCategoryRepository.saveAll(userCategoryList);
+				resUser.setUserCategories(resUserCategoryList);
+			} catch(DataIntegrityViolationException e) {
+				throw new ApiException(ExceptionEnum.NOT_FOUND_CATEGORY);
+			}
+		}
+
+		return UserRes.of(resUser);
 	}
 
 	@Override
