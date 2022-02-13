@@ -2,6 +2,7 @@ package com.ssafy.api.response;
 
 import com.ssafy.db.entity.RegularSchedule;
 import com.ssafy.db.entity.Study;
+import com.ssafy.db.entity.StudyCategory;
 import com.ssafy.db.entity.StudyMember;
 import io.swagger.annotations.ApiModel;
 import java.util.List;
@@ -25,6 +26,7 @@ public class StudyRes {
     String finish_at;
     List<RegularScheduleListRes> regular_schedules;
     List<UserRes> members;
+    List<CategoryRes> categories;
 
     public static StudyRes of(Study study) {
         StudyRes res = new StudyRes();
@@ -43,6 +45,9 @@ public class StudyRes {
         }).collect(Collectors.toList()));
         res.setMembers(study.getStudyMembers().stream().map((StudyMember sm) -> {
             return UserRes.of(sm.getUser());
+        }).collect(Collectors.toList()));
+        res.setCategories(study.getStudyCategories().stream().map((StudyCategory sc) -> {
+            return CategoryRes.of(sc.getCategory());
         }).collect(Collectors.toList()));
         return res;
     }

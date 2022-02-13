@@ -40,5 +40,16 @@ public class StudyReq {
         + "        }\n"
         + "    ]")
     List<Map<String, String>> regular_schedules;
+    @ApiModelProperty(name = "스터디 카테고리 리스트", example = "[\n"
+        + "        {\n"
+        + "            \"id\": 1,\n"
+        + "            \"name\": \"react\"\n"
+        + "        },\n"
+        + "        {\n"
+        + "            \"id\": 2,\n"
+        + "            \"name\": \"spring\"\n"
+        + "        }\n"
+        + "    ]")
+    List<Map<String, String>> categories;
 
 }
