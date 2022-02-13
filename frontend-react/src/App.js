@@ -73,7 +73,7 @@ function App() {
       <div className="content">
         <Router>
           {/* <Header authenticated={authenticated} isLogin={isLogin} /> */}
-          {/* <ResponsiveAppBar /> */}
+          <ResponsiveAppBar />
           <Routes>
             <Route path="/" element={<Index />}></Route>
             <Route path="/studylist" element={<StudyList />}></Route>
