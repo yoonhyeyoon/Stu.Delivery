@@ -164,10 +164,12 @@ function Schedule({ schedule }) {
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
             <div className={styles.modal_text_aria}>
-              <SelectDate
-                startDate={newStartDate}
-                setStartDate={setNewStartDate}
-              />
+              <div className={styles.modal_date}>
+                <SelectDate
+                  startDate={newStartDate}
+                  setStartDate={setNewStartDate}
+                />
+              </div>
               <h3>일정명</h3>
               <input
                 className={styles.title}
@@ -187,12 +189,14 @@ function Schedule({ schedule }) {
                   {newContent.length}/{contentLimit}
                 </h3>
               </div>
-              <button
-                className={styles.modal_btn}
-                onClick={handleUpdateSchedule}
-              >
-                수정하기
-              </button>
+              <div className={styles.modal_btn_wrap}>
+                <button
+                  className={styles.modal_btn}
+                  onClick={handleUpdateSchedule}
+                >
+                  수정하기
+                </button>
+              </div>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>

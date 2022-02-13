@@ -113,9 +113,11 @@ function EditMemo({ memo }) {
               <h3>
                 {newContent.length}/{contentLimit}
               </h3>
-              <button className={styles.modal_btn} onClick={handleUpdateMemo}>
-                수정하기
-              </button>
+              <div className={styles.modal_btn_wrap}>
+                <button className={styles.modal_btn} onClick={handleUpdateMemo}>
+                  수정하기
+                </button>
+              </div>
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>

@@ -42,7 +42,9 @@ function MemoList() {
   }, [dispatch]);
   return (
     <>
-      <AddMemo />
+      <div className={styles.frame_header}>
+        <AddMemo />
+      </div>
       <div className={styles.frame} ref={memoContainer}>
         {memos &&
           memos.map((memo) => <Memo key={memo.study_board_id} memo={memo} />)}

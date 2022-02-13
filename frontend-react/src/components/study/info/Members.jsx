@@ -18,12 +18,15 @@ import { useParams } from "react-router";
 
 function Members({ members }) {
   const params = useParams();
+  const study = useSelector((state) => state.study.study);
+  const user = useSelector((state) => state.user.user);
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: "#f2dcc2",
     },
   }));
+
   const rows = members;
   const handleOut = (email) => {
     axios({
@@ -36,7 +39,7 @@ function Members({ members }) {
     })
       .then((res) => {
         console.log(res.data);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +57,7 @@ function Members({ members }) {
     })
       .then((res) => {
         console.log(res.data);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -74,37 +77,55 @@ function Members({ members }) {
             {/* <StyledTableCell align="right">닉네임</StyledTableCell> */}
             <StyledTableCell>관심사</StyledTableCell>
             <StyledTableCell>한마디</StyledTableCell>
-            <StyledTableCell>강퇴</StyledTableCell>
-            <StyledTableCell>스터디장위임</StyledTableCell>
+            {study.master_id === user.id ? (
+              <>
+                <StyledTableCell>강퇴</StyledTableCell>
+                <StyledTableCell>스터디장위임</StyledTableCell>
+              </>
+            ) : null}
           </TableRow>
         </TableHead>
         <TableBody>
           {rows
             ? rows.map((row) => (
                 <TableRow
-                  // onClick={(event) => handleClick(event, row.id)}
                   key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    <Avatar>{row.nickname.slice(0, 1)}</Avatar>
+                    <Avatar
+                      sx={
+                        row.id === study.master_id
+                          ? { bgcolor: "#bf7a26" }
+                          : null
+                      }
+                    >
+                      {row.nickname.slice(0, 1)}
+                    </Avatar>
                     {row.nickname}
                   </TableCell>
-                  {/* <TableCell align="right">{row.email}</TableCell> */}
                   <TableCell>리액트...</TableCell>
                   <TableCell>화이팅..</TableCell>
-                  <TableCell>
-                    <DisabledByDefaultIcon
-                      color="error"
-                      onClick={() => handleOut(row.email)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <EscalatorWarningIcon
-                      color="warning"
-                      onClick={() => handleMaster(row.email)}
-                    />
-                  </TableCell>
+                  {study.master_id === user.id ? (
+                    <>
+                      <TableCell>
+                        {row.id === study.master_id ? null : (
+                          <DisabledByDefaultIcon
+                            color="error"
+                            onClick={() => handleOut(row.email)}
+                          />
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {row.id === study.master_id ? null : (
+                          <EscalatorWarningIcon
+                            color="warning"
+                            onClick={() => handleMaster(row.email)}
+                          />
+                        )}
+                      </TableCell>
+                    </>
+                  ) : null}
                 </TableRow>
               ))
             : null}

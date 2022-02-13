@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 // import Button from "@material-ui/core/Button";
 import Button from "react-bootstrap/Button";
 import { useParams } from "react-router";
+// import { Modal } from "@mui/material";
+import Modal from "react-bootstrap/Modal";
+import StudyInfoUpdate from "../../info/StudyInfoUpdate";
 
 function StudyBtn() {
   const params = useParams();
@@ -32,6 +35,11 @@ function StudyBtn() {
         alert(err.response.data.errorMessage);
       });
   };
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <>
       {isMember ? (
@@ -48,9 +56,14 @@ function StudyBtn() {
         </Button>
       )}
       {study.master_id === user.id ? (
-        <Button className={styles.btn}>
-          <Link to="/study">스터디 정보 수정</Link>
-        </Button>
+        <>
+          <Button className={styles.btn} onClick={handleShow}>
+            스터디 정보 수정
+          </Button>
+          <Modal show={show} onHide={handleClose}>
+            <StudyInfoUpdate />
+          </Modal>
+        </>
       ) : null}
     </>
   );

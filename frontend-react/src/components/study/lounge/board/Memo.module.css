@@ -1,4 +1,11 @@
 /* add */
+.frame_header {
+  height: 2rem;
+  width: 25rem;
+  /* background-color: #f2f2e8; */
+  margin: 35px;
+}
+
 .frame {
   display: flex;
   height: 25rem;
@@ -116,7 +123,9 @@
 h3 {
   text-align: center;
 }
-
+.modal_btn_wrap {
+  text-align: center;
+}
 .modal_btn {
   border: 2px solid black;
   font-size: 25px;
