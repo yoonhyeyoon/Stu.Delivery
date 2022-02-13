@@ -12,7 +12,7 @@ const Study = ({ study }) => {
           </article>
         );
       })} */}
-      <Link to={`/study/${study && study.id}`}>{study && study.name}</Link>
+      <Link to={`/study/${study && study.id}/info`}>{study && study.name}</Link>
     </div>
   );
 };
