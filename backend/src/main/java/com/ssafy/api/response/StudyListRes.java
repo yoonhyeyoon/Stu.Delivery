@@ -1,8 +1,11 @@
 package com.ssafy.api.response;
 
 import com.ssafy.db.entity.Study;
+import com.ssafy.db.entity.StudyCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +31,18 @@ public class StudyListRes {
     @ApiModelProperty(name = "스터디 현재 인원", example = "3")
     Integer user_num;
 
+    @ApiModelProperty(name = "스터디 카테고리 리스트", example = "[\n"
+        + "        {\n"
+        + "            \"id\": 1,\n"
+        + "            \"name\": \"react\"\n"
+        + "        },\n"
+        + "        {\n"
+        + "            \"id\": 2,\n"
+        + "            \"name\": \"spring\"\n"
+        + "        }\n"
+        + "    ]")
+    List<CategoryRes> categories;
+
     public static StudyListRes of(Study study) {
         StudyListRes res = new StudyListRes();
         res.setId(study.getId());
@@ -36,6 +51,9 @@ public class StudyListRes {
         res.setThumbnail_url(study.getThumbnailUrl());
         res.setMax_user_num(study.getMaxUserNum());
         res.setUser_num(study.getStudyMembers().size());
+        res.setCategories(study.getStudyCategories().stream().map((StudyCategory sc) -> {
+            return CategoryRes.of(sc.getCategory());
+        }).collect(Collectors.toList()));
         return res;
     }
 }

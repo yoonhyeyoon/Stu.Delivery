@@ -5,7 +5,6 @@ import com.ssafy.api.request.StudyBoardReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
-import com.ssafy.api.response.StudyCreateRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.db.entity.User;

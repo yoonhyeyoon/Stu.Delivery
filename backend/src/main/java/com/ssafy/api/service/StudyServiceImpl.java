@@ -5,21 +5,23 @@ import com.ssafy.api.request.StudyBoardReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
-import com.ssafy.api.response.StudyCreateRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
+import com.ssafy.db.entity.Category;
 import com.ssafy.db.entity.Location;
 import com.ssafy.db.entity.RegularSchedule;
 import com.ssafy.db.entity.Schedule;
 import com.ssafy.db.entity.Study;
 import com.ssafy.db.entity.StudyBoard;
+import com.ssafy.db.entity.StudyCategory;
 import com.ssafy.db.entity.StudyMember;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RegularScheduleRepository;
 import com.ssafy.db.repository.ScheduleRepository;
 import com.ssafy.db.repository.StudyBoardRepository;
+import com.ssafy.db.repository.StudyCategoryRepository;
 import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
 import java.text.SimpleDateFormat;
@@ -53,6 +55,9 @@ public class StudyServiceImpl implements StudyService {
 
     @Autowired
     ScheduleRepository scheduleRepository;
+
+    @Autowired
+    StudyCategoryRepository studyCategoryRepository;
 
     @Override
     public List<StudyListRes> getStudyList() {
@@ -104,26 +109,47 @@ public class StudyServiceImpl implements StudyService {
 
         // 정기 일정 추가
         List<Map<String, String>> schList = req.getRegular_schedules();
-        List<RegularSchedule> regularSchedules = new ArrayList<>();
-        for (Map<String, String> schMap : schList) {
-            String dayOfWeek = schMap.get("day_of_week");
-            String time = schMap.get("time");
-            if (dayOfWeek == null || time == null) {
-                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+        if (schList != null) {
+            List<RegularSchedule> regularSchedules = new ArrayList<>();
+            for (Map<String, String> schMap : schList) {
+                String dayOfWeek = schMap.get("day_of_week");
+                String time = schMap.get("time");
+                if (dayOfWeek == null || time == null) {
+                    throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+                }
+                RegularSchedule regularSchedule;
+                try {
+                    regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
+                } catch (IllegalArgumentException e) {
+                    throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+                } catch (DateTimeParseException e) {
+                    throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+                }
+                regularSchedules.add(regularSchedule);
             }
-            RegularSchedule regularSchedule;
-            try {
-                regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
-            } catch (IllegalArgumentException e) {
-                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
-            } catch (DateTimeParseException e) {
-                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
-            }
-            regularSchedule.setStudy(resStudy);
-            regularSchedules.add(regularSchedule);
+
+            List<RegularSchedule> resRegularScheduleList = regularScheduleRepository.saveAll(regularSchedules);
+            resStudy.setRegularSchedules(resRegularScheduleList);
         }
 
-        regularScheduleRepository.saveAll(regularSchedules);
+        // 카테고리 추가
+        if (req.getCategories() != null) {
+            List<StudyCategory> studyCategoryList = new ArrayList<>();
+            for (Map<String, String> categoryMap : req.getCategories()) {
+                Category category = new Category();
+                category.setId(Long.parseLong(categoryMap.get("id")));
+                category.setName(categoryMap.get("name"));
+
+                StudyCategory studyCategory = new StudyCategory();
+                studyCategory.setStudy(study);
+                studyCategory.setCategory(category);
+
+                studyCategoryList.add(studyCategory);
+            }
+
+            List<StudyCategory> resStudyCategoryList = studyCategoryRepository.saveAll(studyCategoryList);
+            resStudy.setStudyCategories(resStudyCategoryList);
+        }
 
         return StudyRes.of(resStudy);
     }
@@ -151,32 +177,52 @@ public class StudyServiceImpl implements StudyService {
         }
         Study resStudy = studyRepository.save(study);
 
-        // 기존 정기 일정 삭제
-        regularScheduleRepository.deleteByStudyId(studyId);
-        resStudy.getRegularSchedules().clear();
-
         // 정기 일정 추가
         List<Map<String, String>> schList = req.getRegular_schedules();
-        List<RegularSchedule> regularSchedules = new ArrayList<>();
-        for (Map<String, String> schMap : schList) {
-            String dayOfWeek = schMap.get("day_of_week");
-            String time = schMap.get("time");
-            if (dayOfWeek == null || time == null) {
-                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+        if (schList != null) {
+            List<RegularSchedule> regularSchedules = new ArrayList<>();
+
+            for (Map<String, String> schMap : schList) {
+                String dayOfWeek = schMap.get("day_of_week");
+                String time = schMap.get("time");
+                if (dayOfWeek == null || time == null) {
+                    throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+                }
+                RegularSchedule regularSchedule;
+                try {
+                    regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
+                } catch (IllegalArgumentException e) {
+                    throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+                } catch (DateTimeParseException e) {
+                    throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
+                }
+                regularSchedules.add(regularSchedule);
             }
-            RegularSchedule regularSchedule;
-            try {
-                regularSchedule = RegularSchedule.parseToRegularSchedule(dayOfWeek, time);
-            } catch (IllegalArgumentException e) {
-                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
-            } catch (DateTimeParseException e) {
-                throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
-            }
-            regularSchedule.setStudy(resStudy);
-            regularSchedules.add(regularSchedule);
+
+            regularScheduleRepository.deleteAllByStudyId(studyId);
+            List<RegularSchedule> resRegularScheduleList = regularScheduleRepository.saveAll(regularSchedules);
+            resStudy.setRegularSchedules(resRegularScheduleList);
         }
 
-        regularScheduleRepository.saveAll(regularSchedules);
+        // 카테고리 추가
+        if (req.getCategories() != null) {
+            List<StudyCategory> studyCategoryList = new ArrayList<>();
+            for (Map<String, String> categoryMap : req.getCategories()) {
+                Category category = new Category();
+                category.setId(Long.parseLong(categoryMap.get("id")));
+                category.setName(categoryMap.get("name"));
+
+                StudyCategory studyCategory = new StudyCategory();
+                studyCategory.setStudy(study);
+                studyCategory.setCategory(category);
+
+                studyCategoryList.add(studyCategory);
+            }
+
+            studyCategoryRepository.deleteAllByStudyId(studyId);
+            List<StudyCategory> resStudyCategoryList = studyCategoryRepository.saveAll(studyCategoryList);
+            resStudy.setStudyCategories(resStudyCategoryList);
+        }
 
         return StudyRes.of(resStudy);
     }
