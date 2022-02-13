@@ -1,8 +1,8 @@
 package com.ssafy.api.request;
 
-import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +10,9 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserUpdateReq")
 public class UserUpdateReq {
-
-    User user;
+    String nick_name;
+    String profile_img;
+    String birth;
+    String determination;
+    List<Map<String, String>> categories;
 }
