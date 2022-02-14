@@ -9,6 +9,13 @@ import {
   Modal,
   Container,
   TextField,
+  TableContainer,
+  TableBody,
+  TableCell,
+  Table,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -34,7 +41,6 @@ const Todolist = () => {
   const inputRef = useRef();
 
   const handleGoal = (event) => {
-    console.log(event);
     setGoal(event.target.value);
   };
   const handleOpen = () => setOpen(true);
@@ -100,8 +106,8 @@ const Todolist = () => {
       <Box sx={{ border: 2, mt: 1 }}>
         <Stack spacing={1} direction="column">
           <Stack spacing={1} direction="row" alignItems="center">
-            {goals.map((mygoal) => (
-              <Fragment key={mygoal}>
+            {goals.map((mygoal, index) => (
+              <Fragment key={index}>
                 <Checkbox onChange={controlTodo} />
                 <Typography variant="body" gutterBottom>
                   {mygoal}

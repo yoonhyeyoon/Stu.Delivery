@@ -160,6 +160,21 @@ const CreateStudy = () => {
       console.log(dayjs(date[0]).format("YYYY-MM-DD"));
 
       let link_url = "https://i6d201.p.ssafy.io/study/" + url;
+
+      await axios({
+        method: "post",
+        url: "https://i6d201.p.ssafy.io:8443/openvidu/api/sessions",
+        headers: {
+          Authorization: `Basic btoa("OPENVIDUAPP:" + "STUDELIVERY")`,
+        },
+      })
+        .then((response) => {
+          console.log("Video conference is created.");
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+
       await axios({
         method: "post",
         url: "https://i6d201.p.ssafy.io/api/v1/study",
@@ -183,10 +198,6 @@ const CreateStudy = () => {
         .catch((error) => {
           console.log(error.response);
         });
-
-      // await axios({
-      //   method: "post"
-      // })
     }
   };
 
@@ -267,6 +278,19 @@ const CreateStudy = () => {
                   />
                 )}
               />
+              {/* <FormLabel component="legend" sx={{ color: "text.primary" }}>
+                일정
+              </FormLabel>
+              <TextField
+                margin="dense"
+                required
+                fullWidth
+                id="title"
+                label="스터디 일정을 입력해주세요."
+                name="title"
+                sx={{ mb: 5 }}
+                onChange={onTitleHandler}
+              /> */}
               {/* <TextField
                 margin="dense"
                 fullWidth

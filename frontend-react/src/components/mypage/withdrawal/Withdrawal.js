@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { setHeader } from "../../../utils/api";
 
+import { Container, Box, Button, Typography } from "@mui/material";
+
 const unjoin = () => {
   console.log("회원탈퇴");
 
