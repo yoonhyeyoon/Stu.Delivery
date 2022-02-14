@@ -27,11 +27,15 @@ public class UserRes {
         res.setEmail(user.getEmail());
         res.setNick_name(user.getNickName());
         res.setProfile_img(user.getProfileImg());
-        res.setBirth(user.getBirth().toString());
+        if (user.getBirth() != null) {
+            res.setBirth(user.getBirth().toString());
+        }
         res.setDetermination(user.getDetermination());
-        res.setCategories(user.getUserCategories().stream().map((UserCategory uc) -> {
-            return CategoryRes.of(uc.getCategory());
-        }).collect(Collectors.toList()));
+        if (user.getUserCategories() != null && user.getUserCategories().size() > 0) {
+            res.setCategories(user.getUserCategories().stream().map((UserCategory uc) -> {
+                return CategoryRes.of(uc.getCategory());
+            }).collect(Collectors.toList()));
+        }
         return res;
     }
 
