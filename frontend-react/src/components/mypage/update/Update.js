@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { LocalizationProvider, DatePicker } from "@mui/lab";
 import {
+  Autocomplete,
   Container,
   CssBaseline,
   Box,
@@ -14,18 +15,22 @@ import {
   Grid,
   Modal,
   Button,
+  Chip,
 } from "@mui/material";
 
 import { setHeader } from "../../../utils/api";
 import axios from "axios";
 import CheckPwd from "./checkpwd/CheckPwd";
+import dayjs from "dayjs";
 
 const Update = () => {
+  const [email, setEmail] = useState(""); // 이메일
   const [img, setImg] = useState(""); // 프로필 사진
   const [previewUrl, setPreviewUrl] = useState(""); // 프로필 사진 URL
   const [nickname, setNickname] = useState(""); // 닉네임
   const [birthday, setBirthday] = useState(""); // 생년월일
   const [interest, setInterest] = useState(""); // 관심사
+  const [interestList, setInterestList] = useState([]);
   const [aspire, setAspire] = useState(""); // 나의 한마디
   const imgInput = useRef();
 
@@ -44,6 +49,56 @@ const Update = () => {
   const [curPassword, setCurPassword] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+
+  const [categoryList, setCategoryList] = useState([]);
+
+  useEffect(() => {
+    // 페이지가 처음 로드될 때 서버에서 유저 정보 받아옴
+    const getUserInfo = () => {
+      axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/users",
+        headers: setHeader(),
+      })
+        .then((response) => {
+          const resNick = response.data.nick_name;
+          const resProfile = response.data.profile_img;
+          const resBirthday = response.data.birth;
+          const resAspire = response.data.determination;
+          const resInterest = response.data.categories;
+
+          setEmail(response.data.email);
+          setNickname(resNick !== null ? resNick : "");
+          setPreviewUrl(resProfile !== null ? resProfile : "");
+          setBirthday(resBirthday !== null ? resBirthday : "");
+          setAspire(resAspire !== null ? resAspire : "");
+          setInterestList(resInterest !== null ? resInterest : []);
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
+    };
+
+    const getCategories = () => {
+      // 관심사 카테고리도 같이 받아오기
+      axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/category",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          setCategoryList(response.data);
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
+    };
+
+    getUserInfo();
+    getCategories();
+  }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -83,6 +138,7 @@ const Update = () => {
   };
 
   const changePassword = () => {
+    // 비밀번호 변경
     if (isValid && pwdCheck) {
       axios({
         method: "patch",
@@ -107,6 +163,35 @@ const Update = () => {
     }
   };
 
+  const updateInfo = () => {
+    // 회원정보수정
+    console.log(nickname);
+    console.log(previewUrl);
+    console.log(dayjs(birthday).format("YYYY-MM-DD"));
+    console.log(JSON.stringify(interestList));
+    console.log(aspire);
+
+    axios({
+      method: "put",
+      url: "https://i6d201.p.ssafy.io/api/v1/users",
+      headers: setHeader(),
+      data: {
+        nick_name: nickname,
+        profile_img: previewUrl,
+        birth: dayjs(birthday).format("YYYY-MM-DD"),
+        determination: aspire,
+        categories: JSON.parse(JSON.stringify(interestList)),
+      },
+    })
+      .then((response) => {
+        alert("회원정보가 정상적으로 수정되었습니다.");
+        window.location.href = "/mypage/dashboard";
+      })
+      .catch((e) => {
+        console.log(e.response);
+      });
+  };
+
   const style = {
     // modal css
     position: "absolute",
@@ -120,6 +205,7 @@ const Update = () => {
     p: 4,
   };
 
+  // 프로필 사진 변경
   const onImgChange = async (event) => {
     let reader = new FileReader();
     let file = event.target.files[0];
@@ -147,22 +233,35 @@ const Update = () => {
     }
   };
 
-  const onBirthdayHandler = (event) => {
-    setBirthday(event.target.value);
-  };
-
+  // 관심사 정보 추가
   const onInterestHandler = (event) => {
-    const currentInterest = event.target.value;
-    setInterest(currentInterest);
+    if (event.type === "click") {
+      // 목록에서 클릭했을 때
+      const inter = categoryList.filter(
+        (value) => value.name === event.target.innerText
+      );
+
+      if (inter.length !== 0 && !interestList.includes(inter)) {
+        setInterestList([...interestList, ...inter]);
+      }
+      console.log(interestList);
+    } else if (event.type === "change") {
+      // 직접 타이핑하는 경우
+      const inter = categoryList.filter(
+        (value) => value.name === event.target.value
+      );
+
+      if (inter.length !== 0 && !interestList.includes(inter)) {
+        setInterestList([...interestList, ...inter]);
+      }
+      console.log(interestList);
+    }
   };
 
+  // 나의 한마디 설정
   const onAspireHandler = (event) => {
     const currentAspire = event.target.value;
     setAspire(currentAspire);
-  };
-
-  const onSubmit = () => {
-    console.log("submit!");
   };
 
   return (
@@ -289,62 +388,91 @@ const Update = () => {
             </Stack>
           </Box>
         </Modal>
-        <Box noValidate sx={{ mt: 1, width: "auto", alignItems: "center" }}>
-          <FormLabel component="legend" sx={{ color: "text.primary" }}>
-            닉네임
-          </FormLabel>
-          <TextField
-            margin="dense"
-            required
-            fullWidth
-            id="title"
-            label="닉네임을 입력해주세요."
-            name="title"
-            sx={{ mb: 5 }}
-            onChange={onNicknameHandler}
+        <FormLabel component="legend" sx={{ color: "text.primary" }}>
+          닉네임
+        </FormLabel>
+        <TextField
+          margin="dense"
+          required
+          fullWidth
+          id="title"
+          label="닉네임을 입력해주세요."
+          name="title"
+          sx={{ mb: 5 }}
+          onChange={onNicknameHandler}
+        />
+        <FormLabel component="legend" sx={{ color: "text.primary", mb: 2 }}>
+          생년월일
+        </FormLabel>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          sx={{ mb: 5, width: "100%" }}
+        >
+          <DatePicker
+            label="생년월일을 선택해주세요."
+            value={birthday}
+            minDate={new Date("1900-01-01")}
+            inputFormat={"yyyy-MM-dd"}
+            mask={"____-__-__"}
+            onChange={(newValue) => {
+              setBirthday(newValue);
+            }}
+            renderInput={(params) => (
+              <TextField sx={{ mb: 5, width: "100%" }} {...params} />
+            )}
           />
-          <FormLabel component="legend" sx={{ color: "text.primary", mb: 2 }}>
-            생년월일
-          </FormLabel>
-          <LocalizationProvider dateAdapter={AdapterDateFns} sx={{ mb: 5 }}>
-            <DatePicker
-              label="생년월일을 선택해주세요."
-              value={birthday}
-              minDate={new Date("1900-01-01")}
-              inputFormat={"yyyy-MM-dd"}
-              mask={"____-__-__"}
-              onChange={(newValue) => {
-                setBirthday(newValue);
-              }}
-              renderInput={(params) => <TextField sx={{ mb: 5 }} {...params} />}
+        </LocalizationProvider>
+        <FormLabel component="legend" sx={{ color: "text.primary" }}>
+          관심사
+        </FormLabel>
+        <Autocomplete
+          disablePortal
+          options={categoryList}
+          sx={{ width: "100%" }}
+          getOptionLabel={(option) => {
+            return option.name;
+          }}
+          onInputChange={onInterestHandler}
+          renderInput={(params) => (
+            <TextField
+              margin="dense"
+              required
+              fullWidth
+              id="interest"
+              sx={{ mb: 5 }}
+              {...params}
+              label="관심사를 입력해주세요"
             />
-          </LocalizationProvider>
-          <FormLabel component="legend" sx={{ color: "text.primary" }}>
-            관심사
-          </FormLabel>
-          <TextField
-            margin="dense"
-            required
-            fullWidth
-            id="title"
-            label="관심사를 입력해주세요."
-            name="title"
-            sx={{ mb: 5 }}
-          />
-          <FormLabel component="legend" sx={{ color: "text.primary" }}>
-            나의 한마디
-          </FormLabel>
-          <TextField
-            margin="dense"
-            required
-            fullWidth
-            id="title"
-            label="하고 싶은 말을 적어주세요."
-            name="title"
-            sx={{ mb: 5 }}
-            onChange={onAspireHandler}
-          />
-        </Box>
+          )}
+        />
+        {/* <Stack direction="row" spacing={1}>
+          {interestList.map(({ id, name }, index) => {
+            console.log(id, name);
+            return (
+              <Chip
+                key={index}
+                label={name}
+                onDelete={() => {
+                  interestList.splice(index, 1);
+                  console.log(interestList);
+                }}
+              />
+            );
+          })}
+        </Stack> */}
+        <FormLabel component="legend" sx={{ color: "text.primary" }}>
+          나의 한마디
+        </FormLabel>
+        <TextField
+          margin="dense"
+          required
+          fullWidth
+          id="title"
+          label="하고 싶은 말을 적어주세요."
+          name="title"
+          sx={{ mb: 5 }}
+          onChange={onAspireHandler}
+        />
         <Button
           variant="contained"
           style={{
@@ -352,91 +480,11 @@ const Update = () => {
             borderColor: "rgba(191, 127, 38, 0.7)",
           }}
           sx={{ mt: 3, mb: 2 }}
+          onClick={updateInfo}
         >
           프로필 변경
         </Button>
       </Box>
-
-      {/* <h2 className="title">회원정보수정</h2>
-      <div className="container-group">
-        <div className="profilePic">
-          <input
-            type="file"
-            accept="image/*"
-            className="profile_img"
-            name="profile_img"
-            ref={imgInput}
-            onChange={onImgChange}
-          />
-          <button type="button" onClick={onImgButtonClick}>
-            프로필 사진 선택
-          </button>
-          {img !== "" ? (
-            <img className="profile_preview" src={previewUrl} alt="profile" />
-          ) : null}
-        </div>
-      </div>
-      <Form onSubmit={onSubmit} className={styles.form}>
-        <Form.Group as={Row} className="mb-3">
-          <Col sm>
-            <Form.Control
-              type="text"
-              placeholder="닉네임"
-              value={nickname}
-              onChange={onNicknameHandler}
-            />
-            <Form.Text className={isName ? styles.success : styles.error}>
-              {nameMessage}
-            </Form.Text>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Col sm>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDatePicker
-                label="생년월일"
-                value={birthday}
-                minDate={new Date("1900-01-01")}
-                inputFormat={"yyyy-MM-dd"}
-                mask={"____-__-__"}
-                onChange={(newValue) => {
-                  setBirthday(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Col sm>
-            <Form.Control
-              type="text"
-              placeholder="관심사"
-              value={interest}
-              onChange={onInterestHandler}
-            />
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Col sm>
-            <Form.Control
-              type="text"
-              placeholder="나의 한마디"
-              value={aspire}
-              onChange={onAspireHandler}
-            />
-          </Col>
-        </Form.Group>
-        <div className="d-grid gap-1">
-          <Button
-            className={`${styles.submit} text_white`}
-            variant="warning"
-            type="submit"
-          >
-            프로필 변경 완료
-          </Button>
-        </div>
-      </Form> */}
     </Container>
   );
 };
