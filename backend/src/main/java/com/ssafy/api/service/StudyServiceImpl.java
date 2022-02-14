@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
+import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
@@ -243,6 +244,13 @@ public class StudyServiceImpl implements StudyService {
         }
         studyRepository.delete(study);
         return;
+    }
+
+    @Override
+    public Boolean checkPassword(Long studyId, StudyPasswordReq req) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        return study.getPassword().equals(req.getPassword());
     }
 
     @Override

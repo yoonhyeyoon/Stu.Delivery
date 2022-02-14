@@ -1,10 +1,8 @@
 package com.ssafy.api.response;
 
-import com.ssafy.db.entity.Category;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserCategory;
 import io.swagger.annotations.ApiModel;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
