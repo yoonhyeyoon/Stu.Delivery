@@ -22,44 +22,44 @@ export default class StreamComponent extends Component {
       mutedSound: false,
       isFormValid: true,
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePressKey = this.handlePressKey.bind(this);
-    this.toggleNicknameForm = this.toggleNicknameForm.bind(this);
-    this.toggleSound = this.toggleSound.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handlePressKey = this.handlePressKey.bind(this);
+    // this.toggleNicknameForm = this.toggleNicknameForm.bind(this);
+    // this.toggleSound = this.toggleSound.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ nickname: event.target.value });
-    event.preventDefault();
-  }
+  // handleChange(event) {
+  //   this.setState({ nickname: event.target.value });
+  //   event.preventDefault();
+  // }
 
-  toggleNicknameForm() {
-    if (this.props.user.isLocal()) {
-      this.setState({ showForm: !this.state.showForm });
-    }
-  }
+  // toggleNicknameForm() {
+  //   if (this.props.user.isLocal()) {
+  //     this.setState({ showForm: !this.state.showForm });
+  //   }
+  // }
 
-  toggleSound() {
-    this.setState({ mutedSound: !this.state.mutedSound });
-  }
+  // toggleSound() {
+  //   this.setState({ mutedSound: !this.state.mutedSound });
+  // }
 
-  handlePressKey(event) {
-    if (event.key === "Enter") {
-      console.log(this.state.nickname);
-      if (this.state.nickname.length >= 3 && this.state.nickname.length <= 20) {
-        this.props.handleNickname(this.state.nickname);
-        this.toggleNicknameForm();
-        this.setState({ isFormValid: true });
-      } else {
-        this.setState({ isFormValid: false });
-      }
-    }
-  }
+  // handlePressKey(event) {
+  //   if (event.key === "Enter") {
+  //     console.log(this.state.nickname);
+  //     if (this.state.nickname.length >= 3 && this.state.nickname.length <= 20) {
+  //       this.props.handleNickname(this.state.nickname);
+  //       this.toggleNicknameForm();
+  //       this.setState({ isFormValid: true });
+  //     } else {
+  //       this.setState({ isFormValid: false });
+  //     }
+  //   }
+  // }
 
   render() {
     return (
-      <div className="OT_widget-container">
-        <div className="pointer nickname">
+      <div>
+        {/* <div className="pointer nickname">
           {this.state.showForm ? (
             <FormControl id="nicknameForm">
               <IconButton
@@ -92,11 +92,14 @@ export default class StreamComponent extends Component {
               )}
             </FormControl>
           ) : (
-            <div onClick={this.toggleNicknameForm}>
-              <span id="nickname">{this.props.user.getNickname()}</span>
-              {this.props.user.isLocal() && <span id=""> (edit)</span>}
-            </div>
+            
           )}
+        </div> */}
+        <div className="pointer nickname">
+          <div onClick={this.toggleNicknameForm}>
+            <span id="nickname">{this.props.user.getNickname()}</span>
+            {this.props.user.isLocal() && <span id=""> (edit)</span>}
+          </div>
         </div>
 
         {this.props.user !== undefined &&
@@ -106,30 +109,6 @@ export default class StreamComponent extends Component {
               user={this.props.user}
               mutedSound={this.state.mutedSound}
             />
-            <div id="statusIcons">
-              {!this.props.user.isVideoActive() ? (
-                <div id="camIcon">
-                  <VideocamOff id="statusCam" />
-                </div>
-              ) : null}
-
-              {!this.props.user.isAudioActive() ? (
-                <div id="micIcon">
-                  <MicOff id="statusMic" />
-                </div>
-              ) : null}
-            </div>
-            <div>
-              {!this.props.user.isLocal() && (
-                <IconButton id="volumeButton" onClick={this.toggleSound}>
-                  {this.state.mutedSound ? (
-                    <VolumeOff color="secondary" />
-                  ) : (
-                    <VolumeUp />
-                  )}
-                </IconButton>
-              )}
-            </div>
           </div>
         ) : null}
       </div>
