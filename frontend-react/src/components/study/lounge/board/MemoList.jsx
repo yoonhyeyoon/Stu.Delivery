@@ -40,7 +40,7 @@ function MemoList() {
     };
     fetchMemo();
   }, [dispatch]);
-  console.log(memos);
+  // console.log(memos);
   return (
     <>
       <div className={styles.frame_header}>

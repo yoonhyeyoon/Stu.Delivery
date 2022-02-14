@@ -86,7 +86,10 @@ function App() {
               element={<OAuth2RedirectHandler />}
             ></Route>
             {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
-            <Route path="/webrtc" element={<VideoRoomComponent />}></Route>
+            <Route
+              path="study/:id/webrtc/"
+              element={<VideoRoomComponent />}
+            ></Route>
             <Route path="/studygroup" element={<StudyGroup />}></Route>
             <Route
               path="/videoconference"

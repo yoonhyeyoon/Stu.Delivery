@@ -9,12 +9,18 @@ import ChatComponent from "./chat/ChatComponent";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
+import { connect } from "react-redux";
 
 var localUser = new UserModel();
 
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
+    const study = this.props.study;
+    const user_nickname = this.props.user;
+    const private_room_id = this.props.study.private_room_id;
+    const meeting_room_id = this.props.study.meeting_room_id;
+    // console.log(user_nickname, meeting_room_id);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
       : "https://" + "i6d201.p.ssafy.io" + ":8443";
@@ -33,8 +39,8 @@ class VideoRoomComponent extends Component {
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
-      mySessionId: sessionName,
-      myUserName: userName,
+      mySessionId: meeting_room_id,
+      myUserName: user_nickname,
       session: undefined,
       localUser: undefined,
       subscribers: [],
@@ -729,4 +735,10 @@ class VideoRoomComponent extends Component {
     });
   }
 }
-export default VideoRoomComponent;
+const mapStateToProps = (state) => {
+  return {
+    study: state.study.study,
+    user: state.user.user.nickname,
+  };
+};
+export default connect(mapStateToProps)(VideoRoomComponent);
