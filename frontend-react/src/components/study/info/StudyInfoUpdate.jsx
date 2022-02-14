@@ -193,7 +193,7 @@ const StudyInfoUpdate = () => {
     await axios({
       method: "DELETE",
       url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
-      header: setHeader(),
+      headers: setHeader(),
     })
       .then((res) => {
         console.log(res.data);
