@@ -32,7 +32,7 @@ class VideoRoomComponent extends Component {
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "SessionAqewrt";
+      : "SessionAqewrdt";
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
@@ -256,7 +256,7 @@ class VideoRoomComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionAqqw",
+      mySessionId: "SessionAqqwd",
       myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
       localUser: undefined,
     });
@@ -468,7 +468,7 @@ class VideoRoomComponent extends Component {
     const videoSource =
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
     const publisher = this.OV.initPublisher(
-      undefined,
+      "html-element-id",
       {
         videoSource: videoSource,
         publishAudio: localUser.isAudioActive(),
@@ -489,6 +489,7 @@ class VideoRoomComponent extends Component {
     );
 
     publisher.once("accessAllowed", () => {
+      console.log("accessAllowd");
       this.state.session.unpublish(localUser.getStreamManager());
       localUser.setStreamManager(publisher);
       this.state.session.publish(localUser.getStreamManager()).then(() => {
@@ -499,8 +500,13 @@ class VideoRoomComponent extends Component {
           });
         });
       });
+      publisher.stream.getMediaStream().getVideoTracks()[0].applyConstraints({
+        width: 1280,
+        height: 720,
+      });
     });
     publisher.on("streamPlaying", () => {
+      console.log("streamPlaying");
       this.updateLayout();
       publisher.videos[0].video.parentElement.classList.remove("custom-class");
     });
