@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
+import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
@@ -17,6 +18,7 @@ public interface StudyService {
     StudyRes updateStudy(User user, Long studyId, StudyReq studyReq);
     StudyRes getStudy(Long studyId);
     void deleteStudy(User user, Long studyId);
+    Boolean checkPassword(Long studyId, StudyPasswordReq req);
 
     // 스터디 멤버
     void joinStudy(User user, Long studyId);
