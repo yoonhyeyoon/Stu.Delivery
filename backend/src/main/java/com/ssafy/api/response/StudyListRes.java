@@ -25,6 +25,9 @@ public class StudyListRes {
     @ApiModelProperty(name = "썸네일", example = "/resources/thumbnails/1.png")
     String thumbnail_url;
 
+    @ApiModelProperty(name = "비공개 여부", example = "true")
+    Boolean is_private;
+
     @ApiModelProperty(name = "스터디 최대 인원", example = "8")
     Integer max_user_num;
 
@@ -49,6 +52,7 @@ public class StudyListRes {
         res.setName(study.getName());
         res.setMaster_id(study.getMaster().getId());
         res.setThumbnail_url(study.getThumbnailUrl());
+        res.setIs_private(study.getIsPrivate());
         res.setMax_user_num(study.getMaxUserNum());
         res.setUser_num(study.getStudyMembers().size());
         res.setCategories(study.getStudyCategories().stream().map((StudyCategory sc) -> {
