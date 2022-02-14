@@ -16,6 +16,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -40,8 +43,12 @@ public class StudyController {
 
     @GetMapping
     @ApiOperation(value = "스터디 리스트 가져오기", notes = "스터디 리스트를 가져온다.")
-    public ResponseEntity<List<StudyListRes>> getStudyList() {
-        List<StudyListRes> res = this.studyService.getStudyList();
+    public ResponseEntity<List<StudyListRes>> getStudyList(
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC, size = 10) Pageable pageable,
+        @RequestParam(required = false, defaultValue = "") String name,
+        @RequestParam(required = false, defaultValue = "") List<Long> categories) {
+
+        List<StudyListRes> res = this.studyService.getStudyList(pageable, name, categories);
         return ResponseEntity.ok(res);
     }
 

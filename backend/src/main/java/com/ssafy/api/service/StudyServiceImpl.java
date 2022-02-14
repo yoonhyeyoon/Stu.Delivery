@@ -25,6 +25,7 @@ import com.ssafy.db.repository.StudyBoardRepository;
 import com.ssafy.db.repository.StudyCategoryRepository;
 import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
+import com.ssafy.db.repository.StudyRepositorySupport;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +47,9 @@ public class StudyServiceImpl implements StudyService {
 
     @Autowired
     StudyRepository studyRepository;
+
+    @Autowired
+    StudyRepositorySupport studyRepositorySupport;
 
     @Autowired
     StudyMemberRepository studyMemberRepository;
@@ -61,8 +67,8 @@ public class StudyServiceImpl implements StudyService {
     StudyCategoryRepository studyCategoryRepository;
 
     @Override
-    public List<StudyListRes> getStudyList() {
-        List<Study> studyList = studyRepository.findAll();
+    public List<StudyListRes> getStudyList(Pageable pageable, String name, List<Long> categories) {
+        List<Study> studyList = studyRepositorySupport.findAllByName(pageable, name, categories);
         List<StudyListRes> res = new ArrayList<>();
         for (Study study : studyList) {
             res.add(StudyListRes.of(study));
