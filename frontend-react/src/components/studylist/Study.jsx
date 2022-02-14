@@ -10,18 +10,20 @@ const Study = ({ study }) => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
-    const fetchStudyInfo = async () => {
-      axios({
-        method: "get",
-        url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
-      })
-        .then((res) => {
-          // console.log(res);
-          dispatch(loadStudy(res.data));
+    if (study) {
+      const fetchStudyInfo = async () => {
+        axios({
+          method: "get",
+          url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
         })
-        .catch((err) => console.log(err));
-    };
-    fetchStudyInfo();
+          .then((res) => {
+            // console.log(res);
+            dispatch(loadStudy(res.data));
+          })
+          .catch((err) => console.log(err));
+      };
+      fetchStudyInfo();
+    }
   }, []);
   const user = useSelector((state) => state.user.user);
   const studyInfo = useSelector((state) => state.study.study);
