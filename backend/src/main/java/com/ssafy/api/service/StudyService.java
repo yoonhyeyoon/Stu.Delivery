@@ -10,10 +10,12 @@ import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.db.entity.User;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudyService {
     // 스터디
-    List<StudyListRes> getStudyList();
+    List<StudyListRes> getStudyList(Pageable pageable, String name, List<Long> categories);
     StudyRes createStudy(User user, StudyReq studyReq);
     StudyRes updateStudy(User user, Long studyId, StudyReq studyReq);
     StudyRes getStudy(Long studyId);
