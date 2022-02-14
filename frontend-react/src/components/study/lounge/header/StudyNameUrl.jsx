@@ -35,9 +35,9 @@ function StudyNameUrl({ study }) {
     <div className={styles.text_aria}>
       <h1>{study.name}</h1>
       <div>
-        {study.link_url}
+        {window.location.href}
         <ContentCopyIcon
-          onClick={() => doCopy(study.link_url)}
+          onClick={() => doCopy(window.location.href)}
           className={styles.copy}
         />
       </div>
