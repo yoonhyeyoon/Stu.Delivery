@@ -21,7 +21,7 @@ import {
   FormLabel,
 } from "@mui/material";
 
-const MyStudy = () => {
+const CreateStudy = () => {
   const [title, setTitle] = useState(""); // 스터디명
   const [category, setCategory] = useState([]); // 카테고리
   const [categoryList, setCategoryList] = useState([]); // 서버에서 받아온 카테고리 목록 저장
@@ -135,6 +135,7 @@ const MyStudy = () => {
   };
 
   const onUrlHandler = (event) => {
+    console.log(event);
     setUrl(event.target.value);
   };
 
@@ -159,6 +160,21 @@ const MyStudy = () => {
       console.log(dayjs(date[0]).format("YYYY-MM-DD"));
 
       let link_url = "https://i6d201.p.ssafy.io/study/" + url;
+
+      await axios({
+        method: "post",
+        url: "https://i6d201.p.ssafy.io:8443/openvidu/api/sessions",
+        headers: {
+          Authorization: `Basic btoa("OPENVIDUAPP:" + "STUDELIVERY")`,
+        },
+      })
+        .then((response) => {
+          console.log("Video conference is created.");
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+
       await axios({
         method: "post",
         url: "https://i6d201.p.ssafy.io/api/v1/study",
@@ -262,6 +278,19 @@ const MyStudy = () => {
                   />
                 )}
               />
+              {/* <FormLabel component="legend" sx={{ color: "text.primary" }}>
+                일정
+              </FormLabel>
+              <TextField
+                margin="dense"
+                required
+                fullWidth
+                id="title"
+                label="스터디 일정을 입력해주세요."
+                name="title"
+                sx={{ mb: 5 }}
+                onChange={onTitleHandler}
+              /> */}
               {/* <TextField
                 margin="dense"
                 fullWidth
@@ -486,4 +515,4 @@ const MyStudy = () => {
   );
 };
 
-export default MyStudy;
+export default CreateStudy;
