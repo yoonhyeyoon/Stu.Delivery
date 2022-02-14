@@ -189,7 +189,18 @@ const StudyInfoUpdate = () => {
         });
     }
   };
-
+  const onDelete = async () => {
+    await axios({
+      method: "DELETE",
+      url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
+      header: setHeader(),
+    })
+      .then((res) => {
+        console.log(res.data);
+        window.location.href = "/";
+      })
+      .catch((err) => console.log(err.response));
+  };
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -205,7 +216,7 @@ const StudyInfoUpdate = () => {
             fullWidth
           >
             <Typography component="h1" variant="h4" gutterBottom>
-              스터디 만들기
+              스터디 수정하기
             </Typography>
             <Box onSubmit={submit} noValidate sx={{ mt: 1, width: "auto" }}>
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
@@ -485,6 +496,16 @@ const StudyInfoUpdate = () => {
                 onClick={submit}
               >
                 수정
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                style={{ background: "gray" }}
+                sx={{ mb: 2 }}
+                onClick={onDelete}
+              >
+                스터디 삭제
               </Button>
             </Box>
           </Box>
