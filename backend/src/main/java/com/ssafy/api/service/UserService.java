@@ -1,8 +1,10 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.GoalReq;
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.GoalRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.response.UserRes;
@@ -26,5 +28,15 @@ public interface UserService {
 	void deleteUser(User user);
 	Boolean isValidPassword(User user, Map<String, String> req);
 	void updatePassword(User user, UserPasswordUpdateReq req);
+
+	// 내 스터디
 	List<StudyRes> getMyStudyList(String email);
+
+	// 목표
+	GoalRes createGoal(User user, GoalReq req);
+	List<GoalRes> getGoalList(User user);
+	GoalRes getGoal(User user, Long goalId);
+	GoalRes updateGoal(User user, Long goalId, GoalReq req);
+	GoalRes toggleGoalComplete(User user, Long goalId);
+	void deleteGoal(User user, Long goalId);
 }
