@@ -10,6 +10,7 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import { connect } from "react-redux";
+import CodeShareComponent from "./codeShare/CodeShareComponent";
 
 var localUser = new UserModel();
 
@@ -45,6 +46,7 @@ class VideoRoomComponent extends Component {
       localUser: undefined,
       subscribers: [],
       chatDisplay: "none",
+      codeShareDisplay: "none",
       currentVideoDevice: undefined,
     };
 
@@ -63,6 +65,7 @@ class VideoRoomComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
+    this.toggleCodeShare = this.toggleCodeShare.bind(this);
   }
 
   componentDidMount() {
@@ -585,10 +588,22 @@ class VideoRoomComponent extends Component {
     }
   }
 
+  toggleCodeShare(property) {
+    console.log("!!!!!toggleCodeShare");
+    let display = property;
+
+    if (display === undefined) {
+      display = this.state.codeShareDisplay === "none" ? "block" : "none";
+    }
+    this.setState({ codeShareDisplay: display });
+    this.updateLayout();
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     var chatDisplay = { display: this.state.chatDisplay };
+    var codeShareDisplay = { display: this.state.codeShareDisplay };
 
     return (
       <div className="container" id="container">
@@ -632,6 +647,19 @@ class VideoRoomComponent extends Component {
                 />
               </div>
             )}
+          {localUser !== undefined &&
+            localUser.getStreamManager() !== undefined && (
+              <div
+                className="OT_root OT_publisher custom-class"
+                style={codeShareDisplay}
+              >
+                <CodeShareComponent
+                  user={localUser}
+                  chatDisplay={this.state.codeShareDisplay}
+                  close={this.toggleCodeShare}
+                />
+              </div>
+            )}
         </div>
         <ToolbarComponent
           sessionId={mySessionId}
@@ -644,6 +672,7 @@ class VideoRoomComponent extends Component {
           toggleFullscreen={this.toggleFullscreen}
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
+          toggleCodeShare={this.toggleCodeShare}
           toggleChat={this.toggleChat}
         />
       </div>
