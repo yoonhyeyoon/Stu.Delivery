@@ -4,6 +4,7 @@ import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.StudyListRes;
+import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.response.UserSimpleRes;
 import com.ssafy.api.service.UserService;
@@ -161,10 +162,10 @@ public class UserController {
 
     @ApiOperation(value = "내 스터디 목록 가져오기")
     @GetMapping("/mystudy")
-    public ResponseEntity<List<StudyListRes>> getMyStudyList(@ApiIgnore Authentication authentication){
+    public ResponseEntity<List<StudyRes>> getMyStudyList(@ApiIgnore Authentication authentication){
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
         String email = userDetails.getUsername();
-        List<StudyListRes> res = userService.getMyStudyList(email);
+        List<StudyRes> res = userService.getMyStudyList(email);
         return ResponseEntity.ok(res);
     }
 }
