@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Categories = ({ categories, studyList, filterItems }) => {
+const Categories = ({ categories, myStudyList, filterItems }) => {
   // const [cateNames, setCateNames] = useState();
 
   // const cateNameMaker = () => {

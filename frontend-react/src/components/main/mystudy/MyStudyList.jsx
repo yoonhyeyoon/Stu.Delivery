@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import Footer from "../welcome/Footer";
-import Study from "./Study";
 import Categories from "./Categories";
-import items from "./data";
 import "./Study.css";
 import axios from "axios";
+import Footer from "../../welcome/Footer";
+import MyStudy from "./MyStudy";
+import { setHeader } from "../../../utils/api";
 
 const Container = styled.div`
   width: 100%;
@@ -31,17 +31,18 @@ const RoomContainer = styled.div`
   width: 100%;
 `;
 
-function StudyList() {
-  const [studyList, setStudyList] = useState();
+function MyStudyList() {
+  const [myStudyList, setMyStudyList] = useState();
   useEffect(() => {
     const fetchStudyList = async () => {
       await axios({
         method: "get",
-        url: "https://i6d201.p.ssafy.io/api/v1/study",
+        url: "https://i6d201.p.ssafy.io/api/v1/users/mystudy",
+        headers: setHeader(),
       })
         .then((res) => {
           // console.log(res.data);
-          setStudyList(res.data);
+          setMyStudyList(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -87,37 +88,36 @@ function StudyList() {
   //   }
   // }, []);
 
-  // console.log(categories);
+  const [studyItems, setStudyItems] = useState(myStudyList);
+  // console.log(myStudyList);
   const filterItems = (category) => {
     if (category === "all") {
-      setStudyItems(studyList);
+      setStudyItems(myStudyList);
       return;
     }
-    const newItems = studyList.filter((study) =>
-      study.categories.map((ctg) => ctg.name === category)
+    const newItems = myStudyList.filter((study) =>
+      study.categories.map((categorie) => categorie.name === category)
     );
     setStudyItems(newItems);
   };
-  const [studyItems, setStudyItems] = useState(studyList);
-  // setStudyItems(studyList);
-  // console.log(studyItems);
+
   return (
     <Container>
       <section className="study section">
         <div className="title">
-          <h2>Study List</h2>
+          <h2>My Study List</h2>
           <div className="underline"></div>
         </div>
         <Categories
           categories={categories}
-          studyList={studyList}
+          myStudyList={myStudyList}
           filterItems={filterItems}
         />
         {/* <Study items={studyItems} /> */}
-        {studyList ? (
+        {myStudyList ? (
           <RoomContainer>
-            {(studyItems ? studyItems : studyList).map((study) => (
-              <Study key={study.id} study={study} />
+            {(studyItems ? studyItems : myStudyList).map((myStudy) => (
+              <MyStudy key={myStudy.id} myStudy={myStudy} />
             ))}
           </RoomContainer>
         ) : null}
@@ -129,4 +129,4 @@ function StudyList() {
   );
 }
 
-export default StudyList;
+export default MyStudyList;
