@@ -2,13 +2,17 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
 import com.ssafy.db.entity.AuthProvider;
 import com.ssafy.db.entity.Category;
+import com.ssafy.db.entity.Study;
+import com.ssafy.db.entity.StudyMember;
 import com.ssafy.db.entity.UserCategory;
+import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.UserCategoryRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,6 +54,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	MailService mailService;
+
+	@Autowired
+	StudyMemberRepository studyMemberRepository;
 
 	@Override
 	@Transactional
@@ -176,6 +183,17 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(req.getPassword()));
 		userRepository.save(user);
 		return;
+	}
+
+	@Override
+	public List<StudyListRes> getMyStudyList(String email) {
+		User user = userRepositorySupport.findUserByEmail(email).get();
+		List<StudyMember> myStudyMemberList = user.getStudyMembers();
+		List<StudyListRes> res = new ArrayList<>();
+		for (StudyMember studyMember: myStudyMemberList) {
+			res.add(StudyListRes.of(studyMember.getStudy()));
+		}
+		return res;
 	}
 
 }
