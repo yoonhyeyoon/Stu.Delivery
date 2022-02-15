@@ -73,13 +73,16 @@ function StudyHeader() {
                 <Link
                   to={{
                     pathname: `/study/${study.id}/webrtc`,
-                    state: {
-                      openviduSecret: study.meeting_room_id,
-                      user: user.name,
-                    },
                   }}
                 >
                   <Button className={styles.btn}>회의실</Button>
+                </Link>
+                <Link
+                  to={{
+                    pathname: `/study/${study.id}/webrtcstudy`,
+                  }}
+                >
+                  <Button className={styles.btn}>개인 열람실</Button>
                 </Link>
               </>
             ) : (

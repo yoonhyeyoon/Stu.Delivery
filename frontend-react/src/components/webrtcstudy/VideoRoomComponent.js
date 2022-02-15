@@ -39,7 +39,7 @@ class VideoRoomComponent extends Component {
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
-      mySessionId: meeting_room_id,
+      mySessionId: private_room_id,
       myUserName: user_nickname,
       session: undefined,
       localUser: undefined,
