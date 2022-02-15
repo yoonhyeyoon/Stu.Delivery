@@ -1,8 +1,10 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.GoalReq;
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.GoalRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.response.UserRes;
@@ -25,6 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -167,5 +170,69 @@ public class UserController {
         String email = userDetails.getUsername();
         List<StudyRes> res = userService.getMyStudyList(email);
         return ResponseEntity.ok(res);
+    }
+
+    @ApiOperation(value = "목표 생성하기")
+    @PostMapping("/goal")
+    public ResponseEntity<GoalRes> createGoal(@ApiIgnore Authentication authentication, @RequestBody GoalReq req) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        GoalRes res = userService.createGoal(user, req);
+        return ResponseEntity.ok(res);
+    }
+
+    @ApiOperation(value = "단일 목표 가져오기")
+    @GetMapping("/goal/{goal_id}")
+    public ResponseEntity<GoalRes> getGoal(@ApiIgnore Authentication authentication, @PathVariable Long goal_id) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        GoalRes res = userService.getGoal(user, goal_id);
+        return ResponseEntity.ok(res);
+    }
+
+    @ApiOperation(value = "목표 리스트 가져오기")
+    @GetMapping("/goal")
+    public ResponseEntity<List<GoalRes>> getGoalList(@ApiIgnore Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        List<GoalRes> res = userService.getGoalList(user);
+        return ResponseEntity.ok(res);
+    }
+
+    @ApiOperation(value = "목표 content 수정하기")
+    @PutMapping("/goal/{goal_id}")
+    public ResponseEntity<GoalRes> updateGoal(
+        @ApiIgnore Authentication authentication,
+        @PathVariable Long goal_id,
+        @RequestBody GoalReq req
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        GoalRes res = userService.updateGoal(user, goal_id, req);
+        return ResponseEntity.ok(res);
+    }
+
+    @ApiOperation(value = "목표 완료여부 토글")
+    @PatchMapping("/goal/{goal_id}/toggle")
+    public ResponseEntity<GoalRes> toggleGoalComplete(
+        @ApiIgnore Authentication authentication,
+        @PathVariable Long goal_id
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        GoalRes res = userService.toggleGoalComplete(user, goal_id);
+        return ResponseEntity.ok(res);
+    }
+
+    @ApiOperation(value = "목표 삭제하기")
+    @DeleteMapping("/goal/{goal_id}")
+    public ResponseEntity<BaseResponseBody> deleteGoal(
+        @ApiIgnore Authentication authentication,
+        @PathVariable Long goal_id
+    ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        userService.deleteGoal(user, goal_id);
+        return ResponseEntity.noContent().build();
     }
 }
