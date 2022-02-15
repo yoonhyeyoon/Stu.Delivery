@@ -637,13 +637,12 @@ class VideoRoomComponent extends Component {
             localUser.getStreamManager() !== undefined && (
               <div
                 className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
+                style={codeShareDisplay}
               >
-                <ChatComponent
+                <CodeShareComponent
                   user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
+                  chatDisplay={this.state.codeShareDisplay}
+                  close={this.toggleCodeShare}
                 />
               </div>
             )}
@@ -651,12 +650,13 @@ class VideoRoomComponent extends Component {
             localUser.getStreamManager() !== undefined && (
               <div
                 className="OT_root OT_publisher custom-class"
-                style={codeShareDisplay}
+                style={chatDisplay}
               >
-                <CodeShareComponent
+                <ChatComponent
                   user={localUser}
-                  chatDisplay={this.state.codeShareDisplay}
-                  close={this.toggleCodeShare}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
                 />
               </div>
             )}
