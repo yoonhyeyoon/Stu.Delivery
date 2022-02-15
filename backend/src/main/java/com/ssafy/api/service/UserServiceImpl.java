@@ -1,14 +1,23 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.GoalReq;
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.GoalRes;
+import com.ssafy.api.response.StudyListRes;
+import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
 import com.ssafy.db.entity.AuthProvider;
 import com.ssafy.db.entity.Category;
+import com.ssafy.db.entity.Goal;
+import com.ssafy.db.entity.Study;
+import com.ssafy.db.entity.StudyMember;
 import com.ssafy.db.entity.UserCategory;
+import com.ssafy.db.repository.GoalRepository;
+import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.UserCategoryRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,10 +49,13 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 
 	@Autowired
+	UserRepositorySupport userRepositorySupport;
+
+	@Autowired
 	UserCategoryRepository userCategoryRepository;
 
 	@Autowired
-	UserRepositorySupport userRepositorySupport;
+	GoalRepository goalRepository;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -175,6 +187,91 @@ public class UserServiceImpl implements UserService {
 		}
 		user.setPassword(passwordEncoder.encode(req.getPassword()));
 		userRepository.save(user);
+		return;
+	}
+
+	@Override
+	public List<StudyRes> getMyStudyList(String email) {
+		User user = userRepositorySupport.findUserByEmail(email).get();
+		List<StudyMember> myStudyMemberList = user.getStudyMembers();
+		List<StudyRes> res = new ArrayList<>();
+		for (StudyMember studyMember: myStudyMemberList) {
+			res.add(StudyRes.of(studyMember.getStudy()));
+		}
+		return res;
+	}
+
+	@Override
+	public GoalRes createGoal(User user, GoalReq req) {
+		Goal goal = new Goal();
+		goal.setUser(user);
+		goal.setContent(req.getContent());
+		goal.setIsCompleted(false);
+		Goal resGoal = goalRepository.save(goal);
+
+		return GoalRes.of(resGoal);
+	}
+
+	@Override
+	public List<GoalRes> getGoalList(User user) {
+		List<Goal> goalList = goalRepository.findAllByUserId(user.getId());
+		List<GoalRes> res = new ArrayList<>();
+		for (Goal goal: goalList) {
+			res.add(GoalRes.of(goal));
+		}
+		return res;
+	}
+
+	@Override
+	public GoalRes getGoal(User user, Long goalId) {
+		Goal goal = goalRepository.findById(goalId).orElseThrow(
+			() -> new ApiException(ExceptionEnum.NOT_FOUND_GOAL)
+		);
+		if (goal.getUser().getId() != user.getId()) {
+			throw new ApiException(ExceptionEnum.UNAUTHORIZED_GOAL);
+		}
+
+		return GoalRes.of(goal);
+	}
+
+	@Override
+	public GoalRes updateGoal(User user, Long goalId, GoalReq req) {
+		Goal goal = goalRepository.findById(goalId).orElseThrow(
+			() -> new ApiException(ExceptionEnum.NOT_FOUND_GOAL)
+		);
+		if (goal.getUser().getId() != user.getId()) {
+			throw new ApiException(ExceptionEnum.UNAUTHORIZED_GOAL);
+		}
+
+		goal.setContent(req.getContent());
+		Goal resGoal = goalRepository.save(goal);
+		return GoalRes.of(resGoal);
+	}
+
+	@Override
+	public GoalRes toggleGoalComplete(User user, Long goalId) {
+		Goal goal = goalRepository.findById(goalId).orElseThrow(
+			() -> new ApiException(ExceptionEnum.NOT_FOUND_GOAL)
+		);
+		if (goal.getUser().getId() != user.getId()) {
+			throw new ApiException(ExceptionEnum.UNAUTHORIZED_GOAL);
+		}
+
+		goal.setIsCompleted(!goal.getIsCompleted());
+		Goal resGoal = goalRepository.save(goal);
+		return GoalRes.of(resGoal);
+	}
+
+	@Override
+	public void deleteGoal(User user, Long goalId) {
+		Goal goal = goalRepository.findById(goalId).orElseThrow(
+			() -> new ApiException(ExceptionEnum.NOT_FOUND_GOAL)
+		);
+		if (goal.getUser().getId() != user.getId()) {
+			throw new ApiException(ExceptionEnum.UNAUTHORIZED_GOAL);
+		}
+
+		goalRepository.delete(goal);
 		return;
 	}
 

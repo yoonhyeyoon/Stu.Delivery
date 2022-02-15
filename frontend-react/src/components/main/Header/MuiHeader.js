@@ -145,25 +145,30 @@ const ResponsiveAppBar = () => {
           <Toolbar disableGutters>
             {["left"].map((anchor) => (
               <React.Fragment key={anchor}>
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="open drawer"
-                  sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-                  onClick={toggleDrawer(anchor, true)}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <nav>
-                  <Drawer
-                    anchor="left"
-                    open={toggle["left"]}
-                    onClose={toggleDrawer("left", false)}
-                  >
-                    {list("left")}
-                  </Drawer>
-                </nav>
+                {/* 로그인 했을때만 렌더링 */}
+                {localStorage.getItem("isLogin") && (
+                  <>
+                    <IconButton
+                      size="large"
+                      edge="start"
+                      color="inherit"
+                      aria-label="open drawer"
+                      sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+                      onClick={toggleDrawer(anchor, true)}
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <nav>
+                      <Drawer
+                        anchor="left"
+                        open={toggle["left"]}
+                        onClose={toggleDrawer("left", false)}
+                      >
+                        {list("left")}
+                      </Drawer>
+                    </nav>
+                  </>
+                )}
               </React.Fragment>
             ))}
             <Typography

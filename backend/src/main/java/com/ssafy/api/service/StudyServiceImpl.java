@@ -2,10 +2,10 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
+import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
-import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
@@ -24,6 +24,7 @@ import com.ssafy.db.repository.StudyBoardRepository;
 import com.ssafy.db.repository.StudyCategoryRepository;
 import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.StudyRepository;
+import com.ssafy.db.repository.StudyRepositorySupport;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,9 @@ public class StudyServiceImpl implements StudyService {
 
     @Autowired
     StudyRepository studyRepository;
+
+    @Autowired
+    StudyRepositorySupport studyRepositorySupport;
 
     @Autowired
     StudyMemberRepository studyMemberRepository;
@@ -60,11 +65,11 @@ public class StudyServiceImpl implements StudyService {
     StudyCategoryRepository studyCategoryRepository;
 
     @Override
-    public List<StudyListRes> getStudyList() {
-        List<Study> studyList = studyRepository.findAll();
-        List<StudyListRes> res = new ArrayList<>();
+    public List<StudyRes> getStudyList(Pageable pageable, String name, List<Long> categories) {
+        List<Study> studyList = studyRepositorySupport.findAllByName(pageable, name, categories);
+        List<StudyRes> res = new ArrayList<>();
         for (Study study : studyList) {
-            res.add(StudyListRes.of(study));
+            res.add(StudyRes.of(study));
         }
         return res;
     }
@@ -243,6 +248,13 @@ public class StudyServiceImpl implements StudyService {
         }
         studyRepository.delete(study);
         return;
+    }
+
+    @Override
+    public Boolean checkPassword(Long studyId, StudyPasswordReq req) {
+        Study study = studyRepository.findById(studyId)
+            .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
+        return study.getPassword().equals(req.getPassword());
     }
 
     @Override

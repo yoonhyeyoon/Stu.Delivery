@@ -1,10 +1,8 @@
 package com.ssafy.api.response;
 
-import com.ssafy.db.entity.Category;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserCategory;
 import io.swagger.annotations.ApiModel;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -29,11 +27,15 @@ public class UserRes {
         res.setEmail(user.getEmail());
         res.setNick_name(user.getNickName());
         res.setProfile_img(user.getProfileImg());
-        res.setBirth(user.getBirth().toString());
+        if (user.getBirth() != null) {
+            res.setBirth(user.getBirth().toString());
+        }
         res.setDetermination(user.getDetermination());
-        res.setCategories(user.getUserCategories().stream().map((UserCategory uc) -> {
-            return CategoryRes.of(uc.getCategory());
-        }).collect(Collectors.toList()));
+        if (user.getUserCategories() != null && user.getUserCategories().size() > 0) {
+            res.setCategories(user.getUserCategories().stream().map((UserCategory uc) -> {
+                return CategoryRes.of(uc.getCategory());
+            }).collect(Collectors.toList()));
+        }
         return res;
     }
 
