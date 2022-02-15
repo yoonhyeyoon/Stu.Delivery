@@ -23,8 +23,8 @@ const MyInfo = (props) => {
           나의 관심사
         </Typography>
         <Stack spacing={2} direction="row" sx={{ mb: 7 }}>
-          {props.interests.map((anchor) => (
-            <Chip key={anchor} label={anchor} />
+          {props.interests.map((anchor, index) => (
+            <Chip key={index} label={anchor.name} />
           ))}
         </Stack>
         <Typography component="h6" variant="h6" gutterBottom>

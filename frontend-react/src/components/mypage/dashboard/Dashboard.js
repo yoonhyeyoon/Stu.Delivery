@@ -21,28 +21,33 @@ import {
 } from "@mui/material";
 
 const Dashboard = () => {
+  const [nickname, setNickname] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [aspire, setAspire] = useState("");
+
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      await axios({
+    const fetchUserInfo = () => {
+      localStorage.getItem("interests");
+      axios({
         method: "get",
-        url: "https://i6d201.p.ssafy.io/api/v1/users/me",
+        url: "https://i6d201.p.ssafy.io/api/v1/users",
         headers: setHeader(),
       })
         .then((res) => {
+          setNickname(res.data.nick_name);
+          setInterests([...res.data.categories]);
+          setAspire(res.data.determination);
           localStorage.setItem("user", res.data.id);
           localStorage.setItem("email", res.data.email);
           localStorage.setItem("nickname", res.data.nickname);
           localStorage.setItem("profile", res.data.profile_img);
+
+          console.log(res.data.categories);
         })
         .catch((err) => console.log(err.request.data));
     };
     fetchUserInfo();
   }, []);
-
-  let nickname = localStorage.getItem("nickname");
-  let interests = ["리액트", "Vue.js"];
-  let aspire = "아자아자";
-  let percent = 0;
 
   return (
     <Fragment>
@@ -68,7 +73,6 @@ const Dashboard = () => {
           >
             목표
           </Typography>
-          <ProgressBar />
           <Todolist />
         </Box>
       </Container>

@@ -76,7 +76,7 @@ const CreateStudy = () => {
     })
       .then((response) => {
         console.log(response.data);
-        setCategoryList(response.data);
+        setCategoryList([...categoryList, ...response.data]);
       })
       .catch((e) => {
         console.log(e);
@@ -111,8 +111,31 @@ const CreateStudy = () => {
   };
 
   const onCategoryHandler = (event) => {
-    const input = event.target.value;
-    setCategory([...category, input]);
+    if (event.type === "click") {
+      // 목록에서 클릭했을 때
+      const inter = categoryList.filter(
+        (value) => value.name === event.target.innerText
+      );
+
+      if (
+        inter.length !== 0 &&
+        !JSON.stringify(category).includes(JSON.stringify(inter))
+      ) {
+        setCategory([...category, ...inter]);
+      }
+    } else if (event.type === "change") {
+      // 직접 타이핑하는 경우
+      const inter = categoryList.filter(
+        (value) => value.name === event.target.value
+      );
+
+      if (
+        inter.length !== 0 &&
+        !JSON.stringify(category).includes(JSON.stringify(inter))
+      ) {
+        setCategory([...category, ...inter]);
+      }
+    }
   };
 
   const onIntroduceHandler = (event) => {
@@ -268,6 +291,10 @@ const CreateStudy = () => {
                 disablePortal
                 id="combo-box-demo"
                 options={categoryList}
+                getOptionLabel={(option) => {
+                  return option.name;
+                }}
+                onInputChange={onCategoryHandler}
                 renderInput={(params) => (
                   <TextField
                     {...params}

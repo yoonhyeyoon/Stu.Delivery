@@ -72,7 +72,9 @@ const Update = () => {
           setPreviewUrl(resProfile !== null ? resProfile : "");
           setBirthday(resBirthday !== null ? resBirthday : "");
           setAspire(resAspire !== null ? resAspire : "");
-          setInterestList(resInterest !== null ? resInterest : []);
+          setInterestList(
+            resInterest !== null ? [...interestList, ...resInterest] : []
+          );
         })
         .catch((e) => {
           console.log(e.response);
@@ -163,13 +165,11 @@ const Update = () => {
     }
   };
 
+  // 사진 업로드 이슈 있음
   const updateInfo = () => {
     // 회원정보수정
-    console.log(nickname);
-    console.log(previewUrl);
-    console.log(dayjs(birthday).format("YYYY-MM-DD"));
-    console.log(JSON.stringify(interestList));
-    console.log(aspire);
+    localStorage.setItem("interests", interestList);
+    console.log(interestList);
 
     axios({
       method: "put",
@@ -180,7 +180,12 @@ const Update = () => {
         profile_img: previewUrl,
         birth: dayjs(birthday).format("YYYY-MM-DD"),
         determination: aspire,
-        categories: JSON.parse(JSON.stringify(interestList)),
+        categories: [
+          {
+            id: 1,
+            name: "react",
+          },
+        ],
       },
     })
       .then((response) => {
@@ -241,20 +246,24 @@ const Update = () => {
         (value) => value.name === event.target.innerText
       );
 
-      if (inter.length !== 0 && !interestList.includes(inter)) {
+      if (
+        inter.length !== 0 &&
+        !JSON.stringify(interestList).includes(JSON.stringify(inter))
+      ) {
         setInterestList([...interestList, ...inter]);
       }
-      console.log(interestList);
     } else if (event.type === "change") {
       // 직접 타이핑하는 경우
       const inter = categoryList.filter(
         (value) => value.name === event.target.value
       );
 
-      if (inter.length !== 0 && !interestList.includes(inter)) {
+      if (
+        inter.length !== 0 &&
+        !JSON.stringify(interestList).includes(JSON.stringify(inter))
+      ) {
         setInterestList([...interestList, ...inter]);
       }
-      console.log(interestList);
     }
   };
 
@@ -305,7 +314,7 @@ const Update = () => {
           </Grid>
           <Grid item xs={4} md={9}>
             <Typography component="h6" variant="h6" gutterBottom>
-              tenykim1109@kakao.com
+              {email}
             </Typography>
           </Grid>
           <Grid item xs={4} md={2}>
