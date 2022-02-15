@@ -17,6 +17,7 @@ import StopScreenShare from "@material-ui/icons/StopScreenShare";
 import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
+import Code from "@material-ui/icons/Code";
 
 import IconButton from "@material-ui/core/IconButton";
 
@@ -34,6 +35,7 @@ export default class ToolbarComponent extends Component {
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+    this.toggleCodeShare = this.toggleCodeShare.bind(this);
   }
 
   micStatusChanged() {
@@ -67,6 +69,10 @@ export default class ToolbarComponent extends Component {
 
   toggleChat() {
     this.props.toggleChat();
+  }
+
+  toggleCodeShare() {
+    this.props.toggleCodeShare();
   }
 
   render() {
@@ -136,6 +142,9 @@ export default class ToolbarComponent extends Component {
             onClick={this.switchCamera}
           >
             <SwitchVideoIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={this.toggleCodeShare}>
+            <Code />
           </IconButton>
           <IconButton
             color="inherit"
