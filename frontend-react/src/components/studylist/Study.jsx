@@ -32,7 +32,7 @@ const StyledRoom = styled.div`
   .room-title {
     width: 100%;
     height: 148px;
-    box-shadow: 0 5px 6px -6px rgba(0, 0, 0, 1);
+    box-shadow: 0 5px 6px -6px rgba(191, 122, 38, 0.7);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -70,7 +70,7 @@ const StyledRoom = styled.div`
 `;
 
 const Study = ({ study }) => {
-  console.log({ study });
+  // console.log({ studyList });
   const [show, setShow] = useState(false);
   //   const dispatch = useDispatch();
   //   useEffect(() => {
@@ -96,16 +96,11 @@ const Study = ({ study }) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    if (study && isMember) {
-      console.log(isMember);
-      if (isMember) {
-        window.location.href = `/study/${study.id}`;
+    if (study) {
+      if (study.is_private) {
+        setShow(true);
       } else {
-        if (study.is_private) {
-          setShow(true);
-        } else {
-          window.location.href = `/study/${study.id}/info`;
-        }
+        window.location.href = `/study/${study.id}`;
       }
     }
   };
@@ -124,7 +119,7 @@ const Study = ({ study }) => {
         </div> */}
         <div className="room-title">
           <h3>{study.name}</h3>
-          <p>{`by ${study.master_id}`}</p>
+          {/* <p>{`by ${study.master_id}`}</p> */}
         </div>
         <div className="room-info">
           <div className="active-time">

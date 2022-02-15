@@ -22,8 +22,8 @@ import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
 import "./global.color.css";
 import ResponsiveAppBar from "./components/main/Header/MuiHeader";
 import CreateStudy from "./components/mypage/study/CreateStudy";
-import MyStudy from "./components/main/mystudy/Mystudy";
 import WebrtcStudy from "./components/webrtcstudy/VideoRoomComponent";
+import MyStudyList from "./components/main/mystudy/MyStudyList";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -62,7 +62,7 @@ function App() {
             <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
-            <Route path="/mystudy" element={<MyStudy />}></Route>
+            <Route path="/mystudy" element={<MyStudyList />}></Route>
             <Route
               path="/oauth2/redirect"
               element={<OAuth2RedirectHandler />}
