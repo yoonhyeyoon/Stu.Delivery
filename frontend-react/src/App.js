@@ -25,6 +25,7 @@ import VideoConference from "./components/studylive/studygroup/Webrtc/VideoConfe
 import "./global.color.css";
 import MyStudy from "./components/mypage/study/MyStudy";
 import ResponsiveAppBar from "./components/main/Header/MuiHeader";
+import Board from "./routes/Board";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -98,6 +99,7 @@ function App() {
             <Route path="/study/:id" element={<Lounge />}></Route>
             <Route path="/study/:id/info" element={<Info />}></Route>
             <Route path="/mypage/*" element={<MyPage />}></Route>
+            {/* <Route path="/board" element={<Board />}></Route> */}
           </Routes>
         </Router>
       </div>
