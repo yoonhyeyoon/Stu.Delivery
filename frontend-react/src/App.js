@@ -18,14 +18,12 @@ import { isLoad, loadUser } from "./redux/user";
 import Index from "./components/welcome/Index";
 import GlobalStyles from "./common/styles/GlobalStyles";
 import StudyList from "./components/studylist/StudyList";
-// import StudyLive from "./components/studylive/StudyLive";
 import VideoRoomComponent from "./components/webrtc/VideoRoomComponent";
-import StudyGroup from "./components/studylive/studygroup/StudyGroup";
-import VideoConference from "./components/studylive/studygroup/Webrtc/VideoConference";
 import "./global.color.css";
 import ResponsiveAppBar from "./components/main/Header/MuiHeader";
 import CreateStudy from "./components/mypage/study/CreateStudy";
 import MyStudy from "./components/main/mystudy/Mystudy";
+import WebrtcStudy from "./components/webrtcstudy/VideoRoomComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -69,19 +67,17 @@ function App() {
               path="/oauth2/redirect"
               element={<OAuth2RedirectHandler />}
             ></Route>
-            {/* <Route path="/studylive" element={<StudyLive />}></Route> */}
             <Route
               path="study/:id/webrtc/"
               element={<VideoRoomComponent />}
             ></Route>
-            <Route path="/studygroup" element={<StudyGroup />}></Route>
-            <Route
-              path="/videoconference"
-              element={<VideoConference />}
-            ></Route>
             <Route path="/study/:id" element={<Lounge />}></Route>
             <Route path="/study/:id/info" element={<Info />}></Route>
             <Route path="/mypage/*" element={<MyPage />}></Route>
+            <Route
+              path="study/:id/webrtcstudy/"
+              element={<WebrtcStudy />}
+            ></Route>
           </Routes>
         </Router>
       </div>
