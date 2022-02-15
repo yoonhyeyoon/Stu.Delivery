@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route, Link, NavLink } from "react-router-dom";
 import "./Mypage.css";
 
-import MyStudy from "./study/MyStudy";
 import Dashboard from "./dashboard/Dashboard";
 import Withdrawal from "./withdrawal/Withdrawal";
 import Update from "./update/Update";
@@ -34,12 +33,11 @@ const Sidebar = () => {
 const MyPage = () => {
   return (
     <>
-      {/* <Sidebar /> */}
       <div className="container">
         <Routes>
           <Route path="update/check" element={<CheckPwd />}></Route>
           <Route path="update" element={<Update />}></Route>
-          <Route path="study" element={<MyStudy />}></Route>
+          {/* <Route path="study" element={<MyStudy />}></Route> */}
           <Route path="dashboard" element={<Dashboard />}></Route>
           <Route path="withdrawal" element={<Withdrawal />}></Route>
         </Routes>

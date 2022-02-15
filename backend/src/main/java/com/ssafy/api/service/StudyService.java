@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
+import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
@@ -9,14 +10,17 @@ import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.db.entity.User;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudyService {
     // 스터디
-    List<StudyListRes> getStudyList();
+    List<StudyRes> getStudyList(Pageable pageable, String name, List<Long> categories);
     StudyRes createStudy(User user, StudyReq studyReq);
     StudyRes updateStudy(User user, Long studyId, StudyReq studyReq);
     StudyRes getStudy(Long studyId);
     void deleteStudy(User user, Long studyId);
+    Boolean checkPassword(Long studyId, StudyPasswordReq req);
 
     // 스터디 멤버
     void joinStudy(User user, Long studyId);

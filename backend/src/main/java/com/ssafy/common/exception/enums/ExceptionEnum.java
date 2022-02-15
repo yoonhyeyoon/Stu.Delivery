@@ -36,6 +36,9 @@ public enum ExceptionEnum {
     NOT_FOUND_CATEGORY(HttpStatus.NOT_FOUND, "601", "해당 카테고리를 찾을 수 없습니다."),
     CONFLICT_CATEGORY(HttpStatus.CONFLICT, "602", "이미 해당 카테고리가 존재합니다."),
 
+    NOT_FOUND_GOAL(HttpStatus.NOT_FOUND, "701", "해당 목표를 찾을 수 없습니다."),
+    UNAUTHORIZED_GOAL(HttpStatus.UNAUTHORIZED, "704", "현재 로그인한 사용자는 해당 목표를 조회&수정&삭제할 권한이 없습니다."),
+
     UNAUTHORIZED_REDIRECT_URI(HttpStatus.UNAUTHORIZED, "904", "인증되지 않은 리디렉션 URI 입니다. 인증을 진행할 수 없습니다.");
 
     private final HttpStatus status;

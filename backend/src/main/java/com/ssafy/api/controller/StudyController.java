@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ScheduleReq;
 import com.ssafy.api.request.StudyBoardReq;
+import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
@@ -15,6 +16,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -39,8 +43,12 @@ public class StudyController {
 
     @GetMapping
     @ApiOperation(value = "스터디 리스트 가져오기", notes = "스터디 리스트를 가져온다.")
-    public ResponseEntity<List<StudyListRes>> getStudyList() {
-        List<StudyListRes> res = this.studyService.getStudyList();
+    public ResponseEntity<List<StudyRes>> getStudyList(
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC, size = 10) Pageable pageable,
+        @RequestParam(required = false, defaultValue = "") String name,
+        @RequestParam(required = false, defaultValue = "") List<Long> categories) {
+
+        List<StudyRes> res = this.studyService.getStudyList(pageable, name, categories);
         return ResponseEntity.ok(res);
     }
 
@@ -206,6 +214,17 @@ public class StudyController {
         User user = userDetails.getUser();
         studyService.deleteSchedule(user, study_id, schedule_id);
         return ResponseEntity.ok(BaseResponseBody.of(200, "스터디 일정 삭제에 성공하였습니다."));
+    }
+
+    @PostMapping("/{study_id}/password")
+    @ApiOperation(value = "스터디 비밀번호 확인하기", notes = "스터디의 비밀번호가 일치하는지 확인한다.")
+    public ResponseEntity<BaseResponseBody> checkPassword(@PathVariable Long study_id, @RequestBody StudyPasswordReq req) {
+        Boolean isCorrect = studyService.checkPassword(study_id, req);
+        if (isCorrect) {
+            return ResponseEntity.ok(BaseResponseBody.of(200, "맞는 비밀번호입니다."));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "잘못된 비밀번호입니다."));
+        }
     }
 
 }
