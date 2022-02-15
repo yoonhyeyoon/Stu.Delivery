@@ -4,8 +4,8 @@ import Categories from "./Categories";
 import "./Study.css";
 import axios from "axios";
 import Footer from "../../welcome/Footer";
-import MyStudy from "./MyStudy";
 import { setHeader } from "../../../utils/api";
+import MyStudy from "./Mystudy";
 
 const Container = styled.div`
   width: 100%;
