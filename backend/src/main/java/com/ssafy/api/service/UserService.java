@@ -4,6 +4,7 @@ import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.StudyListRes;
+import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.db.entity.User;
 
@@ -25,5 +26,5 @@ public interface UserService {
 	void deleteUser(User user);
 	Boolean isValidPassword(User user, Map<String, String> req);
 	void updatePassword(User user, UserPasswordUpdateReq req);
-	List<StudyListRes> getMyStudyList(String email);
+	List<StudyRes> getMyStudyList(String email);
 }

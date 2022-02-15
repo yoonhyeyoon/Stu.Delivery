@@ -6,7 +6,6 @@ import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
-import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
@@ -66,11 +65,11 @@ public class StudyServiceImpl implements StudyService {
     StudyCategoryRepository studyCategoryRepository;
 
     @Override
-    public List<StudyListRes> getStudyList(Pageable pageable, String name, List<Long> categories) {
+    public List<StudyRes> getStudyList(Pageable pageable, String name, List<Long> categories) {
         List<Study> studyList = studyRepositorySupport.findAllByName(pageable, name, categories);
-        List<StudyListRes> res = new ArrayList<>();
+        List<StudyRes> res = new ArrayList<>();
         for (Study study : studyList) {
-            res.add(StudyListRes.of(study));
+            res.add(StudyRes.of(study));
         }
         return res;
     }

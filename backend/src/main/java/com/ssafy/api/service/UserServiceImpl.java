@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.StudyListRes;
+import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
@@ -186,12 +187,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<StudyListRes> getMyStudyList(String email) {
+	public List<StudyRes> getMyStudyList(String email) {
 		User user = userRepositorySupport.findUserByEmail(email).get();
 		List<StudyMember> myStudyMemberList = user.getStudyMembers();
-		List<StudyListRes> res = new ArrayList<>();
+		List<StudyRes> res = new ArrayList<>();
 		for (StudyMember studyMember: myStudyMemberList) {
-			res.add(StudyListRes.of(studyMember.getStudy()));
+			res.add(StudyRes.of(studyMember.getStudy()));
 		}
 		return res;
 	}
