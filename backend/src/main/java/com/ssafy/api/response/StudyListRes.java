@@ -54,10 +54,14 @@ public class StudyListRes {
         res.setThumbnail_url(study.getThumbnailUrl());
         res.setIs_private(study.getIsPrivate());
         res.setMax_user_num(study.getMaxUserNum());
-        res.setUser_num(study.getStudyMembers().size());
-        res.setCategories(study.getStudyCategories().stream().map((StudyCategory sc) -> {
-            return CategoryRes.of(sc.getCategory());
-        }).collect(Collectors.toList()));
+        if (study.getStudyMembers() != null) {
+            res.setUser_num(study.getStudyMembers().size());
+        }
+        if (study.getStudyCategories() != null) {
+            res.setCategories(study.getStudyCategories().stream().map((StudyCategory sc) -> {
+                return CategoryRes.of(sc.getCategory());
+            }).collect(Collectors.toList()));
+        }
         return res;
     }
 }

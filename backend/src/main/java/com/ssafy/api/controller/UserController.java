@@ -3,17 +3,20 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.UserPasswordUpdateReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdateReq;
+import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.response.UserSimpleRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.CustomUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Study;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -145,8 +148,8 @@ public class UserController {
         return ResponseEntity.status(200).body(UserSimpleRes.of(user));
     }
 
-    @ApiOperation(value = "이메일 중복 확인", notes = "이미 등록된 이메일인지 확인한다.")
     @GetMapping("/email-valid")
+    @ApiOperation(value = "이메일 중복 확인", notes = "이미 등록된 이메일인지 확인한다.")
     public ResponseEntity<? extends BaseResponseBody> isValidEmail(
         @RequestParam(value = "email") String email) {
         if (userService.isEmailPresent(email)) {
@@ -154,5 +157,14 @@ public class UserController {
         } else {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "True"));
         }
+    }
+
+    @ApiOperation(value = "내 스터디 목록 가져오기")
+    @GetMapping("/mystudy")
+    public ResponseEntity<List<StudyListRes>> getMyStudyList(@ApiIgnore Authentication authentication){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+        List<StudyListRes> res = userService.getMyStudyList(email);
+        return ResponseEntity.ok(res);
     }
 }
