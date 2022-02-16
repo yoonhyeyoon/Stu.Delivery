@@ -22,6 +22,7 @@ import {
 
 const Dashboard = () => {
   const [nickname, setNickname] = useState("");
+  const [profile, setProfile] = useState("");
   const [interests, setInterests] = useState([]);
   const [aspire, setAspire] = useState("");
 
@@ -35,6 +36,7 @@ const Dashboard = () => {
       })
         .then((res) => {
           setNickname(res.data.nick_name);
+          setProfile(res.data.profile_img);
           setInterests([...res.data.categories]);
           setAspire(res.data.determination);
           localStorage.setItem("user", res.data.id);
@@ -64,7 +66,12 @@ const Dashboard = () => {
           <Typography component="h1" variant="h4" gutterBottom>
             대시보드
           </Typography>
-          <MyInfo nickname={nickname} interests={interests} aspire={aspire} />
+          <MyInfo
+            nickname={nickname}
+            profile={profile}
+            interests={interests}
+            aspire={aspire}
+          />
           <Typography
             component="h6"
             variant="h6"

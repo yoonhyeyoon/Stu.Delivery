@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 import {
   CssBaseline,
@@ -14,8 +14,27 @@ import {
   Grid,
 } from "@mui/material";
 import ImageComponent from "./ImageComponent";
+import axios from "axios";
+import { setHeader } from "../../../utils/api";
 
 const MyStudydd = () => {
+  const [mystudy, setMystudy] = useState([]);
+
+  useEffect(() => {
+    const getMystudy = () => {
+      axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/users/mystudy",
+        headers: setHeader(),
+      })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
+    };
+  });
   const studyInfo = [
     {
       title: "파이썬",

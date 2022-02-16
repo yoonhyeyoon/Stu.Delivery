@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { setHeader } from "../../../utils/api";
+import axios from "axios";
 import dayjs from "dayjs";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDateRangePicker from "@mui/lab/DesktopDateRangePicker";
+import { styled } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   Autocomplete,
@@ -19,7 +20,100 @@ import {
   Container,
   Switch,
   FormLabel,
+  ButtonBase,
 } from "@mui/material";
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: "relative",
+  height: 200,
+  [theme.breakpoints.down("sm")]: {
+    width: "100% !important", // Overrides inline-style
+    height: 100,
+  },
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      opacity: 0,
+    },
+    "& .MuiTypography-root": {
+      border: "4px solid currentColor",
+    },
+  },
+}));
+
+const ImageSrc = styled("span")({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: "cover",
+  backgroundPosition: "center 40%",
+});
+
+const Image = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.common.white,
+}));
+
+const ImageBackdrop = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create("opacity"),
+}));
+
+const ImageMarked = styled("span")(({ theme }) => ({
+  height: 3,
+  width: 18,
+  backgroundColor: theme.palette.common.white,
+  position: "absolute",
+  bottom: -2,
+  left: "calc(50% - 9px)",
+  transition: theme.transitions.create("opacity"),
+}));
+
+const images = [
+  {
+    url: "/images/thumbnail/study_thu_1.png",
+    title: "1번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_2.png",
+    title: "2번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_3.png",
+    title: "3번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_4.png",
+    title: "4번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_5.png",
+    title: "5번",
+    width: "50%",
+  },
+];
 
 const CreateStudy = () => {
   const [title, setTitle] = useState(""); // 스터디명
@@ -30,7 +124,7 @@ const CreateStudy = () => {
   const [password, setPassword] = useState(null); // 스터디 비밀번호
   const [participant, setParticipant] = useState(0);
   const [url, setUrl] = useState(""); // 스터디 URL
-  const [thumbnail, setThumbnail] = useState("asdf"); // 썸네일
+  const [thumbnail, setThumbnail] = useState("없음"); // 썸네일
   const [thumbnailUrl, setThumbnailUrl] = useState(""); // 썸네일 Url
   const imgInput = useRef();
 
@@ -49,21 +143,6 @@ const CreateStudy = () => {
   const handlePrivate = (event) => {
     setIsPrivate(event.target.checked);
     console.log(isPrivate);
-  };
-
-  const onImgButtonClick = () => {
-    imgInput.current.click();
-  };
-
-  const onImgChange = async (event) => {
-    let reader = new FileReader();
-    let file = event.target.files[0];
-    reader.onloadend = () => {
-      setThumbnail(file);
-      console.log(reader.result);
-      setThumbnailUrl(reader.result);
-    };
-    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
@@ -171,6 +250,7 @@ const CreateStudy = () => {
     console.log(thumbnail);
     console.log(thumbnailUrl);
     console.log(isPrivate);
+    console.log(category);
 
     if (title === "") {
       alert("스터디 이름을 입력해주세요.");
@@ -178,25 +258,10 @@ const CreateStudy = () => {
       alert("스터디 소개글을 입력해주세요.");
     } else if (participant === 0) {
       alert("스터디 참가 인원을 선택해주세요.");
+    } else if (thumbnailUrl === "") {
+      alert("스터디 썸네일을 선택해주세요.");
     } else {
-      console.log(date[0].toISOString());
-      console.log(dayjs(date[0]).format("YYYY-MM-DD"));
-
       let link_url = "https://i6d201.p.ssafy.io/study/" + url;
-
-      await axios({
-        method: "post",
-        url: "https://i6d201.p.ssafy.io:8443/openvidu/api/sessions",
-        headers: {
-          Authorization: `Basic btoa("OPENVIDUAPP:" + "STUDELIVERY")`,
-        },
-      })
-        .then((response) => {
-          console.log("Video conference is created.");
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
 
       await axios({
         method: "post",
@@ -207,7 +272,7 @@ const CreateStudy = () => {
           introduction: introduce,
           is_private: isPrivate,
           password: "password",
-          thumbnail_url: "thumbnailUrl",
+          thumbnail_url: thumbnailUrl,
           link_url: link_url,
           max_user_num: participant,
           start_at: dayjs(date[0]).format("YYYY-MM-DD"),
@@ -496,30 +561,47 @@ const CreateStudy = () => {
                       세부설정
                     </Typography>
                     <Container maxWidth="sm">
-                      <Stack spacing={5} alignItems="center">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="profile_img"
-                          name="profile_img"
-                          ref={imgInput}
-                          onChange={onImgChange}
-                          style={{ display: "none" }}
-                        />
-                        {thumbnail !== "" ? (
-                          <img
-                            className="profile_preview"
-                            src={thumbnailUrl}
-                            alt="profile"
-                            loading="lazy"
-                            style={{ width: "50%", height: "50%" }}
+                      {images.map((image, index) => (
+                        <ImageButton
+                          focusRipple
+                          key={image.title}
+                          style={{
+                            width: image.width,
+                          }}
+                          onClick={() => {
+                            setThumbnailUrl(image.url);
+                            setThumbnail(image.title);
+                          }}
+                        >
+                          <ImageSrc
+                            style={{ backgroundImage: `url(${image.url})` }}
                           />
-                        ) : null}
-                        <Button onClick={onImgButtonClick}>
-                          썸네일 업로드
-                        </Button>
-                        <Button onClick={handleThumbnailClose}>확인</Button>
-                      </Stack>
+                          <ImageBackdrop className="MuiImageBackdrop-root" />
+                          <Image>
+                            <Typography
+                              component="span"
+                              variant="subtitle1"
+                              color="inherit"
+                              sx={{
+                                position: "relative",
+                                p: 4,
+                                pt: 2,
+                                pb: (theme) =>
+                                  `calc(${theme.spacing(1)} + 6px)`,
+                              }}
+                            >
+                              {image.title}
+                              <ImageMarked className="MuiImageMarked-root" />
+                            </Typography>
+                          </Image>
+                        </ImageButton>
+                      ))}
+                      <Typography variant="subtitle1">
+                        선택된 이미지: {thumbnail}
+                      </Typography>
+                      <Button onClick={handleThumbnailClose} sx={{ mt: 5 }}>
+                        확인
+                      </Button>
                     </Container>
                   </Stack>
                 </Box>
