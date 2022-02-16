@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@teamwork/websocket-json-stream": "^2.0.0",
+    "express": "^4.17.2",
+    "http": "^0.0.1-security",
+    "reconnecting-websocket": "^4.4.0",
+    "rich-text": "^4.1.0",
+    "sharedb": "^2.2.5",
+    "ws": "^8.5.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "web-socket-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
