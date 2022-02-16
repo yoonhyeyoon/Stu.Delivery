@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Members from "./Members";
+import { Box } from "@mui/material";
 
 function StudyInfo() {
   const study = useSelector((state) => state.study.study);
@@ -9,7 +10,15 @@ function StudyInfo() {
   return (
     <div>
       {study ? (
-        <div>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          fullWidth
+        >
           <div>
             <h5>카테고리</h5>
           </div>
@@ -22,13 +31,8 @@ function StudyInfo() {
               {study.max_user_num})
             </h5>
             <Members members={study.members} />
-            {/* <ul>
-              {study.members.map((member) => (
-                <li key={member.id}>{member.nickname}</li>
-              ))}
-            </ul> */}
           </div>
-        </div>
+        </Box>
       ) : null}
     </div>
   );

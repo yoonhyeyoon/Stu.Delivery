@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
 import EditIcon from "@mui/icons-material/Edit";
-import { Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { setHeader } from "../../../../utils/api";
