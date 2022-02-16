@@ -15,14 +15,15 @@ const MyPage = () => {
         <Routes>
           {/* <SocialRoute path="update/check" element={<CheckPwd />}></SocialRoute> */}
           <Route
-            path="update/check"
             element={
-              <SocialRoute>
-                <CheckPwd />
-              </SocialRoute>
+              <SocialRoute
+                socialLogin={localStorage.getItem("is_oauth2_login")}
+              />
             }
-          ></Route>
-          <Route path="update" element={<Update />}></Route>
+          >
+            <Route path="update" element={<Update />}></Route>
+          </Route>
+          <Route path="check" element={<CheckPwd />}></Route>
           {/* <Route path="study" element={<MyStudy />}></Route> */}
           <Route path="dashboard" element={<Dashboard />}></Route>
           <Route path="withdrawal" element={<Withdrawal />}></Route>

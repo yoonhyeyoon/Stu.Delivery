@@ -278,6 +278,7 @@ const CreateStudy = () => {
           start_at: dayjs(date[0]).format("YYYY-MM-DD"),
           finish_at: dayjs(date[1]).format("YYYY-MM-DD"),
           regular_schedules: [],
+          categories: category,
         },
       })
         .then((response) => {
@@ -382,15 +383,6 @@ const CreateStudy = () => {
                 name="title"
                 sx={{ mb: 5 }}
                 onChange={onTitleHandler}
-              /> */}
-              {/* <TextField
-                margin="dense"
-                fullWidth
-                name="category"
-                label="카테고리"
-                id="password"
-                autoComplete="current-password"
-                sx={{ mb: 5 }}
               /> */}
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
                 소개글

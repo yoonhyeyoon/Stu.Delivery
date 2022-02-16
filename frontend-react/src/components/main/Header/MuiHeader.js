@@ -51,7 +51,7 @@ const ResponsiveAppBar = () => {
   };
 
   const route_mypage = {
-    "update/check": "회원정보수정",
+    update: "회원정보수정",
     dashboard: "대시보드",
     withdrawal: "회원탈퇴",
   };
@@ -64,7 +64,7 @@ const ResponsiveAppBar = () => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["update/check", "dashboard", "withdrawal"].map((text, index) => (
+        {["update", "dashboard", "withdrawal"].map((text, index) => (
           <ListItem button key={text} component={Link} to={"mypage/" + text}>
             <ListItemText primary={route_mypage[text]} />
           </ListItem>

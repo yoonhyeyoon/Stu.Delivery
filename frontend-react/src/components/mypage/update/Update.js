@@ -563,7 +563,7 @@ const Update = () => {
           required
           fullWidth
           id="title"
-          label="닉네임을 입력해주세요."
+          value={nickname}
           name="title"
           sx={{ mb: 5 }}
           onChange={onNicknameHandler}
@@ -605,10 +605,10 @@ const Update = () => {
               margin="dense"
               required
               fullWidth
+              label="관심사를 입력해주세요."
               id="interest"
               sx={{ mb: 5 }}
               {...params}
-              label="관심사를 입력해주세요"
             />
           )}
         />
@@ -635,9 +635,9 @@ const Update = () => {
           required
           fullWidth
           id="title"
-          label="하고 싶은 말을 적어주세요."
           name="title"
           sx={{ mb: 5 }}
+          value={aspire}
           onChange={onAspireHandler}
         />
         <Button
