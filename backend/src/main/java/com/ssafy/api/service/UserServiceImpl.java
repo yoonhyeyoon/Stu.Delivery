@@ -6,6 +6,7 @@ import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.GoalRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
+import com.ssafy.api.response.UserProviderRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.exception.enums.ExceptionEnum;
@@ -188,6 +189,11 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(req.getPassword()));
 		userRepository.save(user);
 		return;
+	}
+
+	@Override
+	public UserProviderRes getUserProvider(User user) {
+		return UserProviderRes.of(user);
 	}
 
 	@Override
