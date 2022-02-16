@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Members from "./Members";
-import { Box } from "@mui/material";
+import { Box, Stack, Chip } from "@mui/material";
 
 function StudyInfo() {
   const study = useSelector((state) => state.study.study);
@@ -20,7 +20,21 @@ function StudyInfo() {
           fullWidth
         >
           <div>
-            <h5>카테고리</h5>
+            <p>
+              {study.start_at}~{study.finish_at}
+            </p>
+          </div>
+          <div>
+            <Stack spacing={2} direction="row">
+              <Chip
+                // size="large"
+                sx={{
+                  fontSize: 30,
+                  backgroundColor: "#f2dcc2",
+                }}
+                label={study.categories && study.categories[0].name}
+              />
+            </Stack>
           </div>
           <div>
             <p>{study.introduction}</p>

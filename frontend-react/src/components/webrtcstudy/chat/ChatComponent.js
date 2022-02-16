@@ -91,14 +91,22 @@ export default class ChatComponent extends Component {
   }
 
   render() {
-    const styleChat = { display: this.props.chatDisplay };
+    const styleChat = {
+      display: this.props.chatDisplay,
+      overflow: "auto",
+      background: "#f2f2e8",
+      boxShadow: "1px 1px 10px rgba(0, 0, 0, 0.7)",
+    };
     return (
-      <div id="chatContainer">
+      <div id="chatContainer" style={{ background: "#f2dcc2" }}>
         <div id="chatComponent" style={styleChat}>
-          <div id="chatToolbar">
+          <div
+            id="chatToolbar"
+            style={{ background: "#f2f2e8", color: "black" }}
+          >
             <span>
-              {this.props.user.getStreamManager().stream.session.sessionId} -
-              CHAT
+              {/* {this.props.user.getStreamManager().stream.session.sessionId} - */}
+              열람실 채팅
             </span>
             <IconButton id="closeButton" onClick={this.close}>
               <HighlightOff color="secondary" />

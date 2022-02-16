@@ -113,7 +113,7 @@ const MyStudy = ({ myStudy }) => {
   // console.log(studyInfo, user, isMember);
 
   const handleShow = () => {
-    window.location.href = `/study/${myStudy.id}`;
+    window.location.href = `/study/${myStudy.id}/info`;
   };
   // const getTime = (time) => {
   //   if (time < 1) return "1분미만";

@@ -11,6 +11,8 @@
 }
 .toolbar {
   padding: 0 !important;
+  /* background-color: red; */
+  width: 85% !important;
 }
 
 .headerLight {

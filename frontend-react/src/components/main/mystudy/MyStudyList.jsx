@@ -96,8 +96,8 @@ function MyStudyList() {
       setStudyItems(myStudyList);
       return;
     }
-    const newItems = myStudyList.filter((study) =>
-      study.categories.map((categorie) => categorie.name === category)
+    const newItems = myStudyList.filter(
+      (study) => study.categories[0].name === category
     );
     setStudyItems(newItems);
   };

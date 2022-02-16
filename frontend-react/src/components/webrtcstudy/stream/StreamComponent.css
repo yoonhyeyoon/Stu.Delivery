@@ -9,7 +9,9 @@
 .form-control {
   color: black;
 }
-
+.header_bar {
+  background-color: #f2dcc2;
+}
 .pointer {
   cursor: pointer;
 }
