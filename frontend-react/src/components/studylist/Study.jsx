@@ -70,7 +70,7 @@ const StyledRoom = styled.div`
 `;
 
 const Study = ({ study }) => {
-  // console.log({ studyList });
+  console.log({ study });
   const [show, setShow] = useState(false);
   //   const dispatch = useDispatch();
   //   useEffect(() => {
@@ -124,7 +124,7 @@ const Study = ({ study }) => {
         <div className="room-info">
           <div className="active-time">
             {study.is_private ? <LockIcon fontSize="small" /> : null}
-            <span>{study.finish_at}</span>
+            <span>~{study.finish_at}</span>
           </div>
           <div className="active-users">
             <PeopleIcon className="user-icon" />

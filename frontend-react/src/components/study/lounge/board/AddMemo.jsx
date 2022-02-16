@@ -3,7 +3,7 @@ import { insertMemo } from "../../../../redux/memos";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
-import { Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { is_member_check, setHeader } from "../../../../utils/api";
@@ -109,11 +109,17 @@ function AddMemo() {
       <Modal open={show} onClose={handleClose}>
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
-          <form>
+          <Box
+            sx={{
+              marginTop: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            fullWidth
+          >
             <div className={styles.modal_tex_aria}>
-              <div className={styles.modal_memo}>
-                <h3>메모</h3>
-              </div>
+              <h3>메모</h3>
               <input
                 className={styles.title}
                 value={title}
@@ -138,7 +144,7 @@ function AddMemo() {
               {/* {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} /> */}
             </div>
-          </form>
+          </Box>
         </div>
       </Modal>
     </>

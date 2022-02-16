@@ -1,3 +1,8 @@
+import { Button } from "@mui/material";
+import styles from "./Login.module.css";
+import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
+
 function SocialLogin() {
   const API_BASE_URL = "https://i6d201.p.ssafy.io/api";
 
@@ -22,10 +27,30 @@ function SocialLogin() {
     opacity: 0.7,
     padding: "0 1.3em 0",
   };
-
+  const onGoogle = () => {};
   return (
     <div className="social-login">
-      <a href={GOOGLE_AUTH_URL} style={style}>
+      <Button
+        className={styles.social_btn}
+        fullWidth
+        variant="contained"
+        style={{ background: "rgba(242, 242, 232, 0.7)", color: "black" }}
+        sx={{ mb: 2 }}
+        onClick={() => (window.location.href = GOOGLE_AUTH_URL)}
+      >
+        <GoogleIcon sx={{ marginRight: 1 }} /> Login with Google
+      </Button>
+      <Button
+        className={styles.social_btn}
+        fullWidth
+        variant="contained"
+        style={{ background: "rgba(242, 242, 232, 0.7)", color: "black" }}
+        sx={{ mb: 2 }}
+        onClick={() => (window.location.href = GITHUB_AUTH_URL)}
+      >
+        <GitHubIcon sx={{ marginRight: 1 }} /> Login with Github
+      </Button>
+      {/* <a href={GOOGLE_AUTH_URL} style={style}>
         Login with Google
       </a>
       <a href={FACEBOOK_AUTH_URL} style={style}>
@@ -33,7 +58,7 @@ function SocialLogin() {
       </a>
       <a href={GITHUB_AUTH_URL} style={style}>
         Login with Github
-      </a>
+      </a> */}
     </div>
   );
 }

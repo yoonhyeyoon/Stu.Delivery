@@ -5,7 +5,7 @@ import axios from "axios";
 import styles from "./Memo.module.css";
 import Draggable from "react-draggable";
 import EditMemo from "./EditMemo";
-import { Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,20 +26,29 @@ function Memo({ memo }) {
         </div>
         <div className={styles.bottom}>
           {memo.created_at && memo.created_at.slice(0, 10)}
-          <EditMemo memo={memo} />
+          {/* <EditMemo memo={memo} /> */}
         </div>
       </div>
       <Modal open={show} onClose={handleClose}>
         <div className={styles.modal}>
           <div>
-            <div className={styles.modal_text_aria}>
+            <div>
               <h2>{memo.title}</h2>
               <p>{memo.content}</p>
             </div>
-            <div className={styles.modal_bottom}>
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                margin: "1rem",
+              }}
+              fullWidth
+            >
               {memo.created_at && memo.created_at.slice(0, 10)}
               <EditMemo memo={memo} />
-            </div>
+            </Box>
           </div>
         </div>
       </Modal>

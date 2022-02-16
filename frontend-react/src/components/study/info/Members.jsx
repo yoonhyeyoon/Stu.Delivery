@@ -15,6 +15,7 @@ import { setHeader } from "../../../utils/api";
 import axios from "axios";
 import Avatar from "@mui/material/Avatar";
 import { useParams } from "react-router";
+import { Stack, Chip } from "@mui/material";
 
 function Members({ members }) {
   const params = useParams();
@@ -65,10 +66,10 @@ function Members({ members }) {
       });
   };
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ marginBottom: 6 }}>
       <Table
         // size="small"
-        sx={{ width: "100%", minWidth: 300 }}
+        sx={{ width: "100%", minWidth: 800 }}
         aria-label="simple table"
       >
         <TableHead>
@@ -76,7 +77,7 @@ function Members({ members }) {
             <StyledTableCell>닉네임</StyledTableCell>
             {/* <StyledTableCell align="right">닉네임</StyledTableCell> */}
             <StyledTableCell>관심사</StyledTableCell>
-            <StyledTableCell>한마디</StyledTableCell>
+            <StyledTableCell>각오</StyledTableCell>
             {study.master_id === user.id ? (
               <>
                 <StyledTableCell>강퇴</StyledTableCell>
@@ -104,8 +105,14 @@ function Members({ members }) {
                     </Avatar>
                     {row.nickname}
                   </TableCell>
-                  <TableCell>리액트...</TableCell>
-                  <TableCell>화이팅..</TableCell>
+                  <TableCell>
+                    <Stack spacing={2} direction="row">
+                      {row.category.map((ctg, index) => (
+                        <Chip key={index} label={ctg.name} />
+                      ))}
+                    </Stack>
+                  </TableCell>
+                  <TableCell>{row.determination}</TableCell>
                   {study.master_id === user.id ? (
                     <>
                       <TableCell>

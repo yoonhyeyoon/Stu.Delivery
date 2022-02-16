@@ -118,7 +118,7 @@ const MyStudy = ({ myStudy }) => {
             <div className="room-info">
               <div className="active-time">
                 {/* {myStudy.is_private ? <LockIcon fontSize="small" /> : null} */}
-                <span>{myStudy.finish_at}</span>
+                <span>~{myStudy.finish_at}</span>
               </div>
               <div className="active-users">
                 <PeopleIcon className="user-icon" />

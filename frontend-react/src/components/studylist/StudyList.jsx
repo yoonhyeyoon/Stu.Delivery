@@ -88,6 +88,7 @@ function StudyList() {
   // }, []);
 
   // console.log(categories);
+  const [studyItems, setStudyItems] = useState(studyList);
   const filterItems = (category) => {
     if (category === "all") {
       setStudyItems(studyList);
@@ -96,9 +97,10 @@ function StudyList() {
     const newItems = studyList.filter((study) =>
       study.categories.map((ctg) => ctg.name === category)
     );
+    console.log(newItems);
     setStudyItems(newItems);
   };
-  const [studyItems, setStudyItems] = useState(studyList);
+
   // setStudyItems(studyList);
   // console.log(studyItems);
   return (

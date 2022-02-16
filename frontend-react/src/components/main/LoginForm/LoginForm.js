@@ -3,7 +3,8 @@ import styles from "./Login.module.css";
 import axios from "axios";
 import { login } from "../../../utils/api";
 
-import Button from "react-bootstrap/Button";
+import { Button } from "@mui/material";
+
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -46,8 +47,8 @@ function LoginForm() {
     <div>
       <Container className={styles.box}>
         <Form className={styles.form}>
-          <h5>로그인</h5>
-          <Form.Group as={Row} className="mb-3">
+          <h3 className={styles.title}>Stu.Delivery</h3>
+          <Form.Group as={Row} className="mt-4 mb-3">
             <Col sm>
               <Form.Control
                 type="text"
@@ -71,12 +72,15 @@ function LoginForm() {
           </Form.Group>
           <div className="d-grid gap-1">
             <Button
-              className={styles.submit}
-              className="text-white"
-              variant="warning"
+              className={styles.btn}
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ background: "rgba(191, 122, 38, 0.6)" }}
+              sx={{ mt: 3, mb: 2 }}
               onClick={onClickLogin}
             >
-              로그인
+              입장
             </Button>
           </div>
           <SocialLogin />
