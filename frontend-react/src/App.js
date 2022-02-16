@@ -42,6 +42,7 @@ function App() {
           // action 발생
           dispatch(loadUser(res.data));
           dispatch(isLoad(true));
+          localStorage.setItem("profile_img", res.data.profile_img);
         })
         .catch((err) => console.log(err.request.data));
     };

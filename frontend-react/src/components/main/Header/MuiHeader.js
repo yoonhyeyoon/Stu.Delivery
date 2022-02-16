@@ -95,11 +95,11 @@ const ResponsiveAppBar = () => {
       <>
         <IconButton
           onClick={() => {
-            window.location.href = "/mypage/update/check";
+            window.location.href = "/mypage/update";
           }}
           sx={{ p: 0 }}
         >
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt="Remy Sharp" src={localStorage.getItem("profile_img")} />
         </IconButton>
         <Button
           key="login"
