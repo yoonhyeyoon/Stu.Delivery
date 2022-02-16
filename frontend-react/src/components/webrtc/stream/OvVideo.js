@@ -42,12 +42,23 @@ export default class OvVideoComponent extends Component {
 
   render() {
     return (
-      <video
-        autoPlay={true}
-        id={"video-" + this.props.user.getStreamManager().stream.streamId}
-        ref={this.videoRef}
-        muted={this.props.mutedSound}
-      />
+      <div>
+        {this.props.vdSource == "screen" ? (
+          <video
+            autoPlay={true}
+            id={"video-screen"}
+            ref={this.videoRef}
+            muted={this.props.mutedSound}
+          />
+        ) : (
+          <video
+            autoPlay={true}
+            id={"video-" + this.props.user.getStreamManager().stream.streamId}
+            ref={this.videoRef}
+            muted={this.props.mutedSound}
+          />
+        )}
+      </div>
     );
   }
 }

@@ -473,7 +473,7 @@ class VideoRoomComponent extends Component {
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
     console.log("!!!!!!!!!!!!!video: " + videoSource);
     const publisher = this.OV.initPublisher(
-      "html-element-id",
+      undefined,
       {
         videoSource: videoSource,
         publishAudio: localUser.isAudioActive(),
@@ -607,7 +607,10 @@ class VideoRoomComponent extends Component {
           <div id="layout" className="bounds">
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
-                <div className="OT_publisher custom-class" id="localUser">
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  id="localUser"
+                >
                   <StreamComponent
                     user={localUser}
                     handleNickname={this.nicknameChanged}
@@ -618,7 +621,7 @@ class VideoRoomComponent extends Component {
             {this.state.subscribers.map((sub, i) => (
               <div
                 key={i}
-                className="OT_publisher custom-class"
+                className="OT_root OT_publisher custom-class"
                 id="remoteUsers"
               >
                 <StreamComponent
