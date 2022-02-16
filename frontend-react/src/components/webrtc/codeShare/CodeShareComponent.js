@@ -27,7 +27,7 @@ export default class CodeShareComponent extends Component {
     Sharedb.types.register(richText.type);
 
     // Connecting to our socket server
-    const socket = new WebSocket("ws://i6d201.p.ssafy.io:9000");
+    const socket = new WebSocket("wss://i6d201.p.ssafy.io:9000");
     const connection = new Sharedb.Connection(socket);
 
     // Querying for our document
