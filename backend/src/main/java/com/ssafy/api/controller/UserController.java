@@ -7,6 +7,7 @@ import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.api.response.GoalRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
+import com.ssafy.api.response.UserProviderRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.response.UserSimpleRes;
 import com.ssafy.api.service.UserService;
@@ -98,6 +99,15 @@ public class UserController {
         User user = userDetails.getUser();
         userService.deleteUser(user);
         return ResponseEntity.ok(BaseResponseBody.of(200, "회원탈퇴 성공!"));
+    }
+
+    @GetMapping("/provider")
+    @ApiOperation(value = "로그인 제공자 확인", notes = "로그인한 사용자의 계정의 provider를 확인한다.")
+    public ResponseEntity<UserProviderRes> getUserProvider(@ApiIgnore Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        UserProviderRes res = userService.getUserProvider(user);
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/password-valid")
