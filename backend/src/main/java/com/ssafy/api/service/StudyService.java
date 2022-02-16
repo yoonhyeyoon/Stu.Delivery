@@ -6,6 +6,7 @@ import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
+import com.ssafy.api.response.StudyDetailRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.db.entity.User;
@@ -18,7 +19,7 @@ public interface StudyService {
     List<StudyRes> getStudyList(Pageable pageable, String name, List<Long> categories);
     StudyRes createStudy(User user, StudyReq studyReq);
     StudyRes updateStudy(User user, Long studyId, StudyReq studyReq);
-    StudyRes getStudy(Long studyId);
+    StudyDetailRes getStudy(Long studyId);
     void deleteStudy(User user, Long studyId);
     Boolean checkPassword(Long studyId, StudyPasswordReq req);
 

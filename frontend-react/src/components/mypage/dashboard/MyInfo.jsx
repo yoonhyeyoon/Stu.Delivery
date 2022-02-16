@@ -14,7 +14,7 @@ const MyInfo = (props) => {
           alignItems="left"
           sx={{ mt: 4, mb: 7 }}
         >
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt="Remy Sharp" src={props.profile} />
           <Typography component="h6" variant="h6" gutterBottom>
             {props.nickname}
           </Typography>

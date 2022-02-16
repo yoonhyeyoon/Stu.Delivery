@@ -48,6 +48,7 @@ class VideoRoomComponent extends Component {
       chatDisplay: "none",
       codeShareDisplay: "none",
       currentVideoDevice: undefined,
+      vdsource: undefined,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -190,6 +191,8 @@ class VideoRoomComponent extends Component {
       frameRate: 30,
       insertMode: "APPEND",
     });
+
+    this.setState({ vdSource: "webcam" });
 
     if (this.state.session.capabilities.publish) {
       publisher.on("accessAllowed", () => {
@@ -378,7 +381,7 @@ class VideoRoomComponent extends Component {
   }
 
   updateLayout() {
-    console.log("!!!!!updateLayout");
+    console.log("@@@@@@@@@@@updateLayout: " + this.state.vdSource);
     setTimeout(() => {
       this.layout.updateLayout();
     }, 20);
@@ -468,10 +471,12 @@ class VideoRoomComponent extends Component {
 
   screenShare() {
     console.log("!!!!!screenShare");
+    // console.log("!!!!!!!!!!!!!video: " + videoDevices[0].deviceId);
     const videoSource =
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
+    console.log("!!!!!!!!!!!!!video: " + videoSource);
     const publisher = this.OV.initPublisher(
-      "html-element-id",
+      undefined,
       {
         videoSource: videoSource,
         publishAudio: localUser.isAudioActive(),
@@ -491,6 +496,8 @@ class VideoRoomComponent extends Component {
       }
     );
 
+    this.setState({ vdSource: "screen" });
+
     publisher.once("accessAllowed", () => {
       console.log("accessAllowd");
       this.state.session.unpublish(localUser.getStreamManager());
@@ -503,10 +510,10 @@ class VideoRoomComponent extends Component {
           });
         });
       });
-      publisher.stream.getMediaStream().getVideoTracks()[0].applyConstraints({
-        width: 1280,
-        height: 720,
-      });
+      // publisher.stream.getMediaStream().getVideoTracks()[0].applyConstraints({
+      //   width: 1280,
+      //   height: 720,
+      // });
     });
     publisher.on("streamPlaying", () => {
       console.log("streamPlaying");
@@ -611,56 +618,93 @@ class VideoRoomComponent extends Component {
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         /> */}
-        <div id="layout" className="bounds">
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
+        {this.state.vdSource == "screen" ? (
+          <div id="layout" className="bounds">
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  id="localUser"
+                >
+                  <StreamComponent
+                    user={localUser}
+                    handleNickname={this.nicknameChanged}
+                    vdSource="screen"
+                  />
+                </div>
+              )}
+            {this.state.subscribers.map((sub, i) => (
+              <div
+                key={i}
+                className="OT_root OT_publisher custom-class"
+                id="remoteUsers"
+              >
                 <StreamComponent
-                  user={localUser}
-                  handleNickname={this.nicknameChanged}
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                  vdSource="webcam"
                 />
               </div>
-            )}
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="OT_root OT_publisher custom-class"
-              id="remoteUsers"
-            >
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-            </div>
-          ))}
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
+            ))}
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  style={chatDisplay}
+                >
+                  <ChatComponent
+                    user={localUser}
+                    chatDisplay={this.state.chatDisplay}
+                    close={this.toggleChat}
+                    messageReceived={this.checkNotification}
+                  />
+                </div>
+              )}
+          </div>
+        ) : (
+          <div id="layout" className="bounds">
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  id="localUser"
+                >
+                  <StreamComponent
+                    user={localUser}
+                    handleNickname={this.nicknameChanged}
+                    vdSource="webcam"
+                  />
+                </div>
+              )}
+            {this.state.subscribers.map((sub, i) => (
               <div
+                key={i}
                 className="OT_root OT_publisher custom-class"
-                style={codeShareDisplay}
+                id="remoteUsers"
               >
-                <CodeShareComponent
-                  user={localUser}
-                  chatDisplay={this.state.codeShareDisplay}
-                  close={this.toggleCodeShare}
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                  vdSource="webcam"
                 />
               </div>
-            )}
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
-              >
-                <ChatComponent
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                />
-              </div>
-            )}
-        </div>
+            ))}
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  style={chatDisplay}
+                >
+                  <ChatComponent
+                    user={localUser}
+                    chatDisplay={this.state.chatDisplay}
+                    close={this.toggleChat}
+                    messageReceived={this.checkNotification}
+                  />
+                </div>
+              )}
+          </div>
+        )}
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}

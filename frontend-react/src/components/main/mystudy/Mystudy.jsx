@@ -7,6 +7,7 @@ import axios from "axios";
 import styled from "styled-components";
 import PeopleIcon from "@mui/icons-material/People";
 import LockIcon from "@mui/icons-material/Lock";
+import { setHeader } from "../../../utils/api";
 
 const StyledRoom = styled.div`
   width: 320px;
@@ -71,23 +72,40 @@ const StyledRoom = styled.div`
 const MyStudy = ({ myStudy }) => {
   // console.log({ myStudy });
   const [show, setShow] = useState(false);
+  const [mystudy, setMystudy] = useState([]);
   //   const dispatch = useDispatch();
-  //   useEffect(() => {
-  //     if (study) {
-  //       const fetchStudyInfo = async () => {
-  //         axios({
-  //           method: "get",
-  //           url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
-  //         })
-  //           .then((res) => {
-  //             // console.log(res);
-  //             dispatch(loadStudy(res.data));
-  //           })
-  //           .catch((err) => console.log(err));
-  //       };
-  //       fetchStudyInfo();
-  //     }
-  //   }, []);
+
+  useEffect(() => {
+    const getStudy = () => {
+      axios({
+        method: "get",
+        url: "https://i6d201.p.ssafy.io/api/v1/users/mystudy",
+        headers: setHeader(),
+      })
+        .then((res) => {
+          console.log(res);
+          setMystudy([...res.data]);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    // if (study) {
+    //   const fetchStudyInfo = async () => {
+    //     axios({
+    //       method: "get",
+    //       url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
+    //     })
+    //       .then((res) => {
+    //         // console.log(res);
+    //         dispatch(loadStudy(res.data));
+    //       })
+    //       .catch((err) => console.log(err));
+    //   };
+    //   fetchStudyInfo();
+    // }
+    getStudy();
+  }, []);
+
   const user = useSelector((state) => state.user.user);
   // const studyInfo = useSelector((state) => state.study.study);
   // const isMember = is_member_check(myStudy, user);

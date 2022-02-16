@@ -41,6 +41,23 @@ build-front:
     tags :
         - prd
 
+build-wss:
+    stage: build
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}
+        paths:
+            - project/S06P12D201/web-socket-server/node_modules
+    only:
+        - master
+        - develop
+    script:
+        - cd $CI_PROJECT_DIR/web-socket-server
+        - rm -rf node_modules
+        - rm -rf package-lock.json
+        - npm install
+    tags :
+        - prd
+
 deploy-back:
     stage: deploy
     only :
@@ -60,5 +77,16 @@ deploy-front:
     script :
         # 배포는 이미 끝나서 단순 확인하기 위한 job으로만 구성
         - ls -al ~/project/S06P12D201/frontend-react/build
+    tags :
+        - prd
+
+deploy-wss:
+    stage: deploy
+    only :
+        - master
+        - develop
+    script :
+        - npm start
+        - cp -rf build ~/project/S06P12D201/web-socket-server
     tags :
         - prd
