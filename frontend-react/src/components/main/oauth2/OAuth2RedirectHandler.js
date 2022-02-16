@@ -24,7 +24,7 @@ const OAuth2RedirectHandler = (props) => {
     console.log("set token!");
     setJwtToken(token);
     localStorage.setItem("isLogin", true);
-    localStorage.setItem("social", true);
+    localStorage.setItem("is_oauth2_login", true);
     return (
       <Navigate
         to={{
