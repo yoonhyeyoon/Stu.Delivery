@@ -88,21 +88,25 @@ function StudyList() {
   // }, []);
 
   // console.log(categories);
-  const [studyItems, setStudyItems] = useState(studyList);
+  const [studyItems, setStudyItems] = useState();
   const filterItems = (category) => {
     if (category === "all") {
       setStudyItems(studyList);
       return;
     }
-    const newItems = studyList.filter((study) =>
-      study.categories.map((ctg) => ctg.name === category)
+
+    const newItems = studyList.filter(
+      (study) => study.categories[0].name === category
     );
-    console.log(newItems);
+    // console.log(category);
+    // console.log(studyList);
+    // console.log(newItems);
     setStudyItems(newItems);
+    console.log(category, categories, studyItems, newItems);
   };
 
   // setStudyItems(studyList);
-  // console.log(studyItems);
+
   return (
     <Container>
       <section className="study section">
