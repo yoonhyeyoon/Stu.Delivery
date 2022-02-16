@@ -73,7 +73,6 @@ function LoginForm() {
           <div className="d-grid gap-1">
             <Button
               className={styles.btn}
-              type="submit"
               fullWidth
               variant="contained"
               style={{ background: "rgba(191, 122, 38, 0.6)" }}

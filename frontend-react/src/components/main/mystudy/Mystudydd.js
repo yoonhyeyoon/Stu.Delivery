@@ -29,6 +29,7 @@ const MyStudydd = () => {
       })
         .then((response) => {
           console.log(response.data);
+          setMystudy([...response.data]);
         })
         .catch((e) => {
           console.log(e.response);
