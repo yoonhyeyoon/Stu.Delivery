@@ -96,7 +96,7 @@ export default class StreamComponent extends Component {
           )}
         </div> */}
         <div className="pointer nickname">
-          <div onClick={this.toggleNicknameForm}>
+          <div className="hearder_bar" onClick={this.toggleNicknameForm}>
             <span id="nickname">{this.props.user.getNickname()}</span>
             {this.props.user.isLocal() && <span id=""> (edit)</span>}
           </div>

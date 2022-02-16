@@ -4,6 +4,7 @@ import HighlightOff from "@material-ui/icons/HighlightOff";
 
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
+import "react-quill/dist/quill.snow.css";
 import Sharedb from "sharedb/lib/client";
 import richText from "rich-text";
 
@@ -47,9 +48,22 @@ export default class CodeShareComponent extends Component {
         doc.create([{ insert: "Hello World!" }], "rich-text");
       }
 
-      const toolbarOptions = ["bold", "italic", "underline", "strike", "align"];
+      const toolbarOptions = [
+        //[{ 'font': [] }],
+        [{ header: [1, 2, false] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
+        ["link", "image"],
+        [{ align: [] }, { color: [] }, { background: [] }], // dropdown with defaults from theme
+        ["clean"],
+      ];
       const options = {
-        theme: "bubble",
+        theme: "snow",
         modules: {
           toolbar: toolbarOptions,
         },
@@ -86,19 +100,24 @@ export default class CodeShareComponent extends Component {
   componentDidUpdate() {}
 
   render() {
-    const styleCodeShare = { display: this.props.codeShareDisplay };
+    const styleCodeShare = {
+      display: this.props.codeShareDisplay,
+      overflow: "auto",
+      background: "#f2f2e8",
+      boxShadow: "1px 1px 10px rgba(0, 0, 0, 0.7)",
+    };
     return (
-      <div id="chatContainer">
+      <div id="chatContainer" style={{ background: "#f2dcc2" }}>
         <div id="chatComponent" style={styleCodeShare}>
-          <div id="chatToolbar">
-            <span>
-              {this.props.user.getStreamManager().stream.session.sessionId} -
-              CodeShare
-            </span>
+          <div
+            id="chatToolbar"
+            style={{ background: "#f2f2e8", color: "black" }}
+          >
+            <span>에디터</span>
             <IconButton id="closeButton" onClick={this.close}>
               <HighlightOff color="secondary" />
             </IconButton>
-            <div style={{ margin: "5%", border: "1px solid" }}>
+            <div style={{ border: "0" }}>
               <div id="editor"></div>
             </div>
           </div>

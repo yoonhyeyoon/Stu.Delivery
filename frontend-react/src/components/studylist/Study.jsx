@@ -100,7 +100,7 @@ const Study = ({ study }) => {
       if (study.is_private) {
         setShow(true);
       } else {
-        window.location.href = `/study/${study.id}`;
+        window.location.href = `/study/${study.id}/info`;
       }
     }
   };

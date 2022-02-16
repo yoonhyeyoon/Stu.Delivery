@@ -13,7 +13,7 @@
   min-height: 40px !important;
   position: fixed !important;
   bottom: 0 !important;
-  width: 70%;
+  /* width: 100% !important; */
 }
 
 #titleContent {
@@ -46,7 +46,7 @@
 }
 
 .bounds {
-  background-color: #494949;
+  background-color: #f2dcc2 !important;
   overflow: hidden;
   position: absolute;
   left: 0;

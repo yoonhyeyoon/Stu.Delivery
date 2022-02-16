@@ -9,7 +9,10 @@
 .form-control {
   color: black;
 }
-
+.hearder_bar {
+  background-color: #f2dcc2;
+  /* box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
+}
 .pointer {
   cursor: pointer;
 }
