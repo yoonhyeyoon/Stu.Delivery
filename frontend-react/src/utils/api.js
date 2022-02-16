@@ -26,6 +26,7 @@ const login = (id, pwd) => {
           setJwtToken(response.data.accessToken);
           localStorage.setItem("isLogin", true);
           localStorage.setItem("is_oauth2_login", false);
+          localStorage.setItem("is_authenticated", false);
           window.location.href = "/";
         }
       })

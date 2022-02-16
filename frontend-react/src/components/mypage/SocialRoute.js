@@ -1,11 +1,20 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import CheckPwd from "./update/checkpwd/CheckPwd";
+import Update from "./update/Update";
 
-const SocialRoute = ({ children }) => {
-  const socialLogin = localStorage.getItem("is_oauth2_login");
+const SocialRoute = ({ socialLogin }) => {
+  //   const socialLogin = localStorage.getItem("is_oauth2_login");
+  console.log(!!socialLogin);
 
-  return socialLogin ? <CheckPwd /> : <Navigate to="update" />;
+  if (
+    socialLogin === "true" ||
+    localStorage.getItem("is_authenticated") === "true"
+  ) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="check" />;
+  }
 };
 
 export default SocialRoute;
