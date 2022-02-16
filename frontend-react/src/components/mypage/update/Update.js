@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { LocalizationProvider, DatePicker } from "@mui/lab";
+import { styled } from "@mui/material/styles";
 import {
   Autocomplete,
   Container,
@@ -15,13 +16,104 @@ import {
   Grid,
   Modal,
   Button,
-  Chip,
+  ButtonBase,
 } from "@mui/material";
 
 import { setHeader } from "../../../utils/api";
 import axios from "axios";
-import CheckPwd from "./checkpwd/CheckPwd";
 import dayjs from "dayjs";
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: "relative",
+  height: 200,
+  [theme.breakpoints.down("sm")]: {
+    width: "100% !important", // Overrides inline-style
+    height: 100,
+  },
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      opacity: 0,
+    },
+    "& .MuiTypography-root": {
+      border: "4px solid currentColor",
+    },
+  },
+}));
+
+const ImageSrc = styled("span")({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: "cover",
+  backgroundPosition: "center 40%",
+});
+
+const Image = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.common.white,
+}));
+
+const ImageBackdrop = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create("opacity"),
+}));
+
+const ImageMarked = styled("span")(({ theme }) => ({
+  height: 3,
+  width: 18,
+  backgroundColor: theme.palette.common.white,
+  position: "absolute",
+  bottom: -2,
+  left: "calc(50% - 9px)",
+  transition: theme.transitions.create("opacity"),
+}));
+
+const images = [
+  {
+    url: "/images/profile/profile_blue.png",
+    title: "1번",
+    width: "50%",
+  },
+  {
+    url: "/images/profile/profile_green.png",
+    title: "2번",
+    width: "50%",
+  },
+  {
+    url: "/images/profile/profile_grey.png",
+    title: "3번",
+    width: "50%",
+  },
+  {
+    url: "/images/profile/profile_purple.png",
+    title: "4번",
+    width: "50%",
+  },
+  {
+    url: "/images/profile/profile_red.png",
+    title: "5번",
+    width: "50%",
+  },
+];
 
 const Update = () => {
   const [email, setEmail] = useState(""); // 이메일
@@ -45,6 +137,7 @@ const Update = () => {
   const [pwdCheck, setPwdCheck] = useState(false);
 
   const [open, setOpen] = useState(false); // modal창 띄우는 용도
+  const [imageOpen, setImageOpen] = useState(false); // 프로필 사진 설정용 modal
 
   const [curPassword, setCurPassword] = useState("");
   const [password1, setPassword1] = useState("");
@@ -104,6 +197,9 @@ const Update = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const openImage = () => setImageOpen(true);
+  const closeImage = () => setImageOpen(false);
 
   const handleCurPassword = (event) => {
     setCurPassword(event.target.value);
@@ -309,9 +405,71 @@ const Update = () => {
               alt="Remy Sharp"
               src={previewUrl}
               sx={{ width: 56, height: 56 }}
-              onClick={onImgButtonClick}
+              onClick={openImage}
             />
           </Grid>
+          <Modal
+            className="thumbnail"
+            open={imageOpen}
+            onClose={closeImage}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Stack spacing={5}>
+                <Typography
+                  id="modal-modal-title"
+                  variant="h5"
+                  component="h2"
+                  margin="normal"
+                >
+                  프로필 사진을 선택해주세요
+                </Typography>
+                <Container maxWidth="sm">
+                  {images.map((image, index) => (
+                    <ImageButton
+                      focusRipple
+                      key={image.title}
+                      style={{
+                        width: image.width,
+                      }}
+                      onClick={() => {
+                        setPreviewUrl(image.url);
+                        setImg(image.title);
+                      }}
+                    >
+                      <ImageSrc
+                        style={{ backgroundImage: `url(${image.url})` }}
+                      />
+                      <ImageBackdrop className="MuiImageBackdrop-root" />
+                      <Image>
+                        <Typography
+                          component="span"
+                          variant="subtitle1"
+                          color="inherit"
+                          sx={{
+                            position: "relative",
+                            p: 4,
+                            pt: 2,
+                            pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                          }}
+                        >
+                          {image.title}
+                          <ImageMarked className="MuiImageMarked-root" />
+                        </Typography>
+                      </Image>
+                    </ImageButton>
+                  ))}
+                  <Typography variant="subtitle1">
+                    선택된 이미지: {img}
+                  </Typography>
+                  <Button onClick={closeImage} sx={{ mt: 5 }}>
+                    확인
+                  </Button>
+                </Container>
+              </Stack>
+            </Box>
+          </Modal>
           <Grid item xs={4} md={9}>
             <Typography component="h6" variant="h6" gutterBottom>
               {email}
