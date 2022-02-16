@@ -22,6 +22,7 @@ const CheckPwd = () => {
       },
     })
       .then((response) => {
+        localStorage.setItem("is_authenticated", true);
         window.location.href = "/mypage/update";
       })
       .catch(() => {
