@@ -8,6 +8,7 @@ export default class OvVideoComponent extends Component {
   }
 
   componentDidMount() {
+    console.log("*******************" + this.props.vdSource);
     if (this.props && this.props.user.streamManager && !!this.videoRef) {
       console.log("PROPS: ", this.props);
       this.props.user.getStreamManager().addVideoElement(this.videoRef.current);
@@ -41,12 +42,23 @@ export default class OvVideoComponent extends Component {
 
   render() {
     return (
-      <video
-        autoPlay={true}
-        id={"video-" + this.props.user.getStreamManager().stream.streamId}
-        ref={this.videoRef}
-        muted={this.props.mutedSound}
-      />
+      <div>
+        {this.props.vdSource == "screen" ? (
+          <video
+            autoPlay={true}
+            id={"video-screen"}
+            ref={this.videoRef}
+            muted={this.props.mutedSound}
+          />
+        ) : (
+          <video
+            autoPlay={true}
+            id={"video-" + this.props.user.getStreamManager().stream.streamId}
+            ref={this.videoRef}
+            muted={this.props.mutedSound}
+          />
+        )}
+      </div>
     );
   }
 }

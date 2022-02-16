@@ -43,7 +43,7 @@
 video {
   -o-object-fit: cover;
   object-fit: cover;
-  width: 100%;
+  width: 20%;
   height: 100%;
   color: #ffffff;
   margin: 0;
@@ -53,12 +53,12 @@ video {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* video {
-  width: 40%;
+.video-screen {
+  width: 100%;
   height: auto;
   float: left;
   cursor: pointer;
-} */
+}
 
 #statusIcons {
   bottom: 0;

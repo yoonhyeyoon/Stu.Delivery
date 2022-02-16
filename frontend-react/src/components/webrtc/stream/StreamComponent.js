@@ -55,6 +55,9 @@ export default class StreamComponent extends Component {
   //     }
   //   }
   // }
+  componentDidMount() {
+    console.log("$$$$$$$$$$$$$$$" + this.props.vdSource);
+  }
 
   render() {
     return (
@@ -108,6 +111,7 @@ export default class StreamComponent extends Component {
             <OvVideoComponent
               user={this.props.user}
               mutedSound={this.state.mutedSound}
+              vdSource={this.props.vdSource}
             />
           </div>
         ) : null}
