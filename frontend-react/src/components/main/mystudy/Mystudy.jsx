@@ -10,8 +10,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import { setHeader } from "../../../utils/api";
 
 const StyledRoom = styled.div`
-  width: 320px;
-  height: 240px;
+  width: 450px;
+  height: 370px;
   padding: 10px 10px;
   border-radius: 5px;
   display: flex;
@@ -31,7 +31,7 @@ const StyledRoom = styled.div`
   }
   .room-title {
     width: 100%;
-    height: 148px;
+    height: 350px;
     box-shadow: 0 5px 6px -6px rgba(191, 122, 38, 0.7);
     display: flex;
     flex-direction: column;
@@ -85,6 +85,7 @@ const MyStudy = ({ myStudy }) => {
         .then((res) => {
           console.log(res);
           setMystudy([...res.data]);
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -129,14 +130,20 @@ const MyStudy = ({ myStudy }) => {
         </div> */}
         {myStudy ? (
           <>
-            <div className="room-title">
-              <h3>{myStudy.name}</h3>
+            <div
+              className="room-title"
+              style={{
+                background: `url(${myStudy.thumbnail_url})`,
+                backgroundSize: "100%",
+              }}
+            >
+              {/* <h3>{myStudy.name}</h3> */}
               {/* <p>{`by ${myStudy.master_id}`}</p> */}
             </div>
             <div className="room-info">
               <div className="active-time">
                 {/* {myStudy.is_private ? <LockIcon fontSize="small" /> : null} */}
-                <span>~{myStudy.finish_at}</span>
+                <span>{myStudy.name}</span>
               </div>
               <div className="active-users">
                 <PeopleIcon className="user-icon" />
