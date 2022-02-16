@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -20,13 +20,113 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 
 const pages = ["mystudy", "studylist", "create"];
+
+const header_for_not_login = [
+  {
+    name: "스터디 목록",
+    url: "studylist",
+  },
+];
+
+const header_for_login = [
+  {
+    name: "내 스터디",
+    url: "mystudy",
+  },
+  {
+    name: "스터디 목록",
+    url: "studylist",
+  },
+  {
+    name: "스터디 만들기",
+    url: "create",
+  },
+];
+
 const route_pages = {
   mystudy: "내 스터디",
   studylist: "스터디 목록",
   create: "스터디 만들기",
 };
 
+const user_pages = [
+  {
+    name: "회원정보수정",
+    url: "/mypage/update",
+  },
+  {
+    name: "대시보드",
+    url: "/mypage/dashboard",
+  },
+  {
+    name: "회원탈퇴",
+    url: "/mypage/withdrawal",
+  },
+  {
+    name: "로그아웃",
+    url: "/",
+  },
+];
+
+const flex_pages_login = [
+  {
+    name: "회원정보수정",
+    url: "/mypage/update",
+  },
+  {
+    name: "대시보드",
+    url: "/mypage/dashboard",
+  },
+  {
+    name: "회원탈퇴",
+    url: "/mypage/withdrawal",
+  },
+  {
+    name: "내 스터디",
+    url: "mystudy",
+  },
+  {
+    name: "스터디 목록",
+    url: "studylist",
+  },
+  {
+    name: "스터디 만들기",
+    url: "create",
+  },
+  {
+    name: "로그아웃",
+    url: "/",
+  },
+];
+
+const flex_pages_not_login = [
+  {
+    name: "로그인",
+    url: "login",
+  },
+  {
+    name: "회원가입",
+    login: "signup",
+  },
+  {
+    name: "스터디 목록",
+    url: "studylist",
+  },
+];
+
 const ResponsiveAppBar = () => {
+  useEffect(() => {
+    const setHeaderItems = () => {
+      if (localStorage.getItem("isLogin") === "true") {
+        setHeaderItem([...header_for_login]);
+      } else {
+        setHeaderItem([...header_for_not_login]);
+      }
+    };
+
+    setHeaderItems();
+  }, []);
+
   // 로그아웃
   const onLogout = () => {
     localStorage.clear();
@@ -38,6 +138,7 @@ const ResponsiveAppBar = () => {
   const [toggle, setToggle] = useState({
     left: false,
   });
+  const [headerItem, setHeaderItem] = useState([]);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -90,25 +191,87 @@ const ResponsiveAppBar = () => {
 
   let item;
 
+  let flexItem;
+
   if (localStorage.getItem("isLogin")) {
     item = (
       <>
-        <IconButton
-          onClick={() => {
-            window.location.href = "/mypage/update";
+        <Tooltip title="내 정보">
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <Avatar
+              alt="Remy Sharp"
+              src={localStorage.getItem("profile_img")}
+            />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          sx={{ mt: "45px" }}
+          id="menu-appbar"
+          anchorEl={anchorElUser}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
           }}
-          sx={{ p: 0 }}
+          keepMounted
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
         >
-          <Avatar alt="Remy Sharp" src={localStorage.getItem("profile_img")} />
-        </IconButton>
-        <Button
-          key="login"
-          onClick={onLogout}
-          sx={{ my: 2, color: "white", display: "block" }}
-        >
-          로그아웃
-        </Button>
+          {user_pages.map((page, index) => (
+            <MenuItem
+              key={index}
+              onClick={() => {
+                if (page.name === "로그아웃") {
+                  localStorage.clear();
+                }
+                window.location.href = page.url;
+              }}
+            >
+              <Typography textAlign="center" variant="subtitle1">
+                {page.name}
+              </Typography>
+            </MenuItem>
+          ))}
+        </Menu>
       </>
+    );
+
+    flexItem = (
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorElNav}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        open={Boolean(anchorElNav)}
+        onClose={handleCloseNavMenu}
+        sx={{
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        {flex_pages_login.map((page, index) => (
+          <MenuItem
+            key={index}
+            onClick={() => {
+              if (page.name === "로그아웃") {
+                localStorage.clear();
+              }
+              window.location.href = page.url;
+            }}
+          >
+            <Typography textAlign="center">{page.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
     );
   } else {
     item = (
@@ -133,6 +296,38 @@ const ResponsiveAppBar = () => {
         </Button>
       </>
     );
+
+    flexItem = (
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorElNav}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        open={Boolean(anchorElNav)}
+        onClose={handleCloseNavMenu}
+        sx={{
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        {flex_pages_not_login.map((page, index) => (
+          <MenuItem
+            key={index}
+            onClick={() => {
+              window.location.href = page.url;
+            }}
+          >
+            <Typography textAlign="center">{page.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
+    );
   }
 
   return (
@@ -143,45 +338,18 @@ const ResponsiveAppBar = () => {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {["left"].map((anchor) => (
-              <React.Fragment key={anchor}>
-                {/* 로그인 했을때만 렌더링 */}
-                {localStorage.getItem("isLogin") && (
-                  <>
-                    <IconButton
-                      size="large"
-                      edge="start"
-                      color="inherit"
-                      aria-label="open drawer"
-                      sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-                      onClick={toggleDrawer(anchor, true)}
-                    >
-                      <MenuIcon />
-                    </IconButton>
-                    <nav>
-                      <Drawer
-                        anchor="left"
-                        open={toggle["left"]}
-                        onClose={toggleDrawer("left", false)}
-                      >
-                        {list("left")}
-                      </Drawer>
-                    </nav>
-                  </>
-                )}
-              </React.Fragment>
-            ))}
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-              onClick={() => {
-                window.location.href = "/";
+            <Button
+              size="large"
+              onClick={() => (window.location.href = "/")}
+              sx={{
+                color: "white",
+                textTransform: "none",
+                fontSize: 25,
+                display: { xs: "none", md: "flex" },
               }}
             >
               Stu.Delivery
-            </Typography>
+            </Button>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -194,52 +362,31 @@ const ResponsiveAppBar = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
+              <>{flexItem}</>
+              <Button
+                size="large"
+                onClick={() => (window.location.href = "/")}
                 sx={{
-                  display: { xs: "block", md: "none" },
+                  color: "white",
+                  textTransform: "none",
+                  fontSize: 25,
+                  display: { xs: "flex", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+                Stu.Delivery
+              </Button>
             </Box>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-              onClick={() => {
-                window.location.href = "/";
-              }}
-            >
-              Stu.Delivery
-            </Typography>
+
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
+              {headerItem.map((item, index) => (
                 <Button
-                  href={page}
-                  key={page}
+                  href={item.url}
+                  key={index}
                   component={Link}
-                  to={page}
+                  to={item.url}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {route_pages[page]}
+                  {item.name}
                 </Button>
               ))}
             </Box>
