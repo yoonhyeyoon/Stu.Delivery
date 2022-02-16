@@ -6,6 +6,7 @@ import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
+import com.ssafy.api.response.StudyDetailRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.common.exception.enums.ExceptionEnum;
 import com.ssafy.common.exception.response.ApiException;
@@ -233,10 +234,10 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public StudyRes getStudy(Long studyId) {
+    public StudyDetailRes getStudy(Long studyId) {
         Study study = studyRepository.findById(studyId)
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
-        return StudyRes.of(study);
+        return StudyDetailRes.of(study);
     }
 
     @Override

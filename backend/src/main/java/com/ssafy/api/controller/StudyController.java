@@ -6,6 +6,7 @@ import com.ssafy.api.request.StudyPasswordReq;
 import com.ssafy.api.request.StudyReq;
 import com.ssafy.api.response.ScheduleRes;
 import com.ssafy.api.response.StudyBoardRes;
+import com.ssafy.api.response.StudyDetailRes;
 import com.ssafy.api.response.StudyListRes;
 import com.ssafy.api.response.StudyRes;
 import com.ssafy.api.service.StudyService;
@@ -76,8 +77,8 @@ public class StudyController {
 
     @GetMapping("/{study_id}")
     @ApiOperation(value = "스터디 가져오기", notes = "스터디 정보를 가져온다.")
-    public ResponseEntity<StudyRes> getStudy(@PathVariable Long study_id) {
-        StudyRes res = this.studyService.getStudy(study_id);
+    public ResponseEntity<StudyDetailRes> getStudy(@PathVariable Long study_id) {
+        StudyDetailRes res = this.studyService.getStudy(study_id);
         return ResponseEntity.ok(res);
     }
 
