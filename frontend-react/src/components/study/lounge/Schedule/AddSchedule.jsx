@@ -40,6 +40,8 @@ function AddSchedule() {
   };
 
   const handleAddSchedule = async (event) => {
+    // const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    // setStartDate(new Date(startDate + KR_TIME_DIFF));
     event.preventDefault();
     if (title === "") {
       return alert("일정명을 입력하세요.");

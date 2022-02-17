@@ -13,12 +13,13 @@ function Calendar({ schedules }) {
 
   const scheduleEvent = (schedules) => {
     const events = [];
+    const offset = new Date().getTimezoneOffset() * 60000;
     if (schedules) {
       for (var i in schedules) {
         // console.log(schedules[i]);
         events.push({
           title: schedules[i].title,
-          date: schedules[i].time,
+          date: new Date(new Date(schedules[i].time) - offset),
           backgroundColor: "#bf7a26",
         });
       }
