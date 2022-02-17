@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 import WelcomeCarousel from "../options/WelcomeCarousel/Index";
 import color from "../../common/styles/theme";
@@ -7,6 +7,7 @@ import recafe1 from "../../assets/images/welcome/recafe1.png";
 import recafe2 from "../../assets/images/welcome/recafe2.png";
 import recafe6 from "../../assets/images/welcome/recafe6.png";
 import recafe8 from "../../assets/images/welcome/recafe8.png";
+import Typed from "typed.js";
 
 const Container = styled.div`
   position: relative;
@@ -33,7 +34,6 @@ const TextDiv = styled.div`
   margin-left: 60px;
   margin-bottom: 60px;
   z-index: 1;
-  font-family: "Black Han Sans", sans-serif;
   cursor: default;
   transition: all 0.35s;
   @media only screen and (min-width: 768px) {
@@ -149,6 +149,20 @@ const HomeTop = ({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const maxIndex = 3;
+  const el = useRef(null);
+
+  useEffect(() => {
+    const typed = new Typed(el.current, {
+      strings: ["코드를 같이 작업", "일정을 같이 공유"],
+      typeSpeed: 100,
+      backSpeed: 100,
+      loop: true,
+    });
+
+    return () => {
+      typed.destroy();
+    };
+  }, []);
 
   return (
     <Container style={{ height: windowHeight }}>
@@ -216,18 +230,17 @@ const HomeTop = ({
               }
             >
               <TextKeyword
+                ref={el}
                 style={
                   overIndex === currentIndex + 1 ||
                   (overIndex === 0 && currentIndex === maxIndex)
                     ? { marginLeft: -40, color: color.yellow.default }
                     : { color: color.yellow.default }
                 }
-              >
-                코드를 같이
-              </TextKeyword>
-              <TextEnd>작업하며</TextEnd>
+              ></TextKeyword>
+              <TextEnd>하며</TextEnd>
             </TextBoxOpacity>
-            <TextBoxOpacity
+            {/* <TextBoxOpacity
               style={
                 currentIndex === 1
                   ? { opacity: 1, color: color.white.default, marginTop: 12 }
@@ -283,7 +296,7 @@ const HomeTop = ({
                 일정을 같이
               </TextKeyword>
               <TextEnd>공유하며</TextEnd>
-            </TextBoxOpacity>
+            </TextBoxOpacity> */}
           </TextChangeFrame>
           <TextBox
             style={

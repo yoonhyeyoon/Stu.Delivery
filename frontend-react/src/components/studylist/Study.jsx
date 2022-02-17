@@ -124,13 +124,13 @@ const Study = ({ study }) => {
             backgroundSize: "100%",
           }}
         >
-          <h3>{study.name}</h3>
+          {/* <h3>{study.name}</h3> */}
           {/* <p>{`by ${study.master_id}`}</p> */}
         </div>
         <div className="room-info">
           <div className="active-time">
             {study.is_private ? <LockIcon fontSize="small" /> : null}
-            <span>~{study.finish_at}</span>
+            <span>{study.name}</span>
           </div>
           <div className="active-users">
             <PeopleIcon className="user-icon" />
