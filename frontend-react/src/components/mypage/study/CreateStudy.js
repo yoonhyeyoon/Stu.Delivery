@@ -122,8 +122,8 @@ const CreateStudy = () => {
   const [date, setDate] = useState([null, null]); // 시작일, 종료일 담은 배열
   const [introduce, setIntroduce] = useState(""); // 스터디 소개글
   const [password, setPassword] = useState(null); // 스터디 비밀번호
-  const [participant, setParticipant] = useState(0);
-  const [url, setUrl] = useState(""); // 스터디 URL
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [participant, setParticipant] = useState(8); // 스터디 참여 인원, 기본값은 8
   const [thumbnail, setThumbnail] = useState("없음"); // 썸네일
   const [thumbnailUrl, setThumbnailUrl] = useState(""); // 썸네일 Url
 
@@ -138,10 +138,9 @@ const CreateStudy = () => {
   const handleThumbnailClose = () => setThumbnailOpen(false);
 
   // 스터디 공개 여부
-  const [isPrivate, setIsPrivate] = useState(false);
+  // const [isPrivate, setIsPrivate] = useState(false);
   const handlePrivate = (event) => {
     setIsPrivate(event.target.checked);
-    console.log(isPrivate);
   };
 
   useEffect(() => {
@@ -235,18 +234,11 @@ const CreateStudy = () => {
     setParticipant(event.target.value);
   };
 
-  const onUrlHandler = (event) => {
-    console.log(event);
-    setUrl(event.target.value);
-  };
-
   const submit = async () => {
     console.log(title);
     console.log(date);
     console.log(introduce);
     console.log(password);
-    console.log(url);
-    console.log(thumbnail);
     console.log(thumbnailUrl);
     console.log(isPrivate);
     console.log(category);
@@ -262,8 +254,6 @@ const CreateStudy = () => {
     } else if (category.length === 0) {
       alert("카테고리를 지정해주세요.");
     } else {
-      let link_url = "https://i6d201.p.ssafy.io/study/" + url;
-
       await axios({
         method: "post",
         url: "https://i6d201.p.ssafy.io/api/v1/study",
@@ -272,9 +262,8 @@ const CreateStudy = () => {
           name: title,
           introduction: introduce,
           is_private: isPrivate,
-          password: "password",
+          password: password,
           thumbnail_url: thumbnailUrl,
-          link_url: link_url,
           max_user_num: participant,
           start_at: dayjs(date[0]).format("YYYY-MM-DD"),
           finish_at: dayjs(date[1]).format("YYYY-MM-DD"),
@@ -434,7 +423,9 @@ const CreateStudy = () => {
                   </Typography>
                   <Typography>{"일정: "}</Typography>
                   <Typography>{"카테고리: "}</Typography>
-                  <Typography>{"스터디장: "}</Typography>
+                  <Typography>
+                    {"스터디장: " + localStorage.getItem("nickname")}
+                  </Typography>
                   <Typography>소개글</Typography>
                   <Typography>{introduce}</Typography>
                 </Container>
@@ -475,7 +466,9 @@ const CreateStudy = () => {
                             spacing={1}
                             alignItems="center"
                           >
-                            <Typography>비공개</Typography>
+                            <Typography>
+                              {isPrivate ? "비공개" : "공개"}
+                            </Typography>
                             <Switch
                               checked={isPrivate}
                               onChange={handlePrivate}
@@ -494,24 +487,10 @@ const CreateStudy = () => {
                           <TextField
                             margin="normal"
                             type="password"
+                            disabled={!isPrivate}
                             label="비밀번호를 입력해주세요"
                             variant="outlined"
                             onChange={onPasswordHandler}
-                          />
-                        </Stack>
-                        <Stack spacing={1}>
-                          <Typography
-                            variant="subtitle1"
-                            gutterBottom
-                            component="div"
-                          >
-                            URL 설정
-                          </Typography>
-                          <TextField
-                            margin="normal"
-                            label="만들고 싶은 URL을 입력해주세요"
-                            variant="outlined"
-                            onChange={onUrlHandler}
                           />
                         </Stack>
                         <Stack spacing={1}>
@@ -526,6 +505,7 @@ const CreateStudy = () => {
                             margin="normal"
                             type="number"
                             InputProps={{ inputProps: { min: 2, max: 10 } }}
+                            value={participant}
                             label="참여 가능 인원을 선택해주세요."
                             variant="outlined"
                             onChange={onParticipantHandler}

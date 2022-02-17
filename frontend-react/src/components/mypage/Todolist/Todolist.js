@@ -82,11 +82,11 @@ const Todolist = () => {
       },
     })
       .then((response) => {
-        alert("성공적으로 서버에 업로드했어요!");
+        alert("성공적으로 저장했어요!");
         window.location.reload();
       })
       .catch((e) => {
-        alert("업로드 중 에러가 발생했어요. 다시 시도해주세요.");
+        alert("에러가 발생했어요. 다시 시도해주세요.");
       });
   };
 
