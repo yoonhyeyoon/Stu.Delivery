@@ -4,6 +4,8 @@ import com.ssafy.common.auth.AuthKey;
 import com.ssafy.common.util.MailUtils;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +28,8 @@ public class MailServiceImpl implements MailService {
 
     // 메일 전송
     @Override
-    public void sendConfirmMail(User user, String authKey) throws Exception {
+    public void sendConfirmMail(User user, String authKey)
+        throws MessagingException, UnsupportedEncodingException {
 
         sendMail = new MailUtils(mailSender);
 

@@ -15,6 +15,7 @@ public enum ExceptionEnum {
     
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "101", "해당 유저를 찾을 수 없습니다."),
     UNAUTHORIZED_USER_PASSWORD(HttpStatus.UNAUTHORIZED, "104", "잘못된 비밀번호입니다."),
+    CONFLICT_UESR(HttpStatus.CONFLICT, "105", "이미 해당 아이디가 존재합니다."),
 
     NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, "201", "해당 스터디를 찾을 수 없습니다."),
     BAE_REQUEST_STUDY(HttpStatus.BAD_REQUEST, "203", "스터디에 카테고리를 반드시 지정해야 합니다."),

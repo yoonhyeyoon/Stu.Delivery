@@ -20,6 +20,7 @@ import com.ssafy.db.entity.UserCategory;
 import com.ssafy.db.repository.GoalRepository;
 import com.ssafy.db.repository.StudyMemberRepository;
 import com.ssafy.db.repository.UserCategoryRepository;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,6 +29,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.mail.MessagingException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -66,12 +68,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public User createUser(UserRegisterPostReq userRegisterInfo) throws Exception {
-
-		if (userRepository.findByEmail(userRegisterInfo.getEmail()).isPresent()) {
-			return null;
-		}
-
+	public User createUser(UserRegisterPostReq userRegisterInfo)
+		throws MessagingException, UnsupportedEncodingException {
 		User user = new User();
 		user.setEmail(userRegisterInfo.getEmail());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
@@ -87,7 +85,11 @@ public class UserServiceImpl implements UserService {
 
 		mailService.sendConfirmMail(user, authKey);
 
-		return userRepository.save(user);
+		if (userRepository.findByEmail(userRegisterInfo.getEmail()).isPresent()) {
+			throw new ApiException(ExceptionEnum.CONFLICT_UESR);
+		} else {
+			return userRepository.save(user);
+		}
 	}
 
 	@Override
