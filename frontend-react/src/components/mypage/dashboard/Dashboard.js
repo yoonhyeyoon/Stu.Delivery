@@ -2,23 +2,9 @@ import React, { Fragment, useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { setHeader } from "../../../utils/api";
 import MyInfo from "./MyInfo";
-import ProgressBar from "../../progressbar/ProgressBar";
 import Todolist from "../Todolist/Todolist";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
-import {
-  CssBaseline,
-  Typography,
-  Button,
-  Stack,
-  Box,
-  TextField,
-  Container,
-  IconButton,
-  Modal,
-  Checkbox,
-} from "@mui/material";
+import { CssBaseline, Typography, Box, Container } from "@mui/material";
 
 const Dashboard = () => {
   const [nickname, setNickname] = useState("");
@@ -39,10 +25,10 @@ const Dashboard = () => {
           setProfile(res.data.profile_img);
           setInterests([...res.data.categories]);
           setAspire(res.data.determination);
-          localStorage.setItem("user", res.data.id);
-          localStorage.setItem("email", res.data.email);
-          localStorage.setItem("nickname", res.data.nickname);
-          localStorage.setItem("profile", res.data.profile_img);
+          // localStorage.setItem("user", res.data.id);
+          // localStorage.setItem("email", res.data.email);
+          // localStorage.setItem("nickname", res.data.nickname);
+          // localStorage.setItem("profile", res.data.profile_img);
 
           console.log(res.data.categories);
         })

@@ -8,6 +8,8 @@ const login = (id, pwd) => {
 
   if (!emailRule.test(id)) {
     alert("이메일 형식의 아이디를 입력해주세요.");
+  } else if (pwd === "") {
+    alert("비밀번호를 입력해주세요.");
   } else {
     console.log("로그인한다");
     axios({
@@ -19,20 +21,19 @@ const login = (id, pwd) => {
       },
     })
       .then((response) => {
-        console.log(response);
         if (response.data.accessToken) {
           // 로그인 성공시 쿠키에 jwt token 저장
           console.log("success!");
           setJwtToken(response.data.accessToken);
           localStorage.setItem("isLogin", true);
-          localStorage.setItem("is_oauth2_login", false);
-          localStorage.setItem("is_authenticated", false);
+          localStorage.setItem("is_oauth2_login", false); // 소셜 로그인 여부는 false
+          localStorage.setItem("is_authenticated", false); // 비밀번호 확인을 할때 인증받았는지 여부는 false - 일반 로그인 전용 필드
           window.location.href = "/";
         }
       })
       .catch((e) => {
         alert("아이디 또는 비밀번호를 확인해주세요.");
-        console.log("Error!");
+        console.log(e.response);
       });
   }
 };

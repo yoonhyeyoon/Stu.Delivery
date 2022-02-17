@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { setHeader } from "../../../../utils/api";
+import { TextField } from "@mui/material";
 
 const CheckPwd = () => {
   const [inputPw, setInputPw] = useState();
@@ -25,8 +26,9 @@ const CheckPwd = () => {
         localStorage.setItem("is_authenticated", true);
         window.location.href = "/mypage/update";
       })
-      .catch(() => {
+      .catch((e) => {
         alert("비밀번호를 다시 입력해주세요.");
+        console.log(e.response);
       });
   };
 
@@ -37,15 +39,21 @@ const CheckPwd = () => {
   return (
     <div className="container">
       <Container className={styles.box}>
-        <Form className={styles.form}>
+        <Container className={styles.form}>
           <Form.Group as={Row} className="mb-3">
             <Col sm>
-              <Form.Control
+              <TextField
                 type="password"
-                name="input_pw"
-                value={inputPw}
+                label="비밀번호를 입력해주세요."
+                required
+                fullWidth
                 onChange={handleInputPw}
-                placeholder="비밀번호를 입력해주세요."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    console.log("enter!");
+                    check();
+                  }
+                }}
               />
             </Col>
           </Form.Group>
@@ -58,7 +66,7 @@ const CheckPwd = () => {
               비밀번호 확인
             </Button>
           </div>
-        </Form>
+        </Container>
       </Container>
     </div>
   );
