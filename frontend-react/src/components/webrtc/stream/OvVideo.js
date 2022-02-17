@@ -5,10 +5,11 @@ export default class OvVideoComponent extends Component {
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
+
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
 
   componentDidMount() {
-    console.log("*******************" + this.props.vdSource);
     if (this.props && this.props.user.streamManager && !!this.videoRef) {
       console.log("PROPS: ", this.props);
       this.props.user.getStreamManager().addVideoElement(this.videoRef.current);
@@ -40,24 +41,25 @@ export default class OvVideoComponent extends Component {
     }
   }
 
+  handleOnClick(obj) {
+    console.log("handleOnClick");
+    console.log(obj.videoRef.current);
+    const vid = document.getElementById(obj.videoRef.current.id);
+
+    vid.style.width = "100%";
+    vid.style.height = "auto";
+    vid.style.transition = "width 0.5s ease";
+  }
+
   render() {
     return (
-      <div>
-        {this.props.vdSource == "screen" ? (
-          <video
-            autoPlay={true}
-            id={"video-screen"}
-            ref={this.videoRef}
-            muted={this.props.mutedSound}
-          />
-        ) : (
-          <video
-            autoPlay={true}
-            id={"video-" + this.props.user.getStreamManager().stream.streamId}
-            ref={this.videoRef}
-            muted={this.props.mutedSound}
-          />
-        )}
+      <div onClick={() => this.handleOnClick(this)}>
+        <video
+          autoPlay={true}
+          id={"video-" + this.props.user.getStreamManager().stream.streamId}
+          ref={this.videoRef}
+          muted={this.props.mutedSound}
+        />
       </div>
     );
   }

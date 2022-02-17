@@ -55,9 +55,6 @@ export default class StreamComponent extends Component {
   //     }
   //   }
   // }
-  componentDidMount() {
-    console.log("$$$$$$$$$$$$$$$" + this.props.vdSource);
-  }
 
   render() {
     return (

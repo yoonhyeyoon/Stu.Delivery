@@ -40,11 +40,16 @@
   justify-content: center;
 }
 
+.vddiv {
+  width: 20%;
+  height: 20%;
+}
+
 video {
   -o-object-fit: cover;
   object-fit: cover;
   width: 20%;
-  height: 100%;
+  height: auto;
   color: #ffffff;
   margin: 0;
   padding: 0;
