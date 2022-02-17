@@ -17,6 +17,7 @@ import {
   Modal,
   Button,
   ButtonBase,
+  Chip,
 } from "@mui/material";
 
 import { setHeader } from "../../../utils/api";
@@ -121,8 +122,7 @@ const Update = () => {
   const [previewUrl, setPreviewUrl] = useState(""); // 프로필 사진 URL
   const [nickname, setNickname] = useState(""); // 닉네임
   const [birthday, setBirthday] = useState(""); // 생년월일
-  const [interest, setInterest] = useState(""); // 관심사
-  const [interestList, setInterestList] = useState([]);
+  const [interestList, setInterestList] = useState([]); // 관심사
   const [aspire, setAspire] = useState(""); // 나의 한마디
   const imgInput = useRef();
 
@@ -165,9 +165,7 @@ const Update = () => {
           setPreviewUrl(resProfile !== null ? resProfile : "");
           setBirthday(resBirthday !== null ? resBirthday : "");
           setAspire(resAspire !== null ? resAspire : "");
-          setInterestList(
-            resInterest !== null ? [...interestList, ...resInterest] : []
-          );
+          setInterestList(resInterest !== null ? [...resInterest] : []);
         })
         .catch((e) => {
           console.log(e.response);
@@ -261,7 +259,6 @@ const Update = () => {
     }
   };
 
-  // 사진 업로드 이슈 있음
   const updateInfo = () => {
     // 회원정보수정
     localStorage.setItem("interests", interestList);
@@ -276,12 +273,7 @@ const Update = () => {
         profile_img: previewUrl,
         birth: dayjs(birthday).format("YYYY-MM-DD"),
         determination: aspire,
-        categories: [
-          {
-            id: 1,
-            name: "react",
-          },
-        ],
+        categories: interestList,
       },
     })
       .then((response) => {
@@ -315,10 +307,6 @@ const Update = () => {
       setPreviewUrl(reader.result);
     };
     reader.readAsDataURL(file);
-  };
-
-  const onImgButtonClick = () => {
-    imgInput.current.click();
   };
 
   const onNicknameHandler = (event) => {
@@ -361,6 +349,7 @@ const Update = () => {
         setInterestList([...interestList, ...inter]);
       }
     }
+    console.log(...interestList);
   };
 
   // 나의 한마디 설정
@@ -612,7 +601,7 @@ const Update = () => {
             />
           )}
         />
-        {/* <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ mb: 4 }}>
           {interestList.map(({ id, name }, index) => {
             console.log(id, name);
             return (
@@ -621,12 +610,12 @@ const Update = () => {
                 label={name}
                 onDelete={() => {
                   interestList.splice(index, 1);
-                  console.log(interestList);
+                  console.log(...interestList);
                 }}
               />
             );
           })}
-        </Stack> */}
+        </Stack>
         <FormLabel component="legend" sx={{ color: "text.primary" }}>
           나의 한마디
         </FormLabel>

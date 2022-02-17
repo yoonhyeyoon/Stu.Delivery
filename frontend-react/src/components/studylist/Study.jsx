@@ -10,8 +10,8 @@ import PeopleIcon from "@mui/icons-material/People";
 import LockIcon from "@mui/icons-material/Lock";
 
 const StyledRoom = styled.div`
-  width: 320px;
-  height: 240px;
+  width: 450px;
+  height: 370px;
   padding: 10px 10px;
   border-radius: 5px;
   display: flex;
@@ -31,7 +31,7 @@ const StyledRoom = styled.div`
   }
   .room-title {
     width: 100%;
-    height: 148px;
+    height: 350px;
     box-shadow: 0 5px 6px -6px rgba(191, 122, 38, 0.7);
     display: flex;
     flex-direction: column;
@@ -117,7 +117,13 @@ const Study = ({ study }) => {
         {/* <div className="category-tag">
           <CategoryTag category={room.category} />
         </div> */}
-        <div className="room-title">
+        <div
+          className="room-title"
+          style={{
+            background: `url(${study.thumbnail_url})`,
+            backgroundSize: "100%",
+          }}
+        >
           <h3>{study.name}</h3>
           {/* <p>{`by ${study.master_id}`}</p> */}
         </div>
