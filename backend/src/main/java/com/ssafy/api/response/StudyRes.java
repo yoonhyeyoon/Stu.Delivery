@@ -42,8 +42,12 @@ public class StudyRes {
         res.setMax_user_num(study.getMaxUserNum());
         res.setPrivate_room_id(study.getPrivateRoomId());
         res.setMeeting_room_id(study.getMeetingRoomId());
-        res.setStart_at(study.getStartAt().toString());
-        res.setFinish_at(study.getFinishAt().toString());
+        if (study.getStartAt() != null) {
+            res.setStart_at(study.getStartAt().toString());
+        }
+        if (study.getFinishAt() != null) {
+            res.setFinish_at(study.getFinishAt().toString());
+        }
         res.setRegular_schedules(study.getRegularSchedules().stream().map((RegularSchedule rs) -> {
             return RegularScheduleListRes.of(rs);
         }).collect(Collectors.toList()));
