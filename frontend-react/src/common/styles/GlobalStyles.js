@@ -9,7 +9,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body{
     /* background-color: black; */
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "EliceDigitalBaeum_Bold";
     &::-webkit-scrollbar {
       width: 11px;
       height: 11px;

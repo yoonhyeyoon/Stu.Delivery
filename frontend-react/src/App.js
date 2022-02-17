@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
 import Header from "./components/main/Header/Header";
 import Footer from "./components/main/Footer/Footer";
 import OAuth2RedirectHandler from "./components/main/oauth2/OAuth2RedirectHandler";
@@ -24,6 +26,12 @@ import ResponsiveAppBar from "./components/main/Header/MuiHeader";
 import CreateStudy from "./components/mypage/study/CreateStudy";
 import WebrtcStudy from "./components/webrtcstudy/VideoRoomComponent";
 import MyStudyList from "./components/main/mystudy/MyStudyList";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: ["EliceDigitalBaeum_Bold"].join(","),
+  },
+});
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -50,40 +58,45 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <GlobalStyles />
-      <div className="content">
-        <Router>
-          {/* <Header authenticated={authenticated} isLogin={isLogin} /> */}
-          <ResponsiveAppBar />
-          <Routes>
-            <Route path="/" element={<Index />}></Route>
-            <Route path="/studylist" element={<StudyList />}></Route>
-            <Route path="/create" element={<CreateStudy />}></Route>
-            <Route path="/main" element={<Main isLogin={isLogin} />}></Route> :
-            <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/mystudy" element={<MyStudyList />}></Route>
-            <Route
-              path="/oauth2/redirect"
-              element={<OAuth2RedirectHandler />}
-            ></Route>
-            <Route
-              path="study/:id/webrtc/"
-              element={<VideoRoomComponent />}
-            ></Route>
-            <Route path="/study/:id" element={<Lounge />}></Route>
-            <Route path="/study/:id/info" element={<Info />}></Route>
-            <Route path="/mypage/*" element={<MyPage />}></Route>
-            <Route
-              path="study/:id/webrtcstudy/"
-              element={<WebrtcStudy />}
-            ></Route>
-          </Routes>
-        </Router>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <GlobalStyles />
+        <div className="content">
+          <Router>
+            {/* <Header authenticated={authenticated} isLogin={isLogin} /> */}
+            <ResponsiveAppBar />
+            <Routes>
+              <Route path="/" element={<Index />}></Route>
+              <Route path="/studylist" element={<StudyList />}></Route>
+              <Route path="/create" element={<CreateStudy />}></Route>
+              <Route
+                path="/main"
+                element={<Main isLogin={isLogin} />}
+              ></Route>{" "}
+              :<Route path="/signup" element={<Signup />}></Route>
+              <Route path="/login" element={<Login />}></Route>
+              <Route path="/mystudy" element={<MyStudyList />}></Route>
+              <Route
+                path="/oauth2/redirect"
+                element={<OAuth2RedirectHandler />}
+              ></Route>
+              <Route
+                path="study/:id/webrtc/"
+                element={<VideoRoomComponent />}
+              ></Route>
+              <Route path="/study/:id" element={<Lounge />}></Route>
+              <Route path="/study/:id/info" element={<Info />}></Route>
+              <Route path="/mypage/*" element={<MyPage />}></Route>
+              <Route
+                path="study/:id/webrtcstudy/"
+                element={<WebrtcStudy />}
+              ></Route>
+            </Routes>
+          </Router>
+        </div>
+        {/* <Footer /> */}
       </div>
-      {/* <Footer /> */}
-    </div>
+    </ThemeProvider>
   );
 }
 

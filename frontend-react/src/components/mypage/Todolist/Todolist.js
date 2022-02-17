@@ -13,7 +13,6 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import TodoItem from "./TodoItem";
 import ProgressBar from "../../progressbar/ProgressBar";
-import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import { setHeader } from "../../../utils/api";
 
@@ -63,7 +62,6 @@ const Todolist = () => {
 
   const addTodo = () => {
     if (goal !== "") {
-      setTodos([...todos, goal]);
       setPercent((percent) => complete / todos.length);
       setGoal("");
 
@@ -94,12 +92,8 @@ const Todolist = () => {
     <Fragment>
       {/* percentage에 따라 progressBar update
        계산식 : 완료한 목표 개수 / 토탈 목표 개수 */}
-      <ProgressBar percent={percent} />
-      <Typography textAlign="center">{`${
-        percent * 100
-      }% Complete!`}</Typography>
       <Box>
-        <Stack spacing={1} alignItems="center" direction="row" sx={{ mt: 4 }}>
+        <Stack spacing={1} alignItems="center" direction="row">
           <IconButton aria-label="add" size="small" onClick={handleOpen}>
             <AddIcon />
           </IconButton>

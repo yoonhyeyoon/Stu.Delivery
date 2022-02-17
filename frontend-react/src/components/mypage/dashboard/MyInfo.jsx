@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Box, Stack, Avatar, Typography, Chip } from "@mui/material";
+import { Box, Stack, Avatar, Typography, Chip, Divider } from "@mui/material";
 
 const MyInfo = (props) => {
   return (
@@ -19,6 +19,7 @@ const MyInfo = (props) => {
             {props.nickname}
           </Typography>
         </Stack>
+        <Divider sx={{ mb: 4 }} />
         <Typography component="h6" variant="h6" gutterBottom>
           나의 관심사
         </Typography>
@@ -27,12 +28,12 @@ const MyInfo = (props) => {
             <Chip key={index} label={anchor.name} />
           ))}
         </Stack>
-        <Typography component="h6" variant="h6" gutterBottom>
+        <Divider sx={{ mb: 4 }} />
+        <Typography component="h6" variant="h6" gutterBottom sx={{ mb: 3 }}>
           나의 한마디
         </Typography>
-        <Typography component="h6" variant="h6" gutterBottom>
-          {props.aspire}
-        </Typography>
+        <Typography gutterBottom>{props.aspire}</Typography>
+        <Divider sx={{ mt: 4, mb: 4 }} />
       </Box>
     </Fragment>
   );
