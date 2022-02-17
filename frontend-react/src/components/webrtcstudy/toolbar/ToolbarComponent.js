@@ -72,6 +72,7 @@ export default class ToolbarComponent extends Component {
   render() {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    const studyId = this.props.studyId;
     return (
       // <AppBar className="toolbar" id="header">
       <Toolbar className="toolbar">
@@ -154,7 +155,9 @@ export default class ToolbarComponent extends Component {
             onClick={this.leaveSession}
             id="navLeaveButton"
           >
-            <PowerSettingsNew />
+            <PowerSettingsNew
+              onClick={() => (window.location.href = `/study/${studyId}`)}
+            />
           </IconButton>
           <IconButton
             color="inherit"

@@ -82,6 +82,7 @@ function Schedule({ schedule }) {
       })
       .catch((err) => console.log(err.response.data));
   };
+  const offset = new Date().getTimezoneOffset() * 60000;
   return (
     <>
       <ListItem
@@ -112,7 +113,7 @@ function Schedule({ schedule }) {
                 variant="body2"
                 color="text.primary"
               >
-                {newStartDate.toLocaleString()}
+                {new Date(newStartDate - offset).toLocaleString()}
               </Typography>
               {schedule.content}
             </React.Fragment>

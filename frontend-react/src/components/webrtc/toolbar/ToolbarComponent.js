@@ -18,8 +18,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import Code from "@material-ui/icons/Code";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SvgIcon from "@mui/material/SvgIcon";
 
 import IconButton from "@material-ui/core/IconButton";
+import { useHistory } from "react-router-dom";
 
 const logo = require("../../../assets/images/logo/logomain.png");
 
@@ -78,17 +81,19 @@ export default class ToolbarComponent extends Component {
   render() {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    const studyId = this.props.studyId;
+
     return (
       // <AppBar className="toolbar" id="header">
       <Toolbar className="toolbar">
         <div id="navSessionInfo">
           <img id="header_img" alt="OpenVidu Logo" src={logo} />
 
-          {this.props.sessionId && (
-            <div id="titleContent">
-              <span id="session-title">{mySessionId}</span>
-            </div>
-          )}
+          {this.props.sessionId &&
+            // <div id="titleContent">
+            //   <span id="session-title">{mySessionId}</span>
+            // </div>
+            null}
         </div>
 
         <div className="buttonsContent">
@@ -163,7 +168,9 @@ export default class ToolbarComponent extends Component {
             onClick={this.leaveSession}
             id="navLeaveButton"
           >
-            <PowerSettingsNew />
+            <PowerSettingsNew
+              onClick={() => (window.location.href = `/study/${studyId}`)}
+            />
           </IconButton>
           <IconButton
             color="inherit"
