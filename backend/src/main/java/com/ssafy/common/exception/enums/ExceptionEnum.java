@@ -25,6 +25,7 @@ public enum ExceptionEnum {
     CONFLICT_STUDY_MEMBER(HttpStatus.CONFLICT, "302", "이미 가입된 유저입니다."),
     UNAUTHORIZED_STUDY_MEMBER(HttpStatus.UNAUTHORIZED, "304", "현재 로그인한 사용자는 해당 요청에 대한 권한이 없습니다."),
     CONFLICT_STUDY_MASTER_DELETE(HttpStatus.CONFLICT, "305", "스터디장은 스터디 탈퇴를 할 수 없습니다. 스터디 삭제를 하거나 스터디장을 위임 후 탈퇴해주세요."),
+    UNAUTHORIZED_STUDY_MEMBER_MAX(HttpStatus.UNAUTHORIZED, "306", "스터디가 꽉 찼습니다."),
 
     NOT_FOUND_STUDY_BOARD(HttpStatus.NOT_FOUND, "401", "해당 스터디 보드 게시글을 찾을 수 없습니다."),
     CONFLICT_STUDY_BOARD(HttpStatus.CONFLICT, "402", "가능한 스터디 보드 게시글의 갯수를 초과하였습니다."),
