@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDateRangePicker from "@mui/lab/DesktopDateRangePicker";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import {
   Autocomplete,
   CssBaseline,
@@ -19,25 +19,118 @@ import {
   Container,
   Switch,
   FormLabel,
+  Chip,
+  ButtonBase,
 } from "@mui/material";
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: "relative",
+  height: 200,
+  [theme.breakpoints.down("sm")]: {
+    width: "100% !important", // Overrides inline-style
+    height: 100,
+  },
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      opacity: 0,
+    },
+    "& .MuiTypography-root": {
+      border: "4px solid currentColor",
+    },
+  },
+}));
+
+const ImageSrc = styled("span")({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: "cover",
+  backgroundPosition: "center 40%",
+});
+
+const Image = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.common.white,
+}));
+
+const ImageBackdrop = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create("opacity"),
+}));
+
+const ImageMarked = styled("span")(({ theme }) => ({
+  height: 3,
+  width: 18,
+  backgroundColor: theme.palette.common.white,
+  position: "absolute",
+  bottom: -2,
+  left: "calc(50% - 9px)",
+  transition: theme.transitions.create("opacity"),
+}));
+
+const images = [
+  {
+    url: "/images/thumbnail/study_thu_1.png",
+    title: "1번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_2.png",
+    title: "2번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_3.png",
+    title: "3번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_4.png",
+    title: "4번",
+    width: "50%",
+  },
+  {
+    url: "/images/thumbnail/study_thu_5.png",
+    title: "5번",
+    width: "50%",
+  },
+];
 
 const StudyInfoUpdate = () => {
   const study = useSelector((state) => state.study.study);
+  const user = useSelector((state) => state.user.user);
+
   console.log(study);
+  console.log(user);
+
   const [title, setTitle] = useState(study.name); // 스터디명
-  const [category, setCategory] = useState([]); // 카테고리
+  const [category, setCategory] = useState(study.categories); // 카테고리
   const [categoryList, setCategoryList] = useState([]); // 서버에서 받아온 카테고리 목록 저장
-  const [date, setDate] = useState([
-    new Date(study.start_at),
-    new Date(study.finish_at),
-  ]); // 시작일, 종료일 담은 배열
+  const [date, setDate] = useState([study.start_at, study.finish_at]); // 시작일, 종료일 담은 배열
   const [introduce, setIntroduce] = useState(study.introduction); // 스터디 소개글
   const [password, setPassword] = useState(); // 스터디 비밀번호
-  const [participant, setParticipant] = useState(0);
-  const [url, setUrl] = useState(""); // 스터디 URL
-  const [thumbnail, setThumbnail] = useState("asdf"); // 썸네일
-  const [thumbnailUrl, setThumbnailUrl] = useState(""); // 썸네일 Url
-  const imgInput = useRef();
+  const [participant, setParticipant] = useState(study.participant);
+  const [thumbnail, setThumbnail] = useState(""); // 썸네일
+  const [thumbnailUrl, setThumbnailUrl] = useState(study.thumbnail_url); // 썸네일 Url
 
   // control details modal
   const [detailOpen, setDetailOpen] = useState(false);
@@ -56,21 +149,6 @@ const StudyInfoUpdate = () => {
     console.log(isPrivate);
   };
 
-  const onImgButtonClick = () => {
-    imgInput.current.click();
-  };
-
-  const onImgChange = async (event) => {
-    let reader = new FileReader();
-    let file = event.target.files[0];
-    reader.onloadend = () => {
-      setThumbnail(file);
-      console.log(reader.result);
-      setThumbnailUrl(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
   useEffect(() => {
     axios({
       method: "get",
@@ -87,6 +165,10 @@ const StudyInfoUpdate = () => {
         console.log(e);
       });
   }, []);
+
+  useEffect(() => {
+    console.log("category update!");
+  }, [category]);
 
   let startDateKor = "";
 
@@ -116,8 +198,38 @@ const StudyInfoUpdate = () => {
   };
 
   const onCategoryHandler = (event) => {
-    const input = event.target.value;
-    setCategory([...category, input]);
+    if (event.type === "click") {
+      // 목록에서 클릭했을 때
+      const inter = categoryList.filter(
+        (value) => value.name === event.target.innerText
+      );
+
+      if (
+        inter.length !== 0 &&
+        !JSON.stringify(category).includes(JSON.stringify(inter))
+      ) {
+        setCategory([...category, ...inter]);
+      }
+    } else if (event.type === "change") {
+      // 직접 타이핑하는 경우
+      const inter = categoryList.filter(
+        (value) => value.name === event.target.value
+      );
+
+      if (
+        inter.length !== 0 &&
+        !JSON.stringify(category).includes(JSON.stringify(inter))
+      ) {
+        setCategory([...category, ...inter]);
+      }
+    }
+    console.log(category);
+  };
+
+  const printCategory = () => {
+    category.map((item) => {
+      return item.name + ",";
+    });
   };
 
   const onIntroduceHandler = (event) => {
@@ -139,16 +251,11 @@ const StudyInfoUpdate = () => {
     setParticipant(event.target.value);
   };
 
-  const onUrlHandler = (event) => {
-    setUrl(event.target.value);
-  };
-
   const submit = async () => {
     console.log(title);
     console.log(date);
     console.log(introduce);
     console.log(password);
-    console.log(url);
     console.log(thumbnail);
     console.log(thumbnailUrl);
     console.log(isPrivate);
@@ -160,10 +267,9 @@ const StudyInfoUpdate = () => {
     } else if (participant === 0) {
       alert("스터디 참가 인원을 선택해주세요.");
     } else {
-      console.log(date[0].toISOString());
-      console.log(dayjs(date[0]).format("YYYY-MM-DD"));
+      // console.log(date[0].toISOString());
+      // console.log(dayjs(date[0]).format("YYYY-MM-DD"));
 
-      let link_url = "https://i6d201.p.ssafy.io/study/" + url;
       await axios({
         method: "put",
         url: "https://i6d201.p.ssafy.io/api/v1/study",
@@ -172,17 +278,17 @@ const StudyInfoUpdate = () => {
           name: title,
           introduction: introduce,
           is_private: isPrivate,
-          password: "password",
-          thumbnail_url: "thumbnailUrl",
-          link_url: link_url,
+          password: password,
+          thumbnail_url: thumbnailUrl,
           max_user_num: participant,
-          start_at: dayjs(date[0]).format("YYYY-MM-DD"),
-          finish_at: dayjs(date[1]).format("YYYY-MM-DD"),
+          start_at: date[0],
+          finish_at: date[1],
           regular_schedules: [],
         },
       })
         .then((response) => {
           alert("스터디 정보 수정이 완료되었습니다.");
+          window.location.href = `/study/${study.id}/info`;
         })
         .catch((error) => {
           console.log(error.response);
@@ -249,7 +355,10 @@ const StudyInfoUpdate = () => {
                     inputFormat={"yyyy-MM-dd"}
                     mask={"____-__-__"}
                     onChange={(newDate) => {
-                      setDate(newDate);
+                      setDate([
+                        dayjs(newDate[0]).format("YYYY-MM-DD"),
+                        dayjs(newDate[1]).format("YYYY-MM-DD"),
+                      ]);
                       console.log(date);
                     }}
                     renderInput={(startProps, endProps) => (
@@ -269,6 +378,10 @@ const StudyInfoUpdate = () => {
                 disablePortal
                 id="combo-box-demo"
                 options={categoryList}
+                getOptionLabel={(option) => {
+                  return option.name;
+                }}
+                onInputChange={onCategoryHandler}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -279,15 +392,6 @@ const StudyInfoUpdate = () => {
                   />
                 )}
               />
-              {/* <TextField
-                margin="dense"
-                fullWidth
-                name="category"
-                label="카테고리"
-                id="password"
-                autoComplete="current-password"
-                sx={{ mb: 5 }}
-              /> */}
               <FormLabel component="legend" sx={{ color: "text.primary" }}>
                 소개글
               </FormLabel>
@@ -337,7 +441,22 @@ const StudyInfoUpdate = () => {
                   </Typography>
                   <Typography>{"일정: "}</Typography>
                   <Typography>{"카테고리: "}</Typography>
-                  <Typography>{"스터디장: "}</Typography>
+                  <Stack direction="row" spacing={1} sx={{ mb: 4 }}>
+                    {category.map(({ id, name }, index) => {
+                      console.log(id, name);
+                      return (
+                        <Chip
+                          key={index}
+                          label={name}
+                          onDelete={() => {
+                            category.splice(index, 1);
+                            console.log(...category);
+                          }}
+                        />
+                      );
+                    })}
+                  </Stack>
+                  <Typography>{"스터디장: " + user.nickname}</Typography>
                   <Typography>소개글</Typography>
                   <Typography>{introduce}</Typography>
                 </Container>
@@ -378,7 +497,9 @@ const StudyInfoUpdate = () => {
                             spacing={1}
                             alignItems="center"
                           >
-                            <Typography>비공개</Typography>
+                            <Typography>
+                              {isPrivate ? "비공개" : "공개"}
+                            </Typography>
                             <Switch
                               checked={isPrivate}
                               onChange={handlePrivate}
@@ -397,24 +518,10 @@ const StudyInfoUpdate = () => {
                           <TextField
                             margin="normal"
                             type="password"
+                            disabled={!isPrivate}
                             label="비밀번호를 입력해주세요"
                             variant="outlined"
                             onChange={onPasswordHandler}
-                          />
-                        </Stack>
-                        <Stack spacing={1}>
-                          <Typography
-                            variant="subtitle1"
-                            gutterBottom
-                            component="div"
-                          >
-                            URL 설정
-                          </Typography>
-                          <TextField
-                            margin="normal"
-                            label="만들고 싶은 URL을 입력해주세요"
-                            variant="outlined"
-                            onChange={onUrlHandler}
                           />
                         </Stack>
                         <Stack spacing={1}>
@@ -459,30 +566,47 @@ const StudyInfoUpdate = () => {
                       세부설정
                     </Typography>
                     <Container maxWidth="sm">
-                      <Stack spacing={5} alignItems="center">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="profile_img"
-                          name="profile_img"
-                          ref={imgInput}
-                          onChange={onImgChange}
-                          style={{ display: "none" }}
-                        />
-                        {thumbnail !== "" ? (
-                          <img
-                            className="profile_preview"
-                            src={thumbnailUrl}
-                            alt="profile"
-                            loading="lazy"
-                            style={{ width: "50%", height: "50%" }}
+                      {images.map((image, index) => (
+                        <ImageButton
+                          focusRipple
+                          key={image.title}
+                          style={{
+                            width: image.width,
+                          }}
+                          onClick={() => {
+                            setThumbnailUrl(image.url);
+                            setThumbnail(image.title);
+                          }}
+                        >
+                          <ImageSrc
+                            style={{ backgroundImage: `url(${image.url})` }}
                           />
-                        ) : null}
-                        <Button onClick={onImgButtonClick}>
-                          썸네일 업로드
-                        </Button>
-                        <Button onClick={handleThumbnailClose}>확인</Button>
-                      </Stack>
+                          <ImageBackdrop className="MuiImageBackdrop-root" />
+                          <Image>
+                            <Typography
+                              component="span"
+                              variant="subtitle1"
+                              color="inherit"
+                              sx={{
+                                position: "relative",
+                                p: 4,
+                                pt: 2,
+                                pb: (theme) =>
+                                  `calc(${theme.spacing(1)} + 6px)`,
+                              }}
+                            >
+                              {image.title}
+                              <ImageMarked className="MuiImageMarked-root" />
+                            </Typography>
+                          </Image>
+                        </ImageButton>
+                      ))}
+                      <Typography variant="subtitle1">
+                        선택된 이미지: {thumbnail}
+                      </Typography>
+                      <Button onClick={handleThumbnailClose} sx={{ mt: 5 }}>
+                        확인
+                      </Button>
                     </Container>
                   </Stack>
                 </Box>
