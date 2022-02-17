@@ -88,13 +88,13 @@ export default class ToolbarComponent extends Component {
       <Toolbar className="toolbar">
         <div id="navSessionInfo">
           <img id="header_img" alt="OpenVidu Logo" src={logo} />
-
           {this.props.sessionId &&
             // <div id="titleContent">
             //   <span id="session-title">{mySessionId}</span>
             // </div>
             null}
         </div>
+        {/* 스톱워치 */}
 
         <div className="buttonsContent">
           <IconButton

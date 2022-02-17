@@ -19,6 +19,7 @@ import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 
 import IconButton from "@material-ui/core/IconButton";
+import StopWatch from "../stopWatch/StopWatch";
 
 const logo = require("../../../assets/images/logo/logomain.png");
 
@@ -76,7 +77,7 @@ export default class ToolbarComponent extends Component {
     return (
       // <AppBar className="toolbar" id="header">
       <Toolbar className="toolbar">
-        <div id="navSessionInfo">
+        {/* <div id="navSessionInfo">
           <img id="header_img" alt="OpenVidu Logo" src={logo} />
 
           {this.props.sessionId && (
@@ -84,8 +85,10 @@ export default class ToolbarComponent extends Component {
               <span id="session-title">{mySessionId}</span>
             </div>
           )}
+        </div> */}
+        <div>
+          <StopWatch />
         </div>
-
         <div className="buttonsContent">
           <IconButton
             color="inherit"
