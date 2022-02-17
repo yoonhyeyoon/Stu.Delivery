@@ -98,8 +98,12 @@ public class StudyServiceImpl implements StudyService {
         study.setMeetingRoomId(meetingRoomId);
         // 날짜 형식 변환 후 저장
         try {
-            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
-            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            if (req.getStart_at() != null && !req.getStart_at().isEmpty()) {
+                study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            }
+            if (req.getFinish_at() != null && !req.getFinish_at().isEmpty()) {
+                study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            }
         } catch (DateTimeParseException e) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
         }
@@ -178,8 +182,12 @@ public class StudyServiceImpl implements StudyService {
         study.setLinkUrl(req.getLink_url());
         study.setMaxUserNum(req.getMax_user_num());
         try {
-            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
-            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            if (req.getStart_at() != null && !req.getStart_at().isEmpty()) {
+                study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            }
+            if (req.getFinish_at() != null && !req.getFinish_at().isEmpty()) {
+                study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            }
         } catch (DateTimeParseException e) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
         }
@@ -268,6 +276,9 @@ public class StudyServiceImpl implements StudyService {
             .orElseThrow(() -> new ApiException(ExceptionEnum.NOT_FOUND_STUDY));
         if (studyMemberRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
             throw new ApiException(ExceptionEnum.CONFLICT_STUDY_MEMBER);
+        }
+        if (study.getStudyMembers().size() >= study.getMaxUserNum()) {
+            throw new ApiException(ExceptionEnum.UNAUTHORIZED_STUDY_MEMBER_MAX);
         }
         StudyMember studyMember = new StudyMember();
         studyMember.setStudy(study);

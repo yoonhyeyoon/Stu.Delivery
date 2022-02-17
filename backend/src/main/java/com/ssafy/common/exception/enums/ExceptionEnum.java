@@ -15,6 +15,7 @@ public enum ExceptionEnum {
     
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "101", "해당 유저를 찾을 수 없습니다."),
     UNAUTHORIZED_USER_PASSWORD(HttpStatus.UNAUTHORIZED, "104", "잘못된 비밀번호입니다."),
+    CONFLICT_UESR(HttpStatus.CONFLICT, "105", "이미 해당 아이디가 존재합니다."),
 
     NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, "201", "해당 스터디를 찾을 수 없습니다."),
     BAE_REQUEST_STUDY(HttpStatus.BAD_REQUEST, "203", "스터디에 카테고리를 반드시 지정해야 합니다."),
@@ -24,6 +25,7 @@ public enum ExceptionEnum {
     CONFLICT_STUDY_MEMBER(HttpStatus.CONFLICT, "302", "이미 가입된 유저입니다."),
     UNAUTHORIZED_STUDY_MEMBER(HttpStatus.UNAUTHORIZED, "304", "현재 로그인한 사용자는 해당 요청에 대한 권한이 없습니다."),
     CONFLICT_STUDY_MASTER_DELETE(HttpStatus.CONFLICT, "305", "스터디장은 스터디 탈퇴를 할 수 없습니다. 스터디 삭제를 하거나 스터디장을 위임 후 탈퇴해주세요."),
+    UNAUTHORIZED_STUDY_MEMBER_MAX(HttpStatus.UNAUTHORIZED, "306", "스터디가 꽉 찼습니다."),
 
     NOT_FOUND_STUDY_BOARD(HttpStatus.NOT_FOUND, "401", "해당 스터디 보드 게시글을 찾을 수 없습니다."),
     CONFLICT_STUDY_BOARD(HttpStatus.CONFLICT, "402", "가능한 스터디 보드 게시글의 갯수를 초과하였습니다."),

@@ -45,7 +45,7 @@ public class StudyController {
     @GetMapping
     @ApiOperation(value = "스터디 리스트 가져오기", notes = "스터디 리스트를 가져온다.")
     public ResponseEntity<List<StudyRes>> getStudyList(
-        @PageableDefault(sort = "createdAt", direction = Direction.DESC, size = 10) Pageable pageable,
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC, size = 100) Pageable pageable,
         @RequestParam(required = false, defaultValue = "") String name,
         @RequestParam(required = false, defaultValue = "") List<Long> categories) {
 
