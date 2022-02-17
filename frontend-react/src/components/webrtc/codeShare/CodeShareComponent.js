@@ -8,6 +8,8 @@ import "react-quill/dist/quill.snow.css";
 import Sharedb from "sharedb/lib/client";
 import richText from "rich-text";
 
+import "../chat/ChatComponent.css";
+
 export default class CodeShareComponent extends Component {
   constructor(props) {
     super(props);

@@ -39,8 +39,7 @@
 
 .streamComponent {
   display: flex;
-  margin: 0;
-  justify-content: center;
+  flex-direction: row;
 }
 
 .vddiv {
@@ -51,7 +50,7 @@
 video {
   -o-object-fit: cover;
   object-fit: cover;
-  width: 20%;
+  width: 100%;
   height: auto;
   color: #ffffff;
   margin: 0;

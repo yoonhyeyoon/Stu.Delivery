@@ -512,6 +512,7 @@ class VideoRoomComponent extends Component {
     isScreenShared =
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
+
     const openviduLayoutOptions = {
       maxRatio: 3 / 2,
       minRatio: 9 / 16,
@@ -588,32 +589,63 @@ class VideoRoomComponent extends Component {
         /> */}
         <div id="layout" className="bounds">
           {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
+            localUser.getStreamManager() !== undefined &&
+            (localUser.isScreenShareActive() ? (
+              <div
+                className={"OT_root OT_publisher custom-class OV_big"}
+                id="localUser"
+              >
                 <StreamComponent
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                   vdSource="screen"
                 />
               </div>
-            )}
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="OT_root OT_publisher custom-class"
-              id="remoteUsers"
-            >
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-                vdSource="webcam"
-              />
-            </div>
-          ))}
+            ) : (
+              <div
+                className={"OT_root OT_publisher custom-class"}
+                id="localUser"
+              >
+                <StreamComponent
+                  user={localUser}
+                  handleNickname={this.nicknameChanged}
+                  vdSource="screen"
+                />
+              </div>
+            ))}
+          {this.state.subscribers.map((sub, i) =>
+            sub.isScreenShareActive() ? (
+              <div
+                key={i}
+                className={"OT_root OT_publisher custom-class OV_big"}
+                id="remoteUsers"
+              >
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                  vdSource="webcam"
+                />
+              </div>
+            ) : (
+              <div
+                key={i}
+                className={"OT_root OT_publisher custom-class "}
+                id="remoteUsers"
+              >
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                  vdSource="webcam"
+                />
+              </div>
+            )
+          )}
+        </div>
+        <div id="layout" className="boundsRight">
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
-                className="OT_root OT_publisher custom-class"
+                className={"OT_root OT_publisher custom-class"}
                 style={codeShareDisplay}
               >
                 <CodeShareComponent
