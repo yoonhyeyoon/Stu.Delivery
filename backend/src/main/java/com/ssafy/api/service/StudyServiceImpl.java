@@ -213,7 +213,9 @@ public class StudyServiceImpl implements StudyService {
         }
 
         // 카테고리 추가
-        if (req.getCategories() != null) {
+        if (req.getCategories() == null || req.getCategories().size() == 0) {
+            throw new ApiException(ExceptionEnum.BAE_REQUEST_STUDY);
+        } else {
             List<StudyCategory> studyCategoryList = new ArrayList<>();
             for (Map<String, String> categoryMap : req.getCategories()) {
                 Category category = new Category();
