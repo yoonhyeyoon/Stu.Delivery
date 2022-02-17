@@ -19,8 +19,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 
-const pages = ["mystudy", "studylist", "create"];
-
+// 로그인 안 했을때 보이는 상단 메뉴
 const header_for_not_login = [
   {
     name: "스터디 목록",
@@ -28,6 +27,7 @@ const header_for_not_login = [
   },
 ];
 
+// 로그인 했을 때 보이는 상단 메뉴
 const header_for_login = [
   {
     name: "내 스터디",
@@ -43,12 +43,7 @@ const header_for_login = [
   },
 ];
 
-const route_pages = {
-  mystudy: "내 스터디",
-  studylist: "스터디 목록",
-  create: "스터디 만들기",
-};
-
+// 로그인 했을때는 회원정보 관련
 const user_pages = [
   {
     name: "회원정보수정",
@@ -68,6 +63,7 @@ const user_pages = [
   },
 ];
 
+// 로그인 했을 때 보이는 flex item
 const flex_pages_login = [
   {
     name: "회원정보수정",
@@ -99,6 +95,7 @@ const flex_pages_login = [
   },
 ];
 
+// 로그인 안 했을 때 보이는 flex item
 const flex_pages_not_login = [
   {
     name: "로그인",
@@ -135,44 +132,7 @@ const ResponsiveAppBar = () => {
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [toggle, setToggle] = useState({
-    left: false,
-  });
   const [headerItem, setHeaderItem] = useState([]);
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setToggle({ ...toggle, [anchor]: open });
-  };
-
-  const route_mypage = {
-    update: "회원정보수정",
-    dashboard: "대시보드",
-    withdrawal: "회원탈퇴",
-  };
-
-  const list = (anchor) => (
-    <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-        {["update", "dashboard", "withdrawal"].map((text, index) => (
-          <ListItem button key={text} component={Link} to={"mypage/" + text}>
-            <ListItemText primary={route_mypage[text]} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -194,17 +154,18 @@ const ResponsiveAppBar = () => {
   let flexItem;
 
   if (localStorage.getItem("isLogin")) {
+    // 로그인 했을 때는 우측 상단에 프로필 정보 표시
     item = (
       <>
         <Tooltip title="내 정보">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar
+            <Avatar // 아바타
               alt="Remy Sharp"
               src={localStorage.getItem("profile_img")}
             />
           </IconButton>
         </Tooltip>
-        <Menu
+        <Menu // 프로필 사진에 마우스 오버 했을 때 나오는 메뉴
           sx={{ mt: "45px" }}
           id="menu-appbar"
           anchorEl={anchorElUser}
@@ -239,6 +200,7 @@ const ResponsiveAppBar = () => {
       </>
     );
 
+    // 반응형 웹 - 화면 작아졌을 때 왼쪽 햄버거 메뉴 누르면 나오는 메뉴
     flexItem = (
       <Menu
         id="menu-appbar"
@@ -258,6 +220,7 @@ const ResponsiveAppBar = () => {
           display: { xs: "block", md: "none" },
         }}
       >
+        {/* 로그인 했을 때는 내 스터디, 스터디 목록, 스터디 생성, 회원정보수정, 대시보드, 회원탈퇴, 로그아웃 */}
         {flex_pages_login.map((page, index) => (
           <MenuItem
             key={index}
@@ -274,6 +237,7 @@ const ResponsiveAppBar = () => {
       </Menu>
     );
   } else {
+    // 로그인 안 했을 때는 로그인, 회원가입
     item = (
       <>
         <Button
@@ -297,6 +261,7 @@ const ResponsiveAppBar = () => {
       </>
     );
 
+    // 로그인 안했을 때는 스터디 목록, 로그인, 회원가입
     flexItem = (
       <Menu
         id="menu-appbar"
@@ -351,6 +316,7 @@ const ResponsiveAppBar = () => {
               Stu.Delivery
             </Button>
 
+            {/* 반응형 웹 - 화면이 작아졌을 때 표시 */}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"

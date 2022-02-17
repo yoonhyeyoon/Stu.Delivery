@@ -13,7 +13,6 @@ const MyPage = () => {
     <>
       <div className="container">
         <Routes>
-          {/* <SocialRoute path="update/check" element={<CheckPwd />}></SocialRoute> */}
           <Route
             element={
               <SocialRoute
