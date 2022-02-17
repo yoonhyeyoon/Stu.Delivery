@@ -3,7 +3,7 @@ import styles from "./Login.module.css";
 import axios from "axios";
 import { login } from "../../../utils/api";
 
-import { Button } from "@mui/material";
+import { Button, FormControlLabel, Checkbox, Stack } from "@mui/material";
 
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -67,9 +67,30 @@ function LoginForm() {
                 value={inputPw}
                 onChange={handleInputPw}
                 placeholder="비밀번호를 입력해주세요."
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onClickLogin();
+                  }
+                }}
               />
             </Col>
           </Form.Group>
+          <Stack spacing={2} direction="row">
+            <FormControlLabel
+              control={<Checkbox value="remember" sx={{ color: "white" }} />}
+              label="아이디 저장"
+              sx={{
+                color: "white",
+              }}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" sx={{ color: "white" }} />}
+              label="자동 로그인"
+              sx={{
+                color: "white",
+              }}
+            />
+          </Stack>
           <div className="d-grid gap-1">
             <Button
               className={styles.btn}
