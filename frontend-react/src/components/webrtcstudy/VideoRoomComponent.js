@@ -180,7 +180,7 @@ class VideoRoomComponent extends Component {
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
-      videoSource: videoDevices[0].deviceId,
+      videoSource: undefined,
       publishAudio: localUser.isAudioActive(),
       publishVideo: localUser.isVideoActive(),
       resolution: "640x480",
@@ -440,7 +440,7 @@ class VideoRoomComponent extends Component {
           // In mobile devices the default and first camera is the front one
           var newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
-            videoSource: newVideoDevice[0].deviceId,
+            videoSource: undefined,
             publishAudio: localUser.isAudioActive(),
             publishVideo: localUser.isVideoActive(),
             mirror: true,
