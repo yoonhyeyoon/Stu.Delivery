@@ -126,7 +126,6 @@ const CreateStudy = () => {
   const [url, setUrl] = useState(""); // 스터디 URL
   const [thumbnail, setThumbnail] = useState("없음"); // 썸네일
   const [thumbnailUrl, setThumbnailUrl] = useState(""); // 썸네일 Url
-  const imgInput = useRef();
 
   // control details modal
   const [detailOpen, setDetailOpen] = useState(false);
@@ -260,6 +259,8 @@ const CreateStudy = () => {
       alert("스터디 참가 인원을 선택해주세요.");
     } else if (thumbnailUrl === "") {
       alert("스터디 썸네일을 선택해주세요.");
+    } else if (category.length === 0) {
+      alert("카테고리를 지정해주세요.");
     } else {
       let link_url = "https://i6d201.p.ssafy.io/study/" + url;
 
@@ -283,6 +284,7 @@ const CreateStudy = () => {
       })
         .then((response) => {
           alert("스터디 생성이 완료되었습니다.");
+          window.location.href = "/studylist";
         })
         .catch((error) => {
           console.log(error.response);
