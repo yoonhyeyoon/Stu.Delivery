@@ -1,0 +1,9 @@
+.buttons {
+  display: inline-block;
+}
+.watch_wrap {
+  display: flex;
+}
+.time {
+  color: red;
+}

@@ -38,7 +38,7 @@
 
 .streamComponent {
   display: flex;
-  margin: 0;
+  margin: auto;
   justify-content: center;
 }
 
