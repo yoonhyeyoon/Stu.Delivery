@@ -53,14 +53,13 @@ export default class OvVideoComponent extends Component {
 
   render() {
     return (
-      <div onClick={() => this.handleOnClick(this)}>
-        <video
-          autoPlay={true}
-          id={"video-" + this.props.user.getStreamManager().stream.streamId}
-          ref={this.videoRef}
-          muted={this.props.mutedSound}
-        />
-      </div>
+      <video
+        autoPlay={true}
+        id={"video-" + this.props.user.getStreamManager().stream.streamId}
+        ref={this.videoRef}
+        muted={this.props.mutedSound}
+        onClick={() => this.handleOnClick(this)}
+      />
     );
   }
 }

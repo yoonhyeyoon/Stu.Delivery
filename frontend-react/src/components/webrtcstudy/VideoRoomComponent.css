@@ -54,8 +54,19 @@
   top: 60px;
   bottom: 40px;
   height: inherit;
-  min-width: 400px !important;
-  width: inherit;
+  width: 70%;
+}
+
+.boundsRight {
+  background-color: #494949;
+  overflow: hidden;
+  position: absolute;
+  left: 70%;
+  right: 0;
+  top: 60px;
+  bottom: 40px;
+  height: inherit;
+  width: 30%;
 }
 
 /*!
