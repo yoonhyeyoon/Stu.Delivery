@@ -98,8 +98,12 @@ public class StudyServiceImpl implements StudyService {
         study.setMeetingRoomId(meetingRoomId);
         // 날짜 형식 변환 후 저장
         try {
-            study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
-            study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            if (req.getStart_at() != null && !req.getStart_at().isEmpty()) {
+                study.setStartAt(LocalDate.parse(req.getStart_at(), DateTimeFormatter.ISO_DATE));
+            }
+            if (req.getFinish_at() != null && !req.getFinish_at().isEmpty()) {
+                study.setFinishAt(LocalDate.parse(req.getFinish_at(), DateTimeFormatter.ISO_DATE));
+            }
         } catch (DateTimeParseException e) {
             throw new ApiException(ExceptionEnum.BAD_REQUEST_DATE);
         }
