@@ -13,15 +13,45 @@
   align-items: center;
   min-height: 100vh;
 }
+
+@keyframes opacity-in {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes opacity-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
 .form {
   justify-content: center;
   align-items: center;
   width: 40em;
-  border: 1px solid lightsteelblue;
+  /* border: 1px solid lightsteelblue; */
   padding: 3em;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, .3);
+  border-radius: 5px;
+  box-shadow: 2px 2px 20px rgba(191, 122, 38, 0.7);
+  opacity: 0.7;
+  animation-name: opacity-out;
+  animation-duration: 1s;
 }
-
+.form:hover {
+  box-shadow: 2px 2px 20px rgba(191, 122, 38, 0.9);
+  opacity: 1;
+  animation-name: opacity-in;
+  animation-duration: 0.5s;
+}
+.title {
+  color: #f2f2e8;
+}
 .login-input {
   display: flex;
   align-items: center;
@@ -49,4 +79,23 @@ h2 {
 
 .submit button {
   width: 100px;
+}
+.social_btn {
+  color: rgba(0, 0, 0, 0.9);
+}
+.social-container {
+  margin: 20px 0;
+}
+/* .btn:hover {
+  color: rgba(191, 122, 38, 0.9);
+} */
+.social-container a {
+  border: 1px solid #dddddd;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
 }

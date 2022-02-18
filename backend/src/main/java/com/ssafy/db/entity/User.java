@@ -3,16 +3,15 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,11 +33,12 @@ import java.time.LocalDateTime;
 public class User extends BaseEntity{
 
     @Column(
-        name = "user_id",
+        name = "email",
         nullable = false,
-        length = 50
+        length = 50,
+        unique = true
     )
-    private String userId;
+    private String email;
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -56,7 +56,7 @@ public class User extends BaseEntity{
     )
     private String profileImg;
 
-    private Date birth;
+    private LocalDate birth;
 
     private String determination;
 
@@ -74,18 +74,24 @@ public class User extends BaseEntity{
 
     private Boolean authStatus;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Attendance> attendanceList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Goal> goals = new ArrayList<>();
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
     private String providerId;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserStudy> userStudies = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<StudyMember> studyMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+    private List<StudyBoard> studyBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserCategory> userCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Attendance> attendanceList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Goal> goals = new ArrayList<>();
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -58,15 +59,37 @@ public class Study extends BaseEntity{
 
     private String lockerUrl;
 
-    @OneToMany(mappedBy = "study")
-    private List<RegularSchedule> regularSchedules = new ArrayList<>();
-
     private LocalDate startAt;
 
     private LocalDate finishAt;
 
-    @OneToMany(mappedBy = "study")
-    private List<UserStudy> userStudies = new ArrayList<>();
+    @Column(length = 50)
+    private String privateRoomId;
+
+    @Column(length = 50)
+    private String meetingRoomId;
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+    private List<RegularSchedule> regularSchedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+    private List<StudyMember> studyMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+    private List<StudyBoard> studyBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+    private List<StudyCategory> studyCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+    private List<Schedule> schedules = new ArrayList<>();
+
+    public void addStudyMember (StudyMember studyMember) {
+        this.studyMembers.add(studyMember);
+        if (studyMember.getStudy() != this) {
+            studyMember.setStudy(this);
+        }
+    }
 
     public void addRegularSchedule (RegularSchedule regularSchedule) {
         this.regularSchedules.add(regularSchedule);

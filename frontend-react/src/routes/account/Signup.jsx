@@ -3,11 +3,12 @@ import axios from "axios";
 import styles from "./Signup.module.css";
 import { useHistory, Link, NavLink } from "react-router-dom";
 
-import Button from "react-bootstrap/Button";
+import { Button, CssBaseline } from "@mui/material";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import Divider from "@mui/material/Divider";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -94,7 +95,7 @@ function Signup() {
       method: "post",
       url: "https://i6d201.p.ssafy.io/api/v1/users",
       data: {
-        id: email,
+        email: email,
         password: password,
         nickname: nickname,
       },
@@ -115,14 +116,16 @@ function Signup() {
 
   return (
     <div>
+      <div className={styles.backImage}></div>
       <div className={styles.back}>
         <Container className={styles.box}>
           <Form onSubmit={onSubmit} className={styles.form}>
-            <h5>회원가입</h5>
-
-            <Form.Group as={Row} className="mb-3">
+            <h3 className={styles.title}>Stu.Delivery</h3>
+            <Divider />
+            <Form.Group as={Row} className="mt-3 mb-3">
               <Col sm>
                 <Form.Control
+                  className={styles.input}
                   type="email"
                   placeholder="이메일"
                   value={email}
@@ -186,7 +189,7 @@ function Signup() {
               </Col>
             </Form.Group>
             <div className="d-grid gap-1">
-              <Button
+              {/* <Button
                 className={styles.submit}
                 className="text-white"
                 variant="warning"
@@ -196,6 +199,17 @@ function Signup() {
                 }
               >
                 회원가입
+              </Button> */}
+              <Button
+                className={styles.btn}
+                type="submit"
+                fullWidth
+                variant="contained"
+                style={{ background: "rgba(191, 122, 38, 0.5)" }}
+                sx={{ mt: 3, mb: 2 }}
+                // onClick={submit}
+              >
+                가입
               </Button>
             </div>
           </Form>
@@ -204,4 +218,5 @@ function Signup() {
     </div>
   );
 }
+
 export default Signup;

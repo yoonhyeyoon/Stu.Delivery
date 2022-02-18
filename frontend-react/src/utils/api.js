@@ -1,7 +1,6 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
+const ACCESS_TOKEN = "accessToken";
 
 const login = (id, pwd) => {
   const emailRule =
@@ -9,13 +8,15 @@ const login = (id, pwd) => {
 
   if (!emailRule.test(id)) {
     alert("이메일 형식의 아이디를 입력해주세요.");
+  } else if (pwd === "") {
+    alert("비밀번호를 입력해주세요.");
   } else {
     console.log("로그인한다");
     axios({
       method: "post",
       url: "https://i6d201.p.ssafy.io/api/v1/auth/login",
       data: {
-        id: id,
+        email: id,
         password: pwd,
       },
     })
@@ -25,18 +26,43 @@ const login = (id, pwd) => {
           console.log("success!");
           setJwtToken(response.data.accessToken);
           localStorage.setItem("isLogin", true);
-          window.location.href = "/mypage";
+          localStorage.setItem("is_oauth2_login", false); // 소셜 로그인 여부는 false
+          localStorage.setItem("is_authenticated", false); // 비밀번호 확인을 할때 인증받았는지 여부는 false - 일반 로그인 전용 필드
+          window.location.href = "/";
         }
       })
       .catch((e) => {
         alert("아이디 또는 비밀번호를 확인해주세요.");
-        console.log("Error!");
+        console.log(e.response);
       });
   }
 };
 
 const setJwtToken = (jwtToken) => {
-  cookies.set("jwt_token", jwtToken, { sameSite: "strict" });
+  localStorage.setItem("JWT", jwtToken, { sameSite: "strict" });
 };
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export { login, setJwtToken };
+
+// api header 가져다 쓰기
+export const setHeader = () => {
+  const token = localStorage.getItem("JWT");
+  const header = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  return header;
+};
+
+// 스터디 멤버인지 확인
+export function is_member_check(study, user) {
+  const memberCheck = (member) => {
+    return member.id === user.id;
+  };
+  if (study.members && user) {
+    if (study.members.find(memberCheck)) {
+      return true;
+    }
+  }
+}

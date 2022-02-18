@@ -1,35 +1,34 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import "./Mypage.css";
 
-const Sidebar = () => {
-  return (
-    <aside className="sidebar-container">
-      <nav className="side-nav">
-        <ul>
-          <li>
-            <p>회원정보수정</p>
-          </li>
-          <li>
-            <p>내 스터디 조회</p>
-          </li>
-          <li>
-            <p>대시보드</p>
-          </li>
-          <li>
-            <p>회원탈퇴</p>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-  );
-};
+import Dashboard from "./dashboard/Dashboard";
+import Withdrawal from "./withdrawal/Withdrawal";
+import Update from "./update/Update";
+import CheckPwd from "./update/checkpwd/CheckPwd";
+import SocialRoute from "./SocialRoute";
 
 const MyPage = () => {
   return (
-    <div className="container">
-      <Sidebar />
-      <div className="contents">"hello Mypage!"</div>
-    </div>
+    <>
+      <div className="container">
+        <Routes>
+          <Route
+            element={
+              <SocialRoute
+                socialLogin={localStorage.getItem("is_oauth2_login")}
+              />
+            }
+          >
+            <Route path="update" element={<Update />}></Route>
+          </Route>
+          <Route path="check" element={<CheckPwd />}></Route>
+          {/* <Route path="study" element={<MyStudy />}></Route> */}
+          <Route path="dashboard" element={<Dashboard />}></Route>
+          <Route path="withdrawal" element={<Withdrawal />}></Route>
+        </Routes>
+      </div>
+    </>
   );
 };
 
