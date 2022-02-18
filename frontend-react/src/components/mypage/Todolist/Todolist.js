@@ -12,7 +12,6 @@ import {
 
 import AddIcon from "@mui/icons-material/Add";
 import TodoItem from "./TodoItem";
-import ProgressBar from "../../progressbar/ProgressBar";
 import axios from "axios";
 import { setHeader } from "../../../utils/api";
 

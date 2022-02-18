@@ -598,9 +598,8 @@ const CreateStudy = () => {
         </Stack>
         <Button
           type="submit"
-          fullWidth
           variant="contained"
-          style={{ background: "rgba(191, 122, 38, 0.7)" }}
+          style={{ background: "rgba(191, 122, 38, 0.7)", width: "30vh" }}
           sx={{ mt: 3, mb: 2 }}
           onClick={submit}
         >
