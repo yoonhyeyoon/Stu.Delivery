@@ -223,11 +223,7 @@ const HomeTop = ({
           <TextBox>스터디원과</TextBox>
           <TextChangeFrame>
             <TextBoxOpacity
-              style={
-                currentIndex === 0
-                  ? { opacity: 1, color: color.white.default, marginTop: 12 }
-                  : null
-              }
+              style={{ opacity: 1, color: color.white.default, marginTop: 12 }}
             >
               <TextKeyword
                 ref={el}
