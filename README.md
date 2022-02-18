@@ -6,7 +6,7 @@
 
 ❓ 스터디를 효과적으로 진행하고 싶으신가요?
 
-![logo (2)](README.assets/logo (2).png)
+![logo](README.assets/logo.png)
 
 **스터디카페**를 언제 어디든 배달해주는 **스터딜리버리**에서 해결하세요!
 
