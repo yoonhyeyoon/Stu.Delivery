@@ -43,7 +43,6 @@ function MyStudyList() {
         .then((res) => {
           // console.log(res.data);
           setMyStudyList(res.data);
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -51,7 +50,6 @@ function MyStudyList() {
   }, []);
 
   const [categories, setCategories] = useState();
-  // const [cateNames, setCateNames] = useState();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -71,26 +69,10 @@ function MyStudyList() {
         .catch((err) => console.log(err));
     };
     fetchCategories();
-    // if (categories) {
-    //   const allCategories = [
-    //     "all",
-    //     ...new Set(categories.map((categorie) => categorie.name)),
-    //   ];
-    //   setCateNames(allCategories);
-    // }
   }, []);
-  // useEffect(() => {
-  //   if (categories) {
-  //     const allCategories = [
-  //       "all",
-  //       ...new Set(categories.map((categorie) => categorie.name)),
-  //     ];
-  //     setCateNames(allCategories);
-  //   }
-  // }, []);
 
   const [studyItems, setStudyItems] = useState(myStudyList);
-  // console.log(myStudyList);
+
   const filterItems = (category) => {
     if (category === "all") {
       setStudyItems(myStudyList);
@@ -114,7 +96,7 @@ function MyStudyList() {
           myStudyList={myStudyList}
           filterItems={filterItems}
         />
-        {/* <Study items={studyItems} /> */}
+
         {myStudyList ? (
           <RoomContainer>
             {(studyItems ? studyItems : myStudyList).map((myStudy) => (

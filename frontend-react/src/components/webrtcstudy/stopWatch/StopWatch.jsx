@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import styles from "./StopWatch.module.css";
 import Button from "@mui/material/Button";
-// this value is 1/100th of a second, the interval
-// needed to increment the stopwatch correctly
+
 const INTERVAL_TIME = 10;
 
 function TimeUnit({ unit }) {

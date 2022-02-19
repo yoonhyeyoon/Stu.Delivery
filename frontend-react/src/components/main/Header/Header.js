@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
 import logo from "./logo.png";
 import Navbar from "react-bootstrap/Navbar";
@@ -18,7 +17,6 @@ class Header extends Component {
   clickLogo() {}
 
   render() {
-    // console.log(this.props.isLogin);
     const appName = "Stu.Delivery";
 
     // 로그아웃
@@ -54,7 +52,6 @@ class Header extends Component {
                     <ul>
                       <li>
                         <a onClick={onLogout}>로그아웃</a>
-                        {/* <button onClick={onLogout}>로그아웃</button> */}
                       </li>
                     </ul>
                   ) : (

@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Memo.module.css";
 import { Box, Modal } from "@mui/material";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+
 import { is_member_check, setHeader } from "../../../../utils/api";
-import EditIcon from "@mui/icons-material/Edit";
+
 import CloseIcon from "@mui/icons-material/Close";
 import { useParams } from "react-router";
 
@@ -82,30 +81,7 @@ function AddMemo() {
           + 보드 추가하기
         </a>
       ) : null}
-      {/* <Modal show={show} onHide={handleClose}>
-        <Form onSubmit={handleAddMemo}>
-          <Form.Control
-            type="text"
-            value={title}
-            placeholder="제목"
-            onChange={onTitleHandler}
-          />
-          <Form.Control
-            as="textarea"
-            cols="30"
-            rows="10"
-            placeholder="내요오옹"
-            value={content}
-            onChange={onContentHandler}
-          ></Form.Control>
-          <div>
-            <small>
-              {content.length}/{contentLimit}
-            </small>
-            <Button type="submit">게시</Button>
-          </div>
-        </Form>
-      </Modal> */}
+
       <Modal open={show} onClose={handleClose}>
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
@@ -141,8 +117,6 @@ function AddMemo() {
                   글쓰기
                 </button>
               </div>
-              {/* {memo.created_at && memo.created_at.slice(0, 10)}
-              <EditMemo memo={memo} /> */}
             </div>
           </Box>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import Input from "@mui/material/Input";
 import FormControl from "@mui/material/FormControl";
@@ -56,7 +56,6 @@ function StudyCheckPwd({ id, show, handleClose }) {
       },
     })
       .then((res) => {
-        console.log(res.data);
         window.location.href = `/study/${id}`;
       })
       .catch((err) => alert(err.response.data.message));

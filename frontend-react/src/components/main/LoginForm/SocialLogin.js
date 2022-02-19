@@ -50,15 +50,6 @@ function SocialLogin() {
       >
         <GitHubIcon sx={{ marginRight: 1 }} /> Login with Github
       </Button>
-      {/* <a href={GOOGLE_AUTH_URL} style={style}>
-        Login with Google
-      </a>
-      <a href={FACEBOOK_AUTH_URL} style={style}>
-        Login with Facebook
-      </a>
-      <a href={GITHUB_AUTH_URL} style={style}>
-        Login with Github
-      </a> */}
     </div>
   );
 }

@@ -3,7 +3,6 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Schedule.module.css";
 import { Modal } from "@mui/material";
-import Button from "@material-ui/core/Button";
 import { is_member_check, setHeader } from "../../../../utils/api";
 import SelectDate from "./SelectDate";
 import ListItem from "@mui/material/ListItem";
@@ -11,9 +10,6 @@ import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Form from "react-bootstrap/Form";
-import { ModalBody, ModalTitle } from "react-bootstrap";
-import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -120,46 +116,7 @@ function Schedule({ schedule }) {
           }
         />
       </ListItem>
-      {/* <Modal show={show} onHide={handleClose}>
-        <Form className={styles.bg}>
-          <Modal.Header>
-            <Modal.Title>
-              스터디 일정
-              <CloseIcon className={styles.close} onClick={handleClose} />
-            </Modal.Title>
-          </Modal.Header>
-          <ModalBody>
-            <SelectDate
-              startDate={newStartDate}
-              setStartDate={setNewStartDate}
-            />
-            <Form.Control
-              size="lg"
-              type="text"
-              className={styles.bg}
-              value={newTitle}
-              placeholder="일정명"
-              onChange={onTitleHandler}
-            />
-            <Form.Control
-              className={styles.bg}
-              as="textarea"
-              cols="30"
-              rows="10"
-              placeholder="상세내용"
-              value={newContent}
-              onChange={onContentHandler}
-            />
-          </ModalBody>
-          <Modal.Footer>
-            <p>
-              {newContent.length}/{contentLimit}
-            </p>
-            <EditIcon onClick={handleUpdateSchedule} className={styles.btn} />
-            {/* <Button onClick={handleRemoveMemo}>삭제</Button> */}
-      {/* </Modal.Footer>
-        </Form>
-      </Modal> */}
+
       <Modal open={show} onClose={handleClose}>
         <div className={styles.modal}>
           <CloseIcon className={styles.close} onClick={handleClose} />
@@ -198,8 +155,6 @@ function Schedule({ schedule }) {
                   수정하기
                 </button>
               </div>
-              {/* {memo.created_at && memo.created_at.slice(0, 10)}
-              <EditMemo memo={memo} /> */}
             </div>
           </form>
         </div>

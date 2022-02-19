@@ -5,8 +5,7 @@ import axios from "axios";
 import styles from "./Memo.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, Modal } from "@mui/material";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+
 import { setHeader } from "../../../../utils/api";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -95,7 +94,6 @@ function EditMemo({ memo }) {
           <CloseIcon className={styles.close} onClick={handleClose} />
           <form>
             <div className={styles.modal_text_aria}>
-              {/* <h2 id="unstyled-modal-title">제목</h2> */}
               <h3>메모</h3>
               <input
                 className={styles.title}
@@ -118,8 +116,6 @@ function EditMemo({ memo }) {
                   수정하기
                 </button>
               </div>
-              {/* {memo.created_at && memo.created_at.slice(0, 10)}
-              <EditMemo memo={memo} /> */}
             </div>
           </form>
         </div>

@@ -3,7 +3,6 @@ import axios from "axios";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 
 import OpenViduLayout from "../../layout/openvidu-layout";
@@ -21,11 +20,9 @@ class VideoRoomComponent extends Component {
     const user_nickname = this.props.user;
     const private_room_id = this.props.study.private_room_id;
     const meeting_room_id = this.props.study.meeting_room_id;
-    // console.log(user_nickname, meeting_room_id);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
       : "https://" + "i6d201.p.ssafy.io" + ":8443";
-    // : "https://" + window.location.hostname + ":8443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "STUDELIVERY";

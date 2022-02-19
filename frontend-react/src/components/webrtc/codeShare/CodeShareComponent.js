@@ -25,15 +25,11 @@ export default class CodeShareComponent extends Component {
   }
 
   componentDidMount() {
-    // Registering the rich text type to make sharedb work
-    // with our quill editor
     Sharedb.types.register(richText.type);
 
-    // Connecting to our socket server
     const socket = new WebSocket("wss://i6d201.p.ssafy.io:9000");
     const connection = new Sharedb.Connection(socket);
 
-    // Querying for our document
     const doc = connection.get(
       "documents",
       this.props.user.getStreamManager().stream.session.sessionId
@@ -43,15 +39,10 @@ export default class CodeShareComponent extends Component {
       if (err) return console.error(err);
 
       if (doc.type === null) {
-        /**
-         * If there is no document with id "firstDocument" in memory
-         * we are creating it and then starting up our ws server
-         */
         doc.create([{ insert: "Hello World!" }], "rich-text");
       }
 
       const toolbarOptions = [
-        //[{ 'font': [] }],
         [{ header: [1, 2, false] }],
         ["bold", "italic", "underline", "strike", "blockquote"],
         [
@@ -61,7 +52,7 @@ export default class CodeShareComponent extends Component {
           { indent: "+1" },
         ],
         ["link", "image"],
-        [{ align: [] }, { color: [] }, { background: [] }], // dropdown with defaults from theme
+        [{ align: [] }, { color: [] }, { background: [] }],
         ["clean"],
       ];
       const options = {
@@ -71,24 +62,14 @@ export default class CodeShareComponent extends Component {
         },
       };
       let quill = new Quill("#editor", options);
-      /**
-       * On Initialising if data is present in server
-       * Updaing its content to editor
-       */
+
       quill.setContents(doc.data);
 
-      /**
-       * On Text change publishing to our server
-       * so that it can be broadcasted to all other clients
-       */
       quill.on("text-change", function (delta, oldDelta, source) {
         if (source !== "user") return;
         doc.submitOp(delta, { source: quill });
       });
 
-      /** listening to changes in the document
-       * that is coming from our server
-       */
       doc.on("op", function (op, source) {
         if (source === quill) return;
         quill.updateContents(op);

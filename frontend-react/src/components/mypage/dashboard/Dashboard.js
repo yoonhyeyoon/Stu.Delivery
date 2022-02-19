@@ -25,10 +25,6 @@ const Dashboard = () => {
           setProfile(res.data.profile_img);
           setInterests([...res.data.categories]);
           setAspire(res.data.determination);
-          // localStorage.setItem("user", res.data.id);
-          // localStorage.setItem("email", res.data.email);
-          // localStorage.setItem("nickname", res.data.nickname);
-          // localStorage.setItem("profile", res.data.profile_img);
 
           console.log(res.data.categories);
         })

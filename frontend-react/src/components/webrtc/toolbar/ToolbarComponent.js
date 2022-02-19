@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import "./ToolbarComponent.css";
-
-import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-
 import Mic from "@material-ui/icons/Mic";
 import MicOff from "@material-ui/icons/MicOff";
 import Videocam from "@material-ui/icons/Videocam";
@@ -18,11 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import Code from "@material-ui/icons/Code";
-import LogoutIcon from "@mui/icons-material/Logout";
-import SvgIcon from "@mui/material/SvgIcon";
-
 import IconButton from "@material-ui/core/IconButton";
-import { useHistory } from "react-router-dom";
 
 const logo = require("../../../assets/images/logo/logomain.png");
 
@@ -84,17 +77,11 @@ export default class ToolbarComponent extends Component {
     const studyId = this.props.studyId;
 
     return (
-      // <AppBar className="toolbar" id="header">
       <Toolbar className="toolbar">
         <div id="navSessionInfo">
           <img id="header_img" alt="OpenVidu Logo" src={logo} />
-          {this.props.sessionId &&
-            // <div id="titleContent">
-            //   <span id="session-title">{mySessionId}</span>
-            // </div>
-            null}
+          {this.props.sessionId && null}
         </div>
-        {/* 스톱워치 */}
 
         <div className="buttonsContent">
           <IconButton
@@ -184,7 +171,6 @@ export default class ToolbarComponent extends Component {
           </IconButton>
         </div>
       </Toolbar>
-      // </AppBar>
     );
   }
 }

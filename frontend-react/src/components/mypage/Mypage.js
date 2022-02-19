@@ -23,7 +23,6 @@ const MyPage = () => {
             <Route path="update" element={<Update />}></Route>
           </Route>
           <Route path="check" element={<CheckPwd />}></Route>
-          {/* <Route path="study" element={<MyStudy />}></Route> */}
           <Route path="dashboard" element={<Dashboard />}></Route>
           <Route path="withdrawal" element={<Withdrawal />}></Route>
         </Routes>
