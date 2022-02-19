@@ -236,63 +236,6 @@ const HomeTop = ({
               ></TextKeyword>
               <TextEnd>하며</TextEnd>
             </TextBoxOpacity>
-            {/* <TextBoxOpacity
-              style={
-                currentIndex === 1
-                  ? { opacity: 1, color: color.white.default, marginTop: 12 }
-                  : null
-              }
-            >
-              <TextKeyword
-                style={
-                  overIndex === currentIndex + 1 ||
-                  (overIndex === 0 && currentIndex === maxIndex)
-                    ? { marginLeft: -40, color: color.pink.default }
-                    : { color: color.pink.default }
-                }
-              >
-                문서를 같이
-              </TextKeyword>
-              <TextEnd>공유하며</TextEnd>
-            </TextBoxOpacity>
-            <TextBoxOpacity
-              style={
-                currentIndex === 2
-                  ? { opacity: 1, color: color.white.default, marginTop: 12 }
-                  : null
-              }
-            >
-              <TextKeyword
-                style={
-                  overIndex === currentIndex + 1 ||
-                  (overIndex === 0 && currentIndex === maxIndex)
-                    ? { marginLeft: -40, color: color.red.default }
-                    : { color: color.red.default }
-                }
-              >
-                보드를 같이
-              </TextKeyword>
-              <TextEnd>그리며</TextEnd>
-            </TextBoxOpacity>
-            <TextBoxOpacity
-              style={
-                currentIndex === 3
-                  ? { opacity: 1, color: color.white.default, marginTop: 12 }
-                  : null
-              }
-            >
-              <TextKeyword
-                style={
-                  overIndex === currentIndex + 1 ||
-                  (overIndex === 0 && currentIndex === maxIndex)
-                    ? { marginLeft: -40, color: color.homeTag.i }
-                    : { color: color.homeTag.i }
-                }
-              >
-                일정을 같이
-              </TextKeyword>
-              <TextEnd>공유하며</TextEnd>
-            </TextBoxOpacity> */}
           </TextChangeFrame>
           <TextBox
             style={

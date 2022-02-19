@@ -3,15 +3,12 @@ import { useEffect, useState } from "react";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-import Header from "./components/main/Header/Header";
-import Footer from "./components/main/Footer/Footer";
 import OAuth2RedirectHandler from "./components/main/oauth2/OAuth2RedirectHandler";
 import Login from "./routes/account/Login";
 import Signup from "./routes/account/Signup";
 import Main from "./routes/main/Main";
 import Lounge from "./routes/study/Lounge";
 import MyPage from "./components/mypage/Mypage";
-import Welcome from "./components/welcome/Welcome";
 import Info from "./routes/study/Info";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -63,7 +60,6 @@ function App() {
         <GlobalStyles />
         <div className="content">
           <Router>
-            {/* <Header authenticated={authenticated} isLogin={isLogin} /> */}
             <ResponsiveAppBar />
             <Routes>
               <Route path="/" element={<Index />}></Route>

@@ -104,10 +104,7 @@ export default class ChatComponent extends Component {
             id="chatToolbar"
             style={{ background: "#f2f2e8", color: "black" }}
           >
-            <span>
-              {/* {this.props.user.getStreamManager().stream.session.sessionId} - */}
-              열람실 채팅
-            </span>
+            <span>열람실 채팅</span>
             <IconButton id="closeButton" onClick={this.close}>
               <HighlightOff color="secondary" />
             </IconButton>

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import StudyCheckPwd from "./StudyCheckPwd";
 import { useSelector, useDispatch } from "react-redux";
 import { is_member_check } from "../../utils/api";
-import axios from "axios";
-import { loadStudy } from "../../redux/study";
 import styled from "styled-components";
 import PeopleIcon from "@mui/icons-material/People";
 import LockIcon from "@mui/icons-material/Lock";
@@ -70,29 +67,11 @@ const StyledRoom = styled.div`
 `;
 
 const Study = ({ study }) => {
-  console.log({ study });
   const [show, setShow] = useState(false);
-  //   const dispatch = useDispatch();
-  //   useEffect(() => {
-  //     if (study) {
-  //       const fetchStudyInfo = async () => {
-  //         axios({
-  //           method: "get",
-  //           url: `https://i6d201.p.ssafy.io/api/v1/study/${study.id}`,
-  //         })
-  //           .then((res) => {
-  //             // console.log(res);
-  //             dispatch(loadStudy(res.data));
-  //           })
-  //           .catch((err) => console.log(err));
-  //       };
-  //       fetchStudyInfo();
-  //     }
-  //   }, []);
+
   const user = useSelector((state) => state.user.user);
-  // const studyInfo = useSelector((state) => state.study.study);
+
   const isMember = is_member_check(study, user);
-  // console.log(studyInfo, user, isMember);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -104,29 +83,17 @@ const Study = ({ study }) => {
       }
     }
   };
-  // const getTime = (time) => {
-  //   if (time < 1) return "1분미만";
-  //   if (time < 60) return `${parseInt(time, 10)}분`;
-  //   if (time >= 60) return `${parseInt(time / 60, 10)}시간`;
-  // };
-  // const time = new Date(study.start_at) - new Date(study.finish_at);
-  // console.log(getTime(time));
+
   return (
     <>
       <StyledRoom onClick={handleShow}>
-        {/* <div className="category-tag">
-          <CategoryTag category={room.category} />
-        </div> */}
         <div
           className="room-title"
           style={{
             background: `url(${study.thumbnail_url})`,
             backgroundSize: "100%",
           }}
-        >
-          {/* <h3>{study.name}</h3> */}
-          {/* <p>{`by ${study.master_id}`}</p> */}
-        </div>
+        ></div>
         <div className="room-info">
           <div className="active-time">
             {study.is_private ? <LockIcon fontSize="small" /> : null}

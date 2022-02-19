@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import Footer from "../welcome/Footer";
 import Study from "./Study";
 import Categories from "./Categories";
-import items from "./data";
 import "./Study.css";
 import axios from "axios";
 
@@ -49,7 +48,6 @@ function StudyList() {
   }, []);
 
   const [categories, setCategories] = useState();
-  // const [cateNames, setCateNames] = useState();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -58,36 +56,17 @@ function StudyList() {
         url: "https://i6d201.p.ssafy.io/api/v1/category",
       })
         .then((res) => {
-          // console.log(res.data);
           const allCategories = [
             "all",
             ...new Set(res.data.map((categorie) => categorie.name)),
           ];
-          // setCateNames(allCategories);
           setCategories(allCategories);
         })
         .catch((err) => console.log(err));
     };
     fetchCategories();
-    // if (categories) {
-    //   const allCategories = [
-    //     "all",
-    //     ...new Set(categories.map((categorie) => categorie.name)),
-    //   ];
-    //   setCateNames(allCategories);
-    // }
   }, []);
-  // useEffect(() => {
-  //   if (categories) {
-  //     const allCategories = [
-  //       "all",
-  //       ...new Set(categories.map((categorie) => categorie.name)),
-  //     ];
-  //     setCateNames(allCategories);
-  //   }
-  // }, []);
 
-  // console.log(categories);
   const [studyItems, setStudyItems] = useState();
   const filterItems = (category) => {
     if (category === "all") {
@@ -98,14 +77,9 @@ function StudyList() {
     const newItems = studyList.filter(
       (study) => study.categories[0].name === category
     );
-    // console.log(category);
-    // console.log(studyList);
-    // console.log(newItems);
-    setStudyItems(newItems);
-    console.log(category, categories, studyItems, newItems);
-  };
 
-  // setStudyItems(studyList);
+    setStudyItems(newItems);
+  };
 
   return (
     <Container>
@@ -119,7 +93,6 @@ function StudyList() {
           studyList={studyList}
           filterItems={filterItems}
         />
-        {/* <Study items={studyItems} /> */}
         {studyList ? (
           <RoomContainer>
             {(studyItems ? studyItems : studyList).map((study) => (

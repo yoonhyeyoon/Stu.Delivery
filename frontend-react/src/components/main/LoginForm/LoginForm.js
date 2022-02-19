@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Login.module.css";
-import axios from "axios";
 import { login } from "../../../utils/api";
 
 import { Button, FormControlLabel, Checkbox, Stack } from "@mui/material";
@@ -30,18 +29,6 @@ function LoginForm() {
     /* 이메일 규칙의 정규식 표현 */
     login(inputId, inputPw);
   };
-
-  // 페이지 렌더링 후 가장 처음 호출되는 함수
-  //   useEffect(
-  //     () => {
-  //       axios
-  //         .get("/user_inform/login")
-  //         .then((res) => console.log(res))
-  //         .catch();
-  //     },
-  //     // 페이지 호출 후 처음 한번만 호출될 수 있도록 [] 추가
-  //     []
-  //   );
 
   return (
     <div>

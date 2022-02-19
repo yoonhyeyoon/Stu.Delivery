@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-// import { loadMemo } from "../../../../redux/memos";
-import axios from "axios";
+import React from "react";
 import Schedule from "./Schedule.jsx";
 import AddSchedule from "./AddSchedule.jsx";
 import styles from "./Schedule.module.css";
 import { TransitionGroup } from "react-transition-group";
 import Collapse from "@mui/material/Collapse";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Box from "@mui/material/Box";
 
 function ScheduleList({ schedules }) {

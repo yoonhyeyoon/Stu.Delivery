@@ -11,15 +11,6 @@ function MemoList() {
   const params = useParams();
   const memoContainer = useRef();
   const [box, setBox] = useState({});
-  // useEffect(() => {
-  //   const box = memoContainer.current.getBoundingClientRect();
-  //   setBox({
-  //     top: box.top,
-  //     left: box.left,
-  //     bottom: box.top + box.height,
-  //     right: box.left + box.width,
-  //   });
-  // }, []);
 
   const dispatch = useDispatch();
   // const [memos, setMemos] = useState();
@@ -32,15 +23,13 @@ function MemoList() {
         url: `https://i6d201.p.ssafy.io/api/v1/study/${params.id}/board`,
       })
         .then((res) => {
-          // console.log(res.data);
-          // setMemos(res.data);
           dispatch(loadMemo(res.data));
         })
         .catch((err) => console.log(err));
     };
     fetchMemo();
   }, [dispatch]);
-  // console.log(memos);
+
   return (
     <>
       <div className={styles.frame_header}>

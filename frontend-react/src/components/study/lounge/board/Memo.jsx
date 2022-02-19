@@ -26,7 +26,6 @@ function Memo({ memo }) {
         </div>
         <div className={styles.bottom}>
           {memo.created_at && memo.created_at.slice(0, 10)}
-          {/* <EditMemo memo={memo} /> */}
         </div>
       </div>
       <Modal open={show} onClose={handleClose}>

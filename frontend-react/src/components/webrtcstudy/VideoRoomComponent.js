@@ -581,11 +581,6 @@ class VideoRoomComponent extends Component {
               </div>
             )}
           {this.state.subscribers.map((sub, i) => (
-            // <div
-            //   key={i}
-            //   className="OT_root OT_publisher custom-class"
-            //   id="remoteUsers"
-            // >
             <div>
               <StreamComponent
                 user={sub}
@@ -597,10 +592,6 @@ class VideoRoomComponent extends Component {
         <div id="layout" className="boundsRight">
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
-              // <div
-              //   className="OT_root OT_publisher custom-class"
-              //   style={chatDisplay}
-              // >
               <div>
                 <ChatComponent
                   user={localUser}

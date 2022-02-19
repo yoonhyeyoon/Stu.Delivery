@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-// import { insertMemo } from "../../../../redux/memos";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import styles from "./Schedule.module.css";
 import { Modal } from "@mui/material";
-import Button from "@material-ui/core/Button";
-import Form from "react-bootstrap/Form";
 import SelectDate from "./SelectDate";
 import { is_member_check, setHeader } from "../../../../utils/api";
-import EditIcon from "@mui/icons-material/Edit";
-import { ModalBody } from "react-bootstrap";
 import CloseIcon from "@mui/icons-material/Close";
 import { useParams } from "react-router";
 
@@ -40,8 +35,6 @@ function AddSchedule() {
   };
 
   const handleAddSchedule = async (event) => {
-    // const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-    // setStartDate(new Date(startDate + KR_TIME_DIFF));
     event.preventDefault();
     if (title === "") {
       return alert("일정명을 입력하세요.");
@@ -61,15 +54,7 @@ function AddSchedule() {
         .then((res) => {
           console.log(res);
           const resData = res.data;
-          // dispatch(
-          //   insertMemo(
-          //     resData.study_board_id,
-          //     resData.title,
-          //     resData.content,
-          //     resData.user_id,
-          //     resData.created_at
-          //   )
-          // );
+
           window.location.reload();
         })
         .catch((err) => console.log(err.response.data));
@@ -118,8 +103,6 @@ function AddSchedule() {
                   글쓰기
                 </button>
               </div>
-              {/* {memo.created_at && memo.created_at.slice(0, 10)}
-              <EditMemo memo={memo} /> */}
             </div>
           </form>
         </div>

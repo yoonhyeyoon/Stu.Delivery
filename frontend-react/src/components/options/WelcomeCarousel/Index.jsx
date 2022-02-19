@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import color from "../../../common/styles/theme";
 
 const Container = styled.div`
   display: ${(props) =>
@@ -61,15 +60,6 @@ const ImageFrame = styled.div`
   width: 100%;
   height: 100%;
 `;
-
-// const BgOpacityFrame = styled.div`
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   background-color: ${color.black.default};
-//   opacity: ${(props) => (props.frameIndex === props.currentIndex ? 0.2 : 0.7)};
-//   transition: opacity 0.3s;
-// `;
 
 const HomeTextFrame = styled.div`
   position: absolute;
@@ -139,12 +129,6 @@ const Index = ({
     >
       <ImageFrame>
         <img src={carouselSrc} layout="fill" objectFit="cover" quality="100" />
-        {/* <BgOpacityFrame
-          {...{
-            ...commonProps,
-            frameIndex,
-          }}
-        /> */}
       </ImageFrame>
     </Container>
   );

@@ -4,10 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { is_member_check, setHeader } from "../../../../utils/api";
 import { useSelector } from "react-redux";
-// import Button from "@material-ui/core/Button";
 import Button from "react-bootstrap/Button";
 import { useParams } from "react-router";
-// import { Modal } from "@mui/material";
 import Modal from "react-bootstrap/Modal";
 import StudyInfoUpdate from "../../info/StudyInfoUpdate";
 
@@ -18,7 +16,6 @@ function StudyBtn() {
   const user = useSelector((state) => state.user.user);
   const isMember = is_member_check(study, user);
 
-  // console.log(study, user, isMember);
   const handleSignUpStudy = async (event) => {
     event.preventDefault();
     axios({
@@ -46,11 +43,7 @@ function StudyBtn() {
           <Link to={`/study/${study.id}`}>스터디 라운지</Link>
         </Button>
       ) : (
-        <Button
-          // class="btn btn-primary shadow-none"
-          onClick={handleSignUpStudy}
-          className={styles.btn}
-        >
+        <Button onClick={handleSignUpStudy} className={styles.btn}>
           스터디 가입
         </Button>
       )}
